@@ -107,6 +107,13 @@ jobs:
           key: numenexcodice-cola-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             numenexcodice-cola-
+      - name: Recuperar fotografias verificadas
+        uses: actions/cache/restore@v4
+        with:
+          path: state/visuales_numen
+          key: numen-visuales-v14-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            numen-visuales-v14-
       - name: Recuperar estado confirmado del repositorio
         shell: bash
         run: |
@@ -136,6 +143,12 @@ jobs:
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'NumenExCodice: actualizar memoria e historial [skip ci]'
             git push origin HEAD:${{ github.event.repository.default_branch }}
           fi
+      - name: Conservar fotografias verificadas incluso si falla produccion
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state/visuales_numen
+          key: numen-visuales-v14-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Conservar cola de publicaciones
         if: always()
         uses: actions/cache/save@v4
