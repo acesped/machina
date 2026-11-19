@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-NumenExCodice · Motor autónomo de reflexión filosófica · versión 1.7
+NumenExCodice · Motor autónomo de reflexión filosófica · versión 1.8
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -17,6 +17,9 @@ VOZ = 'es-CL-CatalinaNeural'  # voz fija para TODOS los segmentos de narración
 VELOCIDAD = os.getenv('AERO_VELOCIDAD_VOZ', '-12%').strip()  # Catalina más pausado; configurable en GitHub Variables
 if not re.fullmatch(r'[+-]?(?:[0-9]|[1-9][0-9]|100)%', VELOCIDAD):
     raise ValueError('AERO_VELOCIDAD_VOZ debe ser porcentaje válido, por ejemplo -5%')
+TONO_VOZ = os.getenv('AERO_TONO_VOZ', '-6Hz').strip()  # tono ligeramente más grave y místico
+if not re.fullmatch(r'[+-]?(?:\d|[1-9]\d|100)Hz', TONO_VOZ):
+    raise ValueError('AERO_TONO_VOZ debe expresarse como Hz, por ejemplo -6Hz o +2Hz')
 # Español siempre con Catalina; nunca cambiar la voz para términos en inglés.
 VOZ_INGLES = os.getenv('AERO_VOZ_INGLES', 'en-US-AndrewNeural').strip()
 # La pronunciación inglesa se puede desactivar si se prefiere una sola voz.
@@ -3034,7 +3037,7 @@ def generar_voces(plan,carpeta):
                     for intento in range(1,5):
                         audio.clear();marcas_fragmento.clear()
                         try:
-                            tts=edge_tts.Communicate(texto_tts,voice=voz_actual,rate=VELOCIDAD,pitch='-4Hz')
+                            tts=edge_tts.Communicate(texto_tts,voice=voz_actual,rate=VELOCIDAD,pitch=TONO_VOZ)
                             async for dato in tts.stream():
                                 if dato['type']=='audio':audio.extend(dato['data'])
                                 elif dato['type']=='WordBoundary':
@@ -3232,13 +3235,24 @@ def _bloque_musica_cinematica(desde_muestra, cantidad, sr, duracion, semilla, te
 
 
 def reverberar_narracion(voz, carpeta):
-    """Reflexiones tempranas suaves, sin modificar la duración de la voz."""
+    """Perfil vocal cósmico: más profundidad, aire y presencia, sin alterar la duración."""
     destino = carpeta / 'narracion_reverb.wav'
     with wave.open(str(voz), 'rb') as entrada:
         muestras = entrada.getnframes()
         sr = entrada.getframerate()
-    filtro = ('aecho=0.98:0.95:37|73|113:0.08|0.045|0.025,'
-              f'atrim=end_sample={muestras},asetpts=PTS-STARTPTS')
+    # Cadena sutil: limpieza, cuerpo, compresión ligera, eco corto y cola espacial.
+    # Se recorta exactamente al mismo número de muestras para no romper subtítulos.
+    filtro = (
+        'highpass=f=85,'
+        'lowpass=f=9000,'
+        'equalizer=f=180:t=q:w=1.0:g=1.8,'
+        'equalizer=f=2600:t=q:w=1.2:g=1.5,'
+        'compand=attacks=0:decays=0.18:points=-80/-80|-26/-20|-12/-9|0/-3:soft-knee=6:gain=2.5,'
+        'chorus=0.55:0.82:18|28:0.20|0.25:0.28|0.20:1.7|2.3,'
+        'aecho=0.88:0.62:35|71|121|181:0.16|0.12|0.08|0.05,'
+        'alimiter=limit=0.93:latency=1,apad,'
+        f'atrim=end_sample={muestras},asetpts=PTS-STARTPTS'
+    )
     subprocess.run(['ffmpeg','-y','-hide_banner','-loglevel','error',
                     '-i',str(voz),'-af',filtro,'-ar',str(sr),
                     '-c:a','pcm_s16le',str(destino)],check=True)
@@ -3619,7 +3633,7 @@ def renderizar_clips(bloques,fotos,caso,carpeta):
         objetivo=round((b['inicio']+b['duracion'])*fps)
         frames_escena=max(1,objetivo-acum_frames)
         acum_frames+=frames_escena
-        num_planos=1 if b['tipo']=='cta' else max(1,math.ceil(frames_escena/(fps*(7 if MODO_VIRAL else 11))))
+        num_planos=1  # un zoom continuo por escena, sin reinicios
         cortes=[round(j*frames_escena/num_planos) for j in range(num_planos+1)]
         for plano in range(num_planos):
             frames=cortes[plano+1]-cortes[plano]
@@ -3649,11 +3663,11 @@ def renderizar_clips(bloques,fotos,caso,carpeta):
                      '-filter_complex',filtro,'-map','[v]','-frames:v',str(frames),'-r',str(fps),'-an',
                      '-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p',str(clip)]
             else:
-                # Ken Burns: encuadre flotante, panorámica alternada y zoom suave.
+                # Zoom cinematográfico limpio: sin paneo ni microtemblor, solo acercamiento suave al centro.
                 z=f"min(1.0+on*{(.09/max(frames,1)):.9f},1.09)"
-                x='(iw-iw/zoom)*0.18' if numero%2 else '(iw-iw/zoom)*0.82'
-                y='(ih-ih/zoom)*0.30' if numero%3 else '(ih-ih/zoom)*0.70'
-                vf=(f'scale=1500:850:force_original_aspect_ratio=increase,crop=1500:850,'
+                x='(iw-iw/zoom)/2'
+                y='(ih-ih/zoom)/2'
+                vf=(f'scale=5760:3240:force_original_aspect_ratio=increase,crop=5760:3240,'
                     f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={ANCHO}x{ALTO}:fps={fps},"
                     'eq=contrast=1.08:saturation=0.90,format=yuv420p')
                 cmd=['ffmpeg','-y','-hide_banner','-loglevel','error','-loop','1','-framerate','1','-i',str(foto),'-vf',vf,'-frames:v',str(frames),'-an','-c:v','libx264','-preset','veryfast','-crf','19','-pix_fmt','yuv420p',str(clip)]
@@ -5502,7 +5516,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '1.7'
+VERSION_SCRIPT = '1.8'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5795,21 +5809,10 @@ def descripcion_youtube(caso,fuentes,creditos):
 
 
 
-def obtener_icono_like(carpeta, session=None):
-    from PIL import Image,ImageDraw
-    p=Path(carpeta)/'numen_like.png'
-    im=Image.new('RGBA',(640,640),(0,0,0,0));d=ImageDraw.Draw(im)
-    d.rounded_rectangle((55,55,585,585),radius=100,fill='#174a78',outline='#89cfff',width=9)
-    font=cargar_fuente(118)
-    box=d.textbbox((0,0),'LIKE',font=font)
-    d.text(((640-(box[2]-box[0]))/2-box[0],(640-(box[3]-box[1]))/2-box[1]),'LIKE',font=font,fill='white')
-    im.save(p);return p
-
-
 def _ent_main():
     if not (OPENROUTER_MODELO=='openrouter/free' or OPENROUTER_MODELO.endswith(':free')):
         raise ValueError('NumenExCodice solo admite modelos gratuitos en OpenRouter.')
-    print('NumenExCodice | motor reflexivo autónomo 1.7',flush=True)
+    print('NumenExCodice | motor reflexivo autónomo 1.8',flush=True)
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     asegurar_dependencias()
@@ -5843,7 +5846,7 @@ def _ent_main():
     bloques,cues,voz=generar_voces(plan,carpeta)
     inicio=next((b['inicio'] for b in bloques if b['tipo']=='cta'),None)
     srt,ass=subtitulos(cues,carpeta,inicio_cta=inicio)
-    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | reverb suave',flush=True)
+    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | tono {TONO_VOZ} | reverb cósmica',flush=True)
     audio=mezclar_cinematica(reverberar_narracion(voz,carpeta),carpeta)
     guardar_metadatos(caso,bloques,[],creditos,carpeta)
     base=renderizar_clips(bloques,fotos,caso,carpeta);video=finalizar_video(base,audio,ass,carpeta,caso)
