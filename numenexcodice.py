@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-NumenExCodice · Motor autónomo de reflexión filosófica · versión 1.5
+NumenExCodice · Motor autónomo de reflexión filosófica · versión 1.6
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5497,7 +5497,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '1.5'
+VERSION_SCRIPT = '1.6'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5590,30 +5590,58 @@ def _ent_visual_tokens(s):
 _ENT_VIS_STOP = set('a an the of at on in with from near beside next to toward towards and or for by showing leaning flickering rotating stuck potted leaning open closed blank cold hot soft quiet modest wooden red blue green black white bright dark old new empty full delivered unread showing screen page paper steam dusk dawn night day'.split())
 _ENT_NOT_PHOTO = re.compile(r'\b(?:bodleian libraries|bound print|cartouche|engraving|etching|woodcut|lithograph|manuscript|book illustration|illustrated book|historical print|speech at|inauguration|press conference|conference|ceremony|portrait|selfie|group photo|painting|drawing|diagram|screenshot|render|advertisement)\b')
 
+# Equivalencias explícitas de objetos físicos. Nunca usar palabras genéricas
+# como sustituto de un objeto concreto (p. ej. calle por cartel).
+_ENT_OBJECTS = (
+    (r'\b(?:billboards?|advertising hoardings?|outdoor advertising boards?)\b', 'billboard', ('advertising hoarding','outdoor advertising board')),
+    (r'\b(?:streetlamps?|streetlights?|street lamps?|street lights?|lamp posts?|lampposts?)\b', 'streetlight', ('street lamp','lamppost')),
+    (r'\b(?:smartphones?|mobile phones?|cell phones?)\b', 'smartphone', ('mobile phone','cell phone')),
+    (r'\b(?:traffic lights?|traffic signals?)\b', 'traffic light', ('traffic signal',)),
+    (r'\b(?:ceiling fans?)\b', 'ceiling fan', ()),
+    (r'\b(?:coffee cups?|coffee mugs?)\b', 'coffee cup', ('coffee mug',)),
+    (r'\b(?:recycling bins?|recycling containers?)\b', 'recycling bin', ('recycling container',)),
+    (r'\b(?:digital menu boards?|electronic menu boards?)\b', 'digital menu board', ('electronic menu board',)),
+    (r'\b(?:bookshelves|book shelves|bookshelfs?|bookcases?)\b', 'bookshelf', ('bookcase','book shelf')),
+)
+
 def _ent_subject(consulta):
     w=_univ_normalizar(consulta).split()
-    # Extraer el sintagma inicial: el objeto antes de los complementos.
     first=[]
     for x in w:
-        if x in {'with','on','in','at','from','near','beside','toward','towards','showing','of'} and first:break
-        if x not in _ENT_VIS_STOP:first.append({'streetlamp':'streetlight','smartphone':'smartphone'}.get(x,x))
+        if x in {'with','on','in','at','from','near','beside','toward','towards','showing','of','without'} and first:break
+        if x not in _ENT_VIS_STOP:first.append(x)
+    phrase=' '.join(first) or _univ_normalizar(consulta)
+    for pattern,canonical,aliases in _ENT_OBJECTS:
+        if re.search(pattern,phrase):return canonical
+    # Conservar los sustantivos distintivos; los complementos de lugar no son
+    # una condición obligatoria si el título documenta el objeto principal.
     return ' '.join(first[:3]) or consulta
+
+def _ent_subject_variants(consulta):
+    subject=_ent_subject(consulta)
+    for _,canonical,aliases in _ENT_OBJECTS:
+        if subject==canonical:return (canonical,*aliases)
+    return (subject,)
 
 def _ent_score(titulo, meta, anclas, consulta=None):
     if not es_foto_real_metadata(titulo,meta):return 0
     name=_univ_normalizar(titulo)
     t=_univ_normalizar(titulo+' '+ ' '.join(limpiar_html(meta.get(k,{}).get('value','')) for k in ('ImageDescription','ObjectName')))
-    if _PERSONA_ENT.search(t) or _ENT_NOT_PHOTO.search(name):return 0
+    if _PERSONA_ENT.search(t):return 0
+    bad=_ENT_NOT_PHOTO.search(name)
+    if bad and not (bad.group()=='advertisement' and consulta and _ent_subject(consulta)=='billboard' and not _ENT_NOT_PHOTO.search(re.sub(r'\badvertisement\b','',name))):return 0
     nt=_ent_visual_tokens(name); tokens=_ent_visual_tokens(t)
     if {'streetlamp','streetlight'} & nt or 'street lamp' in name or 'street light' in name:nt.add('streetlight')
     if 'mobile phone' in name or 'cell phone' in name:nt.add('smartphone')
     if 'streetlamp' in nt or 'streetlight' in nt:nt.update({'streetlight','streetlamp'})
     # La consulta completa ocupa el último lugar en la llamada de producción.
-    obj=set(_ent_subject(consulta or anclas[-1]).split()) if consulta or (len(anclas)>1 and len(anclas[-1].split())>3) else set()
-    obj={x[:-1] if len(x)>4 and x.endswith('s') else x for x in obj}
+    variants=_ent_subject_variants(consulta or anclas[-1]) if consulta or (len(anclas)>1 and len(anclas[-1].split())>3) else ()
     nt.update(x for x in name.split() if x in {'light','world','technology','life'})
-    if obj and not obj<=nt:return 0
-    score=4 if obj and obj<=nt else 0
+    # Los sinónimos deben estar en el título; la descripción solo suma puntos.
+    def required(v):
+        return {x[:-1] if len(x)>4 and x.endswith('s') else x for x in v.split()}
+    if variants and not any(required(v)<=nt for v in variants):return 0
+    score=4 if variants else 0
     for a in anclas:
         n=_univ_normalizar(a); at=_ent_visual_tokens(a)
         if not at:continue
@@ -5624,7 +5652,7 @@ def _ent_score(titulo, meta, anclas, consulta=None):
 
 
 def _ent_queries(e):
-    raw=[_ent_subject(e['consulta']),*e['anclas'],e['consulta']]
+    raw=[*_ent_subject_variants(e['consulta']),*e['anclas'],e['consulta']]
     for v in list(raw):
         words=[w for w in _univ_normalizar(v).split() if w in _ent_visual_tokens(v) and w not in _ENT_VIS_STOP]
         if len(words)>2:raw.append(' '.join(words[:2]))
@@ -5709,7 +5737,7 @@ def _ent_fotos(d, carpeta):
     from PIL import Image, ImageOps
     from io import BytesIO
     s=requests.Session(); configurar_reintentos_wikimedia(s)
-    s.headers['User-Agent']='NumenExCodice/1.4 (https://www.youtube.com/@NumenExCodice; Wikimedia Commons licensed photos)'
+    s.headers['User-Agent']='NumenExCodice/1.6 (https://www.youtube.com/@NumenExCodice; Wikimedia Commons licensed photos)'
     fotos=[]; creditos=[]; mapa=[]; auditoria=[]; huellas=[]; banco=[]
     for i,e in enumerate(d['escenas']):
         elegido=None; vistos=set(); diagnostico=[]
@@ -5882,6 +5910,18 @@ def _ent_test():
         assert _ent_score(bad,{},['wooden desk','printer blank paper',q])==0
     assert _ent_score('Office printer.jpg',{},['printer blank paper','Printer with blank paper on a wooden desk'])>0
     assert _ent_score('Rotating Ceiling fan.jpg',{},['ceiling fan','Ceiling fan in a modest living room'])>0
+    q='Street billboard recycling message'
+    a=['street billboard','recycling message','urban advertising',q]
+    assert _ent_subject(q)=='billboard'
+    assert _ent_queries({'consulta':q,'anclas':a[:-1]})[0]=='billboard'
+    assert _ent_score('File:Billboard at a road.jpg',{},a,q)>0
+    assert _ent_score('File:Advertising hoarding in London.jpg',{},a,q)>0
+    assert _ent_score('File:City street.jpg',{},a,q)==0
+    assert _ent_score('File:Billboard illustration drawing.jpg',{},a,q)==0
+    assert _ent_score('File:Billboard portrait.jpg',{},a,q)==0
+    assert _ent_score('File:Recycling collection truck.jpg',{},a,q)==0
+    assert _ent_subject('Cloudy sky without sun')=='cloudy sky'
+    print('OK: objeto principal billboard, sinónimos y rechazo de imágenes ajenas')
     d={'titulo':'El tiempo que los humanos no pueden recuperar','tesis':'El tiempo perdido no puede recuperarse mediante una acumulación de bienes.','pregunta':'¿Qué harías con el tiempo que te queda?','categoria':'Existencia','mini_titulo':'EL TIEMPO','escenas':[{'texto':('Una interpretación filosófica del tiempo puede abrir una pregunta sobre nuestras decisiones. '*6).strip()+' Variante de prueba '+str(i),'consulta':'Earth at night from orbit','anclas':['earth at night','city lights']} for i in range(8)]}
     assert _ent_validar(d,[]) is d
     try:_ent_validar(d,[d])
