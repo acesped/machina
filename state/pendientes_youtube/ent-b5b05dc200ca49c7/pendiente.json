@@ -1,0 +1,127 @@
+{
+  "estado": "intento_incierto",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-b5b05dc200ca49c7",
+  "privacidad": "public",
+  "video": "El eco de la ausencia en la era digital.mp4",
+  "miniatura": "El eco de la ausencia en la era digital.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El eco de la ausencia en la era digital",
+    "_titulo_caso": "El eco de la ausencia en la era digital",
+    "categoria": "Filosofía de la tecnología",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "pregunta": "¿Cómo imaginamos un futuro donde la ausencia sea la base de la creatividad colectiva?",
+    "mini_titulo": "AUSENCIA CREATIVA"
+  },
+  "episodio": {
+    "id": "ent-b5b05dc200ca49c7",
+    "caso_id": "ent-b5b05dc200ca49c7",
+    "titulo": "El eco de la ausencia en la era digital"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "File:Canon S520 ink jet printer.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Canon_S520_ink_jet_printer.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Canon_S520_ink_jet_printer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 2.5",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/2.5",
+      "autor": "André Karwath aka  Aka",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "printer"
+    },
+    {
+      "archivo": "imagen_01.jpg",
+      "titulo": "File:01 Rotating Ceiling fan at 640th of a second.JPG",
+      "pagina": "https://commons.wikimedia.org/wiki/File:01_Rotating_Ceiling_fan_at_640th_of_a_second.JPG",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/f/f5/01_Rotating_Ceiling_fan_at_640th_of_a_second.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC0",
+      "licencia_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "autor": "Veera.sj",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "ceiling fan"
+    },
+    {
+      "archivo": "imagen_02.jpg",
+      "titulo": "File:20260415 Streetlight palace Schönbrunn.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:20260415_Streetlight_palace_Schönbrunn.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/2/2c/20260415_Streetlight_palace_Sch%C3%B6nbrunn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by/4.0",
+      "autor": "Flocci Nivis",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "streetlight"
+    },
+    {
+      "archivo": "imagen_03.jpg",
+      "titulo": "File:20221116 glass coffee cup empty Panewniki.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:20221116_glass_coffee_cup_empty_Panewniki.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/d/d3/20221116_glass_coffee_cup_empty_Panewniki.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "autor": "Abraham",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "coffee cup"
+    },
+    {
+      "archivo": "imagen_04.jpg",
+      "titulo": "File:A book and Sun.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:A_book_and_Sun.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/a/a5/A_book_and_Sun.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "autor": "SF0402",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "book"
+    },
+    {
+      "archivo": "imagen_05.jpg",
+      "titulo": "File:Traffic light at Jeffrey Road and Smoketree.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Traffic_light_at_Jeffrey_Road_and_Smoketree.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Traffic_light_at_Jeffrey_Road_and_Smoketree.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 3.0",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "autor": "aismallard",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "traffic light"
+    },
+    {
+      "archivo": "imagen_06.jpg",
+      "titulo": "File:5 different Smartphones.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:5_different_Smartphones.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/5_different_Smartphones.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "autor": "Kskhh",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "smartphone"
+    },
+    {
+      "archivo": "imagen_07.jpg",
+      "titulo": "File:Tomato plant 2026 G2.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Tomato_plant_2026_G2.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/2/23/Tomato_plant_2026_G2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by/4.0",
+      "autor": "George Chernilevsky",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "plant"
+    },
+    {
+      "archivo": "imagen_08.jpg",
+      "titulo": "File:Cloudy blue sky without sun.jpg",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Cloudy_blue_sky_without_sun.jpg",
+      "url_original": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Cloudy_blue_sky_without_sun.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "licencia": "CC BY-SA 4.0",
+      "licencia_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "autor": "Borhan",
+      "tipo_recurso": "fotografia_documental",
+      "consulta_origen": "cloudy sky without"
+    }
+  ],
+  "creado_utc": "2026-11-19T15:55:49.540154+00:00",
+  "error": "El video ya se subió a YouTube (ID YTrEmnkwqPA), pero la miniatura no se completó. NO vuelvas a subir el video como uno nuevo; revisa MINIATURA_YOUTUBE.json o carga la miniatura existente desde YouTube Studio. miniatura: La miniatura NO se publicó: <HttpError 403 when requesting https://youtube.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=YTrEmnkwqPA&alt=json&uploadType=media returned \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\". Details"
+}
