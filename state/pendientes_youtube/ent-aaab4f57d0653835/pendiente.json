@@ -1,0 +1,136 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-aaab4f57d0653835",
+  "privacidad": "public",
+  "video": "El susurro del código en la cotidianidad.mp4",
+  "miniatura": "El susurro del código en la cotidianidad.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El susurro del código en la cotidianidad",
+    "_titulo_caso": "El susurro del código en la cotidianidad",
+    "categoria": "Filosofía de la tecnología",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "pregunta": "¿Qué papel queremos asignar al código en la construcción de nuestro futuro colectivo?",
+    "mini_titulo": "CÓDIGO Y COTIDIANIDAD"
+  },
+  "episodio": {
+    "id": "ent-aaab4f57d0653835",
+    "caso_id": "ent-aaab4f57d0653835",
+    "titulo": "El susurro del código en la cotidianidad"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_01.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_02.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_03.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_04.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_05.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_06.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_07.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_08.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    }
+  ],
+  "creado_utc": "2026-11-19T18:50:36.781217+00:00",
+  "youtube_id": "XQRj-fjAeqM"
+}
