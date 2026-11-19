@@ -35,6 +35,7 @@ jobs:
       AERO_IA_TIMEOUT: '60'
       AERO_IMAGENES_MINIMAS: '4'
       AERO_VELOCIDAD_VOZ: '-12%'
+      AERO_TONO_VOZ: '-6Hz'
       AERO_SUBTITULOS_ADELANTO: '0.28'
       AERO_MUSICA_VOLUMEN: '0.095'
       AERO_OPENROUTER_WEB_SEARCH: 'false'
@@ -112,7 +113,9 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check --timeout 30 --retries 2 'Pillow>=10,<13' 'requests>=2.31,<3' 'edge-tts>=6.1,<8' 'numpy>=1.24,<3' 'CairoSVG>=2.7,<3' 'pypdf>=4,<7' 'beautifulsoup4>=4.12,<5' 'json-repair>=0.30,<1' 'google-api-python-client>=2,<3' 'google-auth>=2,<3' 'google-auth-oauthlib>=1,<2'
       - name: Pruebas locales
-        run: python numenexcodice.py --self-test
+        run: |
+          python -m py_compile numenexcodice.py
+          python numenexcodice.py --self-test
       - name: Restaurar archivos pendientes de publicacion
         uses: actions/cache/restore@v4
         with:
@@ -120,7 +123,7 @@ jobs:
           key: numenexcodice-cola-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             numenexcodice-cola-
-      - name: Recuperar fotografias verificadas
+      - name: Recuperar cache visual historica
         uses: actions/cache/restore@v4
         with:
           path: state/visuales_numen
@@ -173,7 +176,7 @@ jobs:
             echo '::error::No se pudo sincronizar el estado tras cinco intentos. Recuperar el respaldo antes de volver a publicar.'
             exit 1
           fi
-      - name: Conservar fotografias verificadas incluso si falla produccion
+      - name: Conservar cache visual historica
         if: always()
         uses: actions/cache/save@v4
         with:
