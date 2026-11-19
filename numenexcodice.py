@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-NumenExCodice · Motor autónomo de reflexión filosófica · versión 2.1
+NumenExCodice · Motor autónomo de reflexión filosófica · versión 2.2
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -3236,7 +3236,7 @@ def _bloque_musica_cinematica(desde_muestra, cantidad, sr, duracion, semilla, te
 
 def reverberar_narracion(voz, carpeta):
     """Voz de templo cósmico: señal directa, reverberación difusa estéreo y delay.
-    Convolución FFT local con respuesta impulsional sintética de 2.4 segundos.
+    Convolución FFT local con respuesta impulsional sintética de 1.85 segundos.
     Mantiene la duración exacta y el inicio de la señal directa para los subtítulos.
     """
     import numpy as np
@@ -3253,24 +3253,24 @@ def reverberar_narracion(voz, carpeta):
     with wave.open(str(limpio),'rb') as f:
         x=np.frombuffer(f.readframes(f.getnframes()),dtype='<i2').astype(np.float32)/32768
     if len(x)!=muestras:raise RuntimeError('La ecualización cambió la duración')
-    # Respuesta estéreo decorrelacionada: predelay 45 ms, caída RT60 ~2.4 s.
-    pred=round(.045*sr); cola=round(2.4*sr); t=np.arange(cola,dtype=np.float64)/sr
+    # Respuesta estéreo decorrelacionada: predelay 32 ms, caída RT60 ~1.85 s.
+    pred=round(.032*sr); cola=round(1.85*sr); t=np.arange(cola,dtype=np.float64)/sr
     rng=np.random.default_rng(20261119)
     irs=[]
     for lado in range(2):
         ruido=rng.standard_normal(cola)
         # Atenuar agudos de la cola con suavizado corto.
         ruido=np.convolve(ruido,np.array([.10,.21,.38,.21,.10]),mode='same')
-        h=ruido*np.exp(-np.log(1000)*t/2.4)*np.minimum(t/.035,1)
-        h*=.30/max(np.linalg.norm(h),1e-12)
+        h=ruido*np.exp(-np.log(1000)*t/1.85)*np.minimum(t/.035,1)
+        h*=.22/max(np.linalg.norm(h),1e-12)
         ir=np.zeros(pred+cola,dtype=np.float64);ir[pred:]=h
-        for ms,g in [(55,.11),(91,.085),(137,.06),(184,.04)]:
+        for ms,g in [(46,.082),(79,.062),(118,.044),(158,.028)]:
             ir[round((ms+lado*9)*sr/1000)]+=g
         # Delay audible pero discreto, alternado entre canales.
-        for ms,g in ([(210,.13),(425,.052),(640,.021)] if lado==0 else [(270,.13),(485,.052),(700,.021)]):
+        for ms,g in ([(165,.078),(315,.032),(470,.014)] if lado==0 else [(205,.078),(356,.032),(520,.014)]):
             ir[round(ms*sr/1000)]+=g
         # Microdoblaje fijo de baja intensidad para anchura sin desafinar.
-        ir[round((17+lado*9)*sr/1000)]+=.055
+        ir[round((17+lado*9)*sr/1000)]+=.033
         irs.append(ir)
     # Overlap-add por bloques: memoria acotada incluso con episodios largos.
     block=sr*4; nfft=1<<(block+len(irs[0])-2).bit_length()
@@ -3282,7 +3282,7 @@ def reverberar_narracion(voz, carpeta):
             chunk=x[start:start+block]; n=len(chunk); X=np.fft.rfft(chunk,nfft)
             wet=np.column_stack([np.fft.irfft(X*h,nfft)[:n+len(irs[0])-1] for h in H])
             wet[:len(overlap)]+=overlap; overlap=wet[n:].copy()
-            mezcla=.83*chunk[:,None]+wet[:n]
+            mezcla=.87*chunk[:,None]+wet[:n]
             # Saturación suave, evita clipping sin modificar la línea de tiempo.
             mezcla=np.tanh(mezcla*1.12)*.94
             out.writeframes(np.rint(mezcla*32767).astype('<i2').tobytes())
@@ -5551,7 +5551,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '2.1'
+VERSION_SCRIPT = '2.2'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5780,7 +5780,7 @@ def _ent_urls(info,titulo):
 
 def _credito_recurso_visual_valido(c):
     if isinstance(c,dict) and c.get('tipo_recurso')=='escena_fotorealista_ia':
-        return c.get('licencia')=='Arte generado con IA para NumenExCodice' and c.get('consulta_origen')=='banco original integrado' and not c.get('url_original') and not c.get('pagina')
+        return c.get('licencia')=='Arte generado con IA para NumenExCodice' and c.get('consulta_origen') in ('banco original integrado','banco original integrado + variación procedural por episodio') and not c.get('url_original') and not c.get('pagina')
     return isinstance(c,dict) and _ent_licencia({'extmetadata': {
         'LicenseShortName':{'value':c.get('licencia','')},
         'LicenseUrl':{'value':c.get('licencia_url','')},
@@ -5834,27 +5834,126 @@ _NUMEN_ARTE = (
 )
 
 def _ent_fotos(d, carpeta):
-    import base64, io
-    from PIL import Image, ImageOps, ImageEnhance
+    import base64, io, math
+    from PIL import Image, ImageOps, ImageEnhance, ImageFilter, ImageChops, ImageDraw
     carpeta=Path(carpeta); carpeta.mkdir(parents=True,exist_ok=True)
     fotos=[]; creditos=[]; mapa=[]; auditoria=[]
-    seed=int(hashlib.sha256(str(d.get('id',d.get('titulo','numen'))).encode()).hexdigest()[:12],16)
-    rng=random.Random(seed)
+    seed_base=int(hashlib.sha256(str(d.get('id',d.get('titulo','numen'))).encode()).hexdigest()[:12],16)
+    rng=random.Random(seed_base)
     orden=list(range(len(_NUMEN_ARTE))); rng.shuffle(orden)
+
+    # Paletas variables por video: cada episodio mantiene el universo/androide,
+    # pero cambia el matiz dominante para que no todos se vean iguales.
+    paletas=[
+        {'nombre':'violeta cósmico','color':(112,66,255),'sec':(37,198,255),'gold':(255,204,120)},
+        {'nombre':'azul interestelar','color':(44,138,255),'sec':(164,108,255),'gold':(255,220,150)},
+        {'nombre':'magenta nebular','color':(221,74,193),'sec':(74,164,255),'gold':(255,210,128)},
+        {'nombre':'oro solar','color':(255,176,68),'sec':(122,88,255),'gold':(255,228,156)},
+        {'nombre':'cian místico','color':(40,220,220),'sec':(118,84,255),'gold':(255,214,140)},
+    ]
+    paleta=paletas[seed_base % len(paletas)]
+
+    def capa_estrellas(size, rng_local, cantidad, brillo):
+        capa=Image.new('RGBA', size, (0,0,0,0))
+        draw=ImageDraw.Draw(capa)
+        w,h=size
+        for _ in range(cantidad):
+            x=rng_local.randint(0,w-1); y=rng_local.randint(0,h-1)
+            r=rng_local.choice([1,1,1,2,2,3])
+            a=rng_local.randint(int(brillo*0.45), brillo)
+            col=(255,255,255,a)
+            draw.ellipse((x-r,y-r,x+r,y+r),fill=col)
+            if r>=2 and rng_local.random()<0.28:
+                draw.line((x-r*2,y,x+r*2,y),fill=(255,255,255,max(0,a-40)),width=1)
+                draw.line((x,y-r*2,x,y+r*2),fill=(255,255,255,max(0,a-40)),width=1)
+        return capa.filter(ImageFilter.GaussianBlur(0.25))
+
+    def capa_nebulosa(size, base_color, sec_color, rng_local, intensidad=0.18):
+        w,h=size
+        capa=Image.new('RGBA', size, (0,0,0,0))
+        draw=ImageDraw.Draw(capa, 'RGBA')
+        manchas=8+rng_local.randint(0,5)
+        for i in range(manchas):
+            cx=rng_local.randint(0,w)
+            cy=rng_local.randint(0,h)
+            rx=rng_local.randint(w//10, w//3)
+            ry=rng_local.randint(h//10, h//3)
+            col=base_color if i%2==0 else sec_color
+            alpha=int(255*intensidad*rng_local.uniform(0.35,0.95))
+            draw.ellipse((cx-rx, cy-ry, cx+rx, cy+ry), fill=(*col, alpha))
+        capa=capa.filter(ImageFilter.GaussianBlur(radius=42))
+        return capa
+
+    def halo_divino(size, gold, escena_seed):
+        w,h=size
+        y0=int(h*(0.14+0.06*((escena_seed>>3)%5)/4))
+        mask=Image.new('L', size, 0)
+        md=ImageDraw.Draw(mask)
+        md.ellipse((w*0.29,y0,w*0.71,y0+h*0.22), fill=165)
+        md.ellipse((w*0.34,y0+h*0.03,w*0.66,y0+h*0.17), fill=0)
+        mask=mask.filter(ImageFilter.GaussianBlur(10))
+        capa=Image.new('RGBA', size, (*gold,0))
+        capa.putalpha(mask)
+        return capa
+
     for i,e in enumerate(d['escenas']):
         idx=orden[i%len(orden)]
+        escena_seed=int(hashlib.sha256(f"{d.get('id','numen')}::{i}".encode()).hexdigest()[:12],16)
+        escena_rng=random.Random(escena_seed)
         with Image.open(io.BytesIO(base64.b64decode(_NUMEN_ARTE[idx]))) as raw:
             im=raw.convert('RGB')
-        # Distintos encuadres conservando el personaje y el universo original.
-        zoom=1.0 if i<len(orden) else rng.uniform(1.025,1.13)
+
+        # Encuadre variable por video y escena, sin perder el androide ni el universo.
+        zoom=escena_rng.uniform(1.04,1.16)
         w,h=im.size; cw,ch=round(w/zoom),round(h/zoom)
-        x=round((w-cw)*rng.uniform(.25,.75)); y=round((h-ch)*rng.uniform(.2,.65))
-        im=im.crop((x,y,x+cw,y+ch)).resize((1920,1080),Image.Resampling.LANCZOS)
-        if i>=len(orden): im=ImageEnhance.Color(im).enhance(rng.uniform(.92,1.12))
+        x=round((w-cw)*escena_rng.uniform(.18,.82)); y=round((h-ch)*escena_rng.uniform(.10,.70))
+        im=ImageOps.fit(im.crop((x,y,x+cw,y+ch)),(1920,1080),Image.Resampling.LANCZOS)
+
+        # Ajustes de tono diferentes por video para variar la atmósfera.
+        im=ImageEnhance.Color(im).enhance(escena_rng.uniform(1.02,1.18))
+        im=ImageEnhance.Contrast(im).enhance(escena_rng.uniform(1.03,1.14))
+        im=ImageEnhance.Brightness(im).enhance(escena_rng.uniform(0.97,1.06))
+
+        # Tinte cósmico variable, siempre dentro del universo visual del canal.
+        rgba=im.convert('RGBA')
+        overlay1=capa_nebulosa(rgba.size,paleta['color'],paleta['sec'],escena_rng,escena_rng.uniform(0.10,0.19))
+        overlay2=capa_estrellas(rgba.size, escena_rng, cantidad=160+escena_rng.randint(0,90), brillo=170)
+        overlay3=halo_divino(rgba.size,paleta['gold'],escena_seed)
+        rgba=Image.alpha_composite(rgba, overlay1)
+        rgba=Image.alpha_composite(rgba, overlay2)
+        if escena_rng.random()<0.88:
+            rgba=Image.alpha_composite(rgba, overlay3)
+
+        # Resplandor suave y viñeta cinematográfica.
+        glow=rgba.filter(ImageFilter.GaussianBlur(radius=10))
+        rgba=Image.blend(rgba, glow, 0.10)
+        vignette=Image.new('L', rgba.size, 255)
+        vd=ImageDraw.Draw(vignette)
+        vd.ellipse((-260,-120,rgba.size[0]+260,rgba.size[1]+140), fill=0)
+        vignette=vignette.filter(ImageFilter.GaussianBlur(120)).point(lambda v: int(v*.35))
+        sombra=Image.new('RGBA', rgba.size, (0,0,0,0)); sombra.putalpha(vignette)
+        rgba=Image.alpha_composite(Image.blend(rgba, Image.new('RGBA', rgba.size, (6,8,18,255)), 0.10), sombra)
+
+        # Microvariación adicional dependiente de la tesis/título para evitar repetición entre videos.
+        firma=(d.get('titulo','')+' '+d.get('tesis','')+' '+e.get('texto','')[:80]).lower()
+        if 'dios' in firma or 'divino' in firma or 'omnipot' in firma:
+            luz=Image.new('RGBA', rgba.size, (*paleta['gold'],0))
+            lm=Image.new('L', rgba.size, 0)
+            ld=ImageDraw.Draw(lm)
+            ld.ellipse((rgba.size[0]*0.18, rgba.size[1]*0.02, rgba.size[0]*0.82, rgba.size[1]*0.58), fill=58)
+            lm=lm.filter(ImageFilter.GaussianBlur(80))
+            luz.putalpha(lm)
+            rgba=Image.alpha_composite(rgba, luz)
+        if 'humano' in firma or 'humanidad' in firma or 'existencia' in firma:
+            rgba=Image.blend(rgba, Image.new('RGBA', rgba.size, (24,14,36,255)), 0.05)
+        if 'tecnolog' in firma or 'máquina' in firma or 'robot' in firma:
+            rgba=Image.blend(rgba, Image.new('RGBA', rgba.size, (12,28,46,255)), 0.06)
+
+        im=rgba.convert('RGB')
         path=carpeta/f'imagen_{i:02}.jpg'; im.save(path,quality=93,optimize=True)
-        c={'archivo':path.name,'titulo':f'NumenExCodice: androide cósmica, composición {idx+1}', 'pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (imágenes generadas con IA)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':'banco original integrado','atribucion':'Ilustración ficticia, no fotografía documental'}
-        fotos.append(path); creditos.append(c); mapa.append(str(path)); auditoria.append({'escena':i+1,'archivo':path.name,'composicion':idx+1,'narracion':e['texto'],'zoom':zoom})
-        print(f'Escena {i+1} | androide cósmica original {idx+1} (sin descarga)',flush=True)
+        c={'archivo':path.name,'titulo':f"NumenExCodice: androide cósmica, composición {idx+1}, paleta {paleta['nombre']}", 'pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (imágenes generadas con IA)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':'banco original integrado + variación procedural por episodio','atribucion':'Ilustración ficticia, no fotografía documental'}
+        fotos.append(path); creditos.append(c); mapa.append(str(path)); auditoria.append({'escena':i+1,'archivo':path.name,'composicion':idx+1,'paleta':paleta['nombre'],'narracion':e['texto'],'zoom':round(zoom,4)})
+        print(f"Escena {i+1} | androide cósmica original {idx+1} | paleta {paleta['nombre']} | variación procedural",flush=True)
     _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',auditoria)
     _cola_json(carpeta/'creditos_imagenes.json',creditos)
     return fotos,creditos,mapa
@@ -5926,7 +6025,7 @@ def _ent_main():
     bloques,cues,voz=generar_voces(plan,carpeta)
     inicio=next((b['inicio'] for b in bloques if b['tipo']=='cta'),None)
     srt,ass=subtitulos(cues,carpeta,inicio_cta=inicio)
-    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | tono {TONO_VOZ} | reverb templo 2.4s + delay estéreo 210/270ms',flush=True)
+    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | tono {TONO_VOZ} | reverb templo 1.85s + delay estéreo 165/205ms',flush=True)
     audio=mezclar_cinematica(reverberar_narracion(voz,carpeta),carpeta)
     guardar_metadatos(caso,bloques,[],creditos,carpeta)
     base=renderizar_clips(bloques,fotos,caso,carpeta);video=finalizar_video(base,audio,ass,carpeta,caso)
