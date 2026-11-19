@@ -610,6 +610,10 @@ def _openrouter_chat(prompt, *, busqueda=False, limitar_razonamiento=True):
     }
     r=requests.post('https://openrouter.ai/api/v1/chat/completions',
                     headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
+    if not r.ok and r.status_code==400 and 'reasoning' in payload and 'mandatory' in r.text.lower():
+        payload.pop('reasoning',None)
+        print('OpenRouter: razonamiento obligatorio; reintento con configuración del modelo.',flush=True)
+        r=requests.post('https://openrouter.ai/api/v1/chat/completions',headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
     if not r.ok:
         # No reintentar automáticamente con configuraciones que podrían volver
         # a consumir todos los tokens de salida. Diagnóstico concreto.
@@ -5625,7 +5629,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '2.6'
+VERSION_SCRIPT = '2.7'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5698,7 +5702,7 @@ def _ent_subtitulo(d):
 
 def _ent_validar(d, memoria):
     if not isinstance(d, dict): raise ValueError('Se requiere objeto JSON')
-    for k, minimo, maximo in [('titulo',25,95),('tesis',35,400),('pregunta',12,200),('categoria',4,55)]:
+    for k, minimo, maximo in [('titulo',8,95),('tesis',35,400),('pregunta',12,200),('categoria',4,55)]:
         v=d.get(k)
         if not isinstance(v,str) or not minimo<=len(v.strip())<=maximo or '\n' in v: raise ValueError('Campo inválido: '+k)
         d[k]=v.strip()
@@ -5771,21 +5775,56 @@ def _ent_validar_coherencia(fn, enfoque, d):
     return d
 
 
+def _ent_normalizar_borrador(d, enfoque):
+    if not isinstance(d,dict):return d
+    d=dict(d)
+    for k in ('titulo','tesis','pregunta','categoria'):
+        v=d.get(k)
+        if isinstance(v,str):d[k]=' '.join(v.split())
+    titulo=d.get('titulo')
+    if not isinstance(titulo,str) or not 8<=len(titulo)<=95 or re.search(r'[#<>]|https?://',titulo):
+        tema=enfoque['tema'].strip()
+        if len(tema)>95:tema=tema[:95].rsplit(' ',1)[0].rstrip(' ,:;')
+        d['titulo']=tema
+    for k in ('tesis','pregunta'):
+        if not isinstance(d.get(k),str) or not d[k].strip():d[k]=enfoque[k]
+    if not isinstance(d.get('categoria'),str) or not 4<=len(d['categoria'])<=55:d['categoria']='Filosofía'
+    if isinstance(d.get('escenas'),list):
+        escenas=[]
+        for e in d['escenas']:
+            if isinstance(e,str):e={'texto':e}
+            if isinstance(e,dict):
+                e=dict(e)
+                # El banco visual local no depende de consultas externas.
+                e['consulta']='Divine android in cosmic nebula'
+                e['anclas']=['divine android','cosmic nebula']
+            escenas.append(e)
+        d['escenas']=escenas
+    return d
+
+
 def _ent_generar(memoria, metricas):
-    errores=[]; enfoque=None
+    errores=[]; enfoque=None; borrador=None; correccion=''
     for motor in _aero_motores_guion():
         fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_consultar_openrouter}[motor]
-        correccion=''
         for intento in range(3):
             try:
                 if enfoque is None:enfoque=_ent_enfoque(fn,memoria)
                 print('NumenExCodice | tema único:',enfoque['tema'],motor,intento+1,flush=True)
-                d=_ent_validar(fn(_ent_prompt(memoria,metricas,enfoque)+ '\nUsa exactamente una escena por cada paso del itinerario, en el mismo orden. '+correccion),memoria)
+                if borrador is None:
+                    candidato=fn(_ent_prompt(memoria,metricas,enfoque)+'\nUsa exactamente una escena por paso. Título válido de 8 a 95 caracteres. '+correccion)
+                else:
+                    candidato=fn(PERSONALIDAD+'\nCorrige este borrador sin cambiar el tema, conservando las escenas correctas. Devuelve el objeto JSON completo con todas sus claves; exactamente '+str(len(enfoque['pasos']))+' escenas. Objetivo 650–750 palabras, mínimo 450. No expreses debilidades de la narradora. Defecto: '+correccion+'\nEnfoque: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador: '+json.dumps(borrador,ensure_ascii=False))
+                borrador=_ent_normalizar_borrador(candidato,enfoque)
+                d=_ent_validar(borrador,memoria)
                 return _ent_validar_coherencia(fn,enfoque,d)
             except Exception as e:
                 errores.append(f'{motor}: {type(e).__name__}: {str(e)[:250]}')
-                correccion='Corrige el defecto editorial o de formato sin cambiar de tema: '+str(e)[:400]
+                correccion=str(e)[:400]
                 print(errores[-1],flush=True)
+                if 'cercana al historial' in correccion:
+                    if os.getenv('NUMEN_TEMA','').strip():raise EpisodioRecuperable('El tema solicitado ya figura en el historial.')
+                    enfoque=None;borrador=None
                 if motor=='openrouter' and isinstance(e,OpenRouterSalidaAgotada):
                     if intento==0 and _openrouter_reintentar_modelo():continue
                     break
@@ -6207,6 +6246,11 @@ def _ent_test():
     print('OK: objeto principal billboard, sinónimos y rechazo de imágenes ajenas')
     d={'titulo':'El tiempo que los humanos no pueden recuperar','tesis':'El tiempo perdido no puede recuperarse mediante una acumulación de bienes.','pregunta':'¿Qué harías con el tiempo que te queda?','categoria':'Existencia','mini_titulo':'EL TIEMPO','escenas':[{'texto':('Una interpretación filosófica del tiempo puede abrir una pregunta sobre nuestras decisiones. '*6).strip()+' Variante de prueba '+str(i),'consulta':'Earth at night from orbit','anclas':['earth at night','city lights']} for i in range(8)]}
     assert _ent_validar(d,[]) is d
+    assert _ent_validar(dict(d,titulo='El perdón'),[])['titulo']=='El perdón'
+    reparado=_ent_normalizar_borrador(dict(d,titulo=None),enfoque)
+    assert reparado['titulo']==enfoque['tema']
+    assert _ent_validar(reparado,[]) is reparado
+    print('OK: recuperación de título y metadatos visuales')
     assert d['mini_subtitulo'] and d['mini_subtitulo']!=d['mini_titulo']
     assert _ent_validar(dict(d,mini_titulo=None),[])['mini_titulo']
     assert len(_ent_validar(dict(d,mini_titulo='x'*90),[])['mini_titulo'])<=38
