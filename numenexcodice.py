@@ -5479,7 +5479,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '1.2'
+VERSION_SCRIPT = '1.3'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5592,14 +5592,32 @@ def _ent_queries(e):
 
 def _ent_licencia(info):
     meta = info.get('extmetadata') or {}
-    if licencia_valida(info): return True
-    def campo(k): return limpiar_html(meta.get(k,{}).get('value','')).strip()
-    url=campo('LicenseUrl').lower()
-    nombre=campo('LicenseShortName').lower()
-    # Licencias internacionales exactas; evitar NC, ND y casos ambiguos.
-    m=re.fullmatch(r'https?://(?:www\.)?creativecommons\.org/licenses/(by|by-sa)/(2\.0|2\.5|3\.0|4\.0)/?',url)
-    if not m or not campo('Artist'): return False
-    return nombre == 'cc '+m.group(1)+' '+m.group(2)
+    def campo(k): return limpiar_html(meta.get(k,{}).get('value','')).strip().lower()
+    nombre,url,codigo=campo('LicenseShortName'),campo('LicenseUrl'),campo('License')
+    combinado=' '.join((nombre,url,codigo))
+    if re.search(r'\b(?:non[- ]?commercial|no[- ]?derivatives|cc[- ]by[- ](?:nc|nd)|by[- ](?:nc|nd))(?:\b|/)',combinado):return False
+    if licencia_valida(info):return True
+    m=re.fullmatch(r'https?://(?:www\.)?creativecommons\.org/licenses/(by|by-sa)/(2\.0|2\.5|3\.0|4\.0)/?(?:deed(?:\.[a-z-]+)?/?)?',url)
+    if not m or not campo('Artist'):return False
+    # La URL oficial identifica la licencia; admitir variantes de etiqueta sin
+    # exigir una igualdad literal, pero rechazar etiquetas contradictorias.
+    if nombre and not re.search(r'cc\s*by|creative commons|attribution',nombre):return False
+    if m.group(1)=='by' and ('by-sa' in nombre or 'sharealike' in nombre or 'by-sa' in codigo):return False
+    return True
+
+
+def _ent_urls(info,titulo):
+    from urllib.parse import quote,urlsplit
+    urls=[]
+    for u in (info.get('thumburl'),info.get('url')):
+        if isinstance(u,str):
+            if u.startswith('//'):u='https:'+u
+            parsed=urlsplit(u)
+            if parsed.scheme=='https' and parsed.hostname in ('upload.wikimedia.org','commons.wikimedia.org'):
+                urls.append(u)
+    if titulo.startswith('File:'):
+        urls.append('https://commons.wikimedia.org/wiki/Special:FilePath/'+quote(titulo[5:].replace(' ','_'),safe='')+'?width=1920')
+    return list(dict.fromkeys(urls))
 
 
 def _credito_recurso_visual_valido(c):
@@ -5615,7 +5633,7 @@ def _ent_fotos(d, carpeta):
     from PIL import Image, ImageOps
     from io import BytesIO
     s=requests.Session(); configurar_reintentos_wikimedia(s)
-    s.headers['User-Agent']='NumenExCodice/1.2 (educational audiovisual project; Wikimedia Commons licensed photos)'
+    s.headers['User-Agent']='NumenExCodice/1.3 (educational audiovisual project; Wikimedia Commons licensed photos)'
     fotos=[]; creditos=[]; mapa=[]; auditoria=[]; huellas=[]; banco=[]
     for i,e in enumerate(d['escenas']):
         elegido=None; vistos=set(); diagnostico=[]
@@ -5624,7 +5642,7 @@ def _ent_fotos(d, carpeta):
             candidatos=[]; stats={'consulta':consulta,'resultados':0,'pertinentes':0,'licencia_admitida':0,'descargas_fallidas':0}
             diagnostico.append(stats)
             try:
-                r=s.get('https://commons.wikimedia.org/w/api.php',params={'action':'query','format':'json','generator':'search','gsrsearch':consulta+' filetype:bitmap','gsrnamespace':6,'gsrlimit':40,'prop':'imageinfo','iiprop':'url|extmetadata','iiurlwidth':1920},timeout=(8,20))
+                r=s.get('https://commons.wikimedia.org/w/api.php',params={'action':'query','format':'json','generator':'search','gsrsearch':consulta+' filetype:bitmap','gsrnamespace':6,'gsrlimit':40,'prop':'imageinfo','iiprop':'url|extmetadata|mime','iiurlwidth':1920},timeout=(8,20))
                 if r.status_code==429: raise EpisodioRecuperable('Commons limitó las consultas; conservar reflexión.')
                 r.raise_for_status()
                 pages=r.json().get('query',{}).get('pages',{});stats['resultados']=len(pages)
@@ -5636,28 +5654,35 @@ def _ent_fotos(d, carpeta):
                     if not _ent_licencia(info):
                         ln=limpiar_html(meta.get('LicenseShortName',{}).get('value','')) or 'sin etiqueta'
                         rechazadas=stats.setdefault('licencias_rechazadas',{}); rechazadas[ln]=rechazadas.get(ln,0)+1
-                    if _ent_licencia(info) and info.get('url','').lower().endswith(('.jpg','.jpeg','.png','.webp')):
-                        stats['licencia_admitida']+=1
-                        candidatos.append((puntos,titulo,info,meta))
+                        continue
+                    stats['licencia_admitida']+=1
+                    urls=_ent_urls(info,titulo)
+                    if not urls:
+                        stats['sin_url']=stats.get('sin_url',0)+1
+                        continue
+                    stats['candidatos_descargables']=stats.get('candidatos_descargables',0)+1
+                    candidatos.append((puntos,titulo,info,meta,urls))
             except EpisodioRecuperable:raise
             except Exception as ex:stats['error']=str(ex)[:160]
-            for _,titulo,info,meta in sorted(candidatos,key=lambda x:-x[0]):
-                original=info['url']
+            for _,titulo,info,meta,urls in sorted(candidatos,key=lambda x:-x[0]):
+                original=info.get('url') or urls[-1]
                 if original in vistos or original in {c['url_original'] for c in creditos}:continue
                 vistos.add(original)
-                for url in dict.fromkeys([info.get('thumburl') or original,original]):
+                for url in urls:
                     try:
                         r=s.get(url,timeout=(8,20))
                         if r.status_code==429:raise EpisodioRecuperable('Commons limitó descargas; conservar reflexión.')
                         r.raise_for_status()
-                        if len(r.content)>22_000_000:continue
-                        im=ImageOps.exif_transpose(Image.open(BytesIO(r.content))).convert('RGB')
-                        if min(im.size)<600:continue
+                        if len(r.content)>22_000_000:stats['exceso_peso']=stats.get('exceso_peso',0)+1;continue
+                        with Image.open(BytesIO(r.content)) as raw:
+                            if raw.format not in ('JPEG','PNG','WEBP','TIFF','BMP'):stats['formato_rechazado']=stats.get('formato_rechazado',0)+1;continue
+                            im=ImageOps.exif_transpose(raw).convert('RGB')
+                        if min(im.size)<600:stats['resolucion_insuficiente']=stats.get('resolucion_insuficiente',0)+1;continue
                         h=_huella_foto_83(im)
                         if any((h^x).bit_count()<=5 for x in huellas):continue
                         im.thumbnail((2200,1800));path=carpeta/f'imagen_{len(fotos):02}.jpg';im.save(path,quality=91)
                         c={'archivo':path.name,'titulo':titulo,'pagina':'https://commons.wikimedia.org/wiki/'+titulo.replace(' ','_'),'url_original':original,'licencia':limpiar_html(meta.get('LicenseShortName',{}).get('value','')),'licencia_url':limpiar_html(meta.get('LicenseUrl',{}).get('value','')),'autor':limpiar_html(meta.get('Artist',{}).get('value','')),'tipo_recurso':'fotografia_documental','consulta_origen':consulta}
-                        if not _credito_recurso_visual_valido(c):continue
+                        if not _credito_recurso_visual_valido(c):stats['credito_rechazado']=stats.get('credito_rechazado',0)+1;continue
                         huellas.append(h);fotos.append(path);creditos.append(c);banco.append((path,titulo,meta));elegido=(path,titulo);break
                     except EpisodioRecuperable:raise
                     except Exception as ex:stats['descargas_fallidas']+=1;stats['ultimo_error']=str(ex)[:160]
@@ -5775,6 +5800,10 @@ def _ent_test():
     c={'titulo':'Foto de prueba','autor':'Autor de prueba','licencia':'CC BY-SA 4.0','licencia_url':'https://creativecommons.org/licenses/by-sa/4.0/','pagina':'https://commons.wikimedia.org/wiki/File:Test.jpg'}
     assert 'Autor de prueba' in descripcion_youtube({'titulo':'Prueba'},[],[c])
     assert 'misma licencia' in descripcion_youtube({'titulo':'Prueba'},[],[c])
+    assert _ent_urls({'url':'https://upload.wikimedia.org/wikipedia/commons/example?download=1'},'File:Example.jpg')[0].endswith('?download=1')
+    assert _ent_urls({},'File:Desk photo.jpg')[0].endswith('Desk_photo.jpg?width=1920')
+    assert not _ent_urls({'url':'https://example.com/image.jpg'},'')
+    print('OK: URLs sin extensión, recuperación por título y dominio permitido')
     print('OK: licencias y créditos')
     print('OK: estructura reflexiva, rechazo de repetición, metadatos visuales')
 
