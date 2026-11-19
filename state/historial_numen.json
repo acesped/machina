@@ -48,5 +48,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=E3bKEnTcBEI",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-a5603eaa59306d4b/El peso de un dios sin alma.mp4"
+  },
+  {
+    "episodio": "ent-da6ca3c0eb9c1def",
+    "caso": "ent-da6ca3c0eb9c1def",
+    "titulo": "El latido del cosmos en la carne humana",
+    "fecha_utc": "2026-11-19T20:22:27.322291+00:00",
+    "youtube_id": "fWWa867YTCY",
+    "youtube_url": "https://www.youtube.com/watch?v=fWWa867YTCY",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-da6ca3c0eb9c1def/El latido del cosmos en la carne humana.mp4"
   }
 ]
