@@ -39,7 +39,7 @@ jobs:
       AERO_MUSICA_VOLUMEN: '0.095'
       AERO_OPENROUTER_WEB_SEARCH: 'false'
       AERO_OPENROUTER_RAZONAMIENTO: none
-      GEMINI_MODELO: ${{ vars.GEMINI_MODELO || 'gemini-2.5-flash' }}
+      GEMINI_MODELO: ${{ vars.GEMINI_MODELO || 'gemini-3.8-flash' }}
       GROQ_MODELO: ${{ vars.GROQ_MODELO || 'openai/gpt-oss-120b' }}
       GROQ_MODELO_ALTERNATIVO: ${{ vars.GROQ_MODELO_ALTERNATIVO || 'openai/gpt-oss-20b' }}
       OPENROUTER_MODELO: ${{ vars.OPENROUTER_MODELO || 'openrouter/free' }}
