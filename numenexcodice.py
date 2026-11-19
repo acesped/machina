@@ -42,7 +42,7 @@ VERIFICACION_OBLIGATORIA = False # si True, detiene cuando no hay referencias of
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', '/content/AEROFACTUM' if Path('/content').exists() else 'output/NumenExCodice'))
 # Guion investigado: Gemini -> Groq -> OpenRouter. Nunca usar plantillas si fallan.
 AERO_IA_MODO = os.getenv('AERO_IA_MODO', 'auto').strip().lower()
-GEMINI_MODELO = os.getenv('GEMINI_MODELO', 'gemini-2.5-flash')
+GEMINI_MODELO = os.getenv('GEMINI_MODELO', 'gemini-3.8-flash')
 GROQ_MODELO = os.getenv('GROQ_MODELO', 'openai/gpt-oss-120b')
 GROQ_MODELO_ALTERNATIVO = os.getenv('GROQ_MODELO_ALTERNATIVO', 'openai/gpt-oss-20b').strip()
 _GROQ_MODELO_REAL = GROQ_MODELO
@@ -5479,7 +5479,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '1.0'
+VERSION_SCRIPT = '1.1'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5563,11 +5563,31 @@ def _ent_generar(memoria, metricas):
 
 _PERSONA_ENT = re.compile(r'\b(?:portrait|selfie|headshot|group photo|people posing|person posing|man standing|woman standing|crowd|retrato|multitud)\b')
 
+def _ent_visual_tokens(s):
+    stop = set('photo photograph photography image picture real close up view scene file jpg jpeg png bitmap concept abstract illustration human technology life world beautiful dark light'.split())
+    return {x[:-1] if len(x)>4 and x.endswith('s') else x for x in _univ_normalizar(s).split() if len(x)>=3 and x not in stop}
+
+
 def _ent_score(titulo, meta, anclas):
     if not es_foto_real_metadata(titulo,meta):return 0
     t=_univ_normalizar(titulo+' '+ ' '.join(limpiar_html(meta.get(k,{}).get('value','')) for k in ('ImageDescription','ObjectName')))
     if _PERSONA_ENT.search(t):return 0
-    return sum(1 for a in anclas if ' '+_univ_normalizar(a)+' ' in ' '+t+' ')
+    tokens=_ent_visual_tokens(t)
+    score=0
+    for a in anclas:
+        n=_univ_normalizar(a); at=_ent_visual_tokens(a)
+        if not at:continue
+        if ' '+n+' ' in ' '+t+' ':score+=4
+        elif len(at)>=2 and at <= tokens:score+=2
+    return score
+
+
+def _ent_queries(e):
+    raw=[e['consulta'],*e['anclas']]
+    for v in list(raw):
+        words=[w for w in _univ_normalizar(v).split() if w in _ent_visual_tokens(v) or (w.endswith('s') and w[:-1] in _ent_visual_tokens(v))]
+        if len(words)>2:raw.extend([' '.join(words[:2]),' '.join(words[-2:])])
+    return list(dict.fromkeys(x.strip() for x in raw if x.strip()))[:12]
 
 
 def _ent_fotos(d, carpeta):
@@ -5575,48 +5595,60 @@ def _ent_fotos(d, carpeta):
     from PIL import Image, ImageOps
     from io import BytesIO
     s=requests.Session(); configurar_reintentos_wikimedia(s)
-    s.headers['User-Agent']='NumenExCodice/1.0 (educational audiovisual project; Wikimedia Commons licensed photos)'
+    s.headers['User-Agent']='NumenExCodice/1.1 (educational audiovisual project; Wikimedia Commons licensed photos)'
     fotos=[]; creditos=[]; mapa=[]; auditoria=[]; huellas=[]; banco=[]
     for i,e in enumerate(d['escenas']):
-        candidatos=[]
-        for consulta in list(dict.fromkeys([e['consulta']]+e['anclas'][:3])):
+        elegido=None; vistos=set(); diagnostico=[]
+        anclas=list(dict.fromkeys(e['anclas']+[e['consulta']]))
+        for consulta in _ent_queries(e):
+            candidatos=[]; stats={'consulta':consulta,'resultados':0,'pertinentes':0,'licencia_admitida':0,'descargas_fallidas':0}
+            diagnostico.append(stats)
             try:
-                r=s.get('https://commons.wikimedia.org/w/api.php',params={'action':'query','format':'json','generator':'search','gsrsearch':consulta+' filetype:bitmap','gsrnamespace':6,'gsrlimit':24,'prop':'imageinfo','iiprop':'url|extmetadata','iiurlwidth':1920},timeout=(8,20))
+                r=s.get('https://commons.wikimedia.org/w/api.php',params={'action':'query','format':'json','generator':'search','gsrsearch':consulta+' filetype:bitmap','gsrnamespace':6,'gsrlimit':40,'prop':'imageinfo','iiprop':'url|extmetadata','iiurlwidth':1920},timeout=(8,20))
                 if r.status_code==429: raise EpisodioRecuperable('Commons limitó las consultas; conservar reflexión.')
                 r.raise_for_status()
-                for p in r.json().get('query',{}).get('pages',{}).values():
+                pages=r.json().get('query',{}).get('pages',{});stats['resultados']=len(pages)
+                for p in pages.values():
                     info=(p.get('imageinfo') or [{}])[0]; meta=info.get('extmetadata') or {}; titulo=p.get('title','')
-                    puntos=_ent_score(titulo,meta,e['anclas'])
-                    if puntos and licencia_valida(info) and info.get('url','').lower().endswith(('.jpg','.jpeg','.png','.webp')):
+                    puntos=_ent_score(titulo,meta,anclas)
+                    if not puntos:continue
+                    stats['pertinentes']+=1
+                    if licencia_valida(info) and info.get('url','').lower().endswith(('.jpg','.jpeg','.png','.webp')):
+                        stats['licencia_admitida']+=1
                         candidatos.append((puntos,titulo,info,meta))
             except EpisodioRecuperable:raise
-            except Exception as ex:print('Commons:',str(ex)[:120],flush=True)
-            if candidatos:break
+            except Exception as ex:stats['error']=str(ex)[:160]
+            for _,titulo,info,meta in sorted(candidatos,key=lambda x:-x[0]):
+                original=info['url']
+                if original in vistos or original in {c['url_original'] for c in creditos}:continue
+                vistos.add(original)
+                for url in dict.fromkeys([info.get('thumburl') or original,original]):
+                    try:
+                        r=s.get(url,timeout=(8,20))
+                        if r.status_code==429:raise EpisodioRecuperable('Commons limitó descargas; conservar reflexión.')
+                        r.raise_for_status()
+                        if len(r.content)>22_000_000:continue
+                        im=ImageOps.exif_transpose(Image.open(BytesIO(r.content))).convert('RGB')
+                        if min(im.size)<600:continue
+                        h=_huella_foto_83(im)
+                        if any((h^x).bit_count()<=5 for x in huellas):continue
+                        im.thumbnail((2200,1800));path=carpeta/f'imagen_{len(fotos):02}.jpg';im.save(path,quality=91)
+                        c={'archivo':path.name,'titulo':titulo,'pagina':'https://commons.wikimedia.org/wiki/'+titulo.replace(' ','_'),'url_original':original,'licencia':limpiar_html(meta.get('LicenseShortName',{}).get('value','')),'licencia_url':limpiar_html(meta.get('LicenseUrl',{}).get('value','')),'autor':limpiar_html(meta.get('Artist',{}).get('value','')),'tipo_recurso':'fotografia_documental','consulta_origen':consulta}
+                        if not _credito_recurso_visual_valido(c):continue
+                        huellas.append(h);fotos.append(path);creditos.append(c);banco.append((path,titulo,meta));elegido=(path,titulo);break
+                    except EpisodioRecuperable:raise
+                    except Exception as ex:stats['descargas_fallidas']+=1;stats['ultimo_error']=str(ex)[:160]
+                if elegido:break
+            print('Visual escena',i+1,stats,flush=True)
+            if elegido:break
             time.sleep(1)
-        elegido=None
-        for _,titulo,info,meta in sorted(candidatos,key=lambda x:-x[0]):
-            if info.get('url') in {c['url_original'] for c in creditos}:continue
-            try:
-                url=info.get('thumburl') or info['url']; r=s.get(url,timeout=(8,20))
-                if r.status_code==429:raise EpisodioRecuperable('Commons limitó descargas; conservar reflexión.')
-                r.raise_for_status()
-                if len(r.content)>22_000_000:continue
-                im=ImageOps.exif_transpose(Image.open(BytesIO(r.content))).convert('RGB')
-                if min(im.size)<600:continue
-                h=_huella_foto_83(im)
-                if any((h^x).bit_count()<=5 for x in huellas):continue
-                huellas.append(h);im.thumbnail((2200,1800));path=carpeta/f'imagen_{len(fotos):02}.jpg';im.save(path,quality=91)
-                c={'archivo':path.name,'titulo':titulo,'pagina':'https://commons.wikimedia.org/wiki/'+titulo.replace(' ','_'),'url_original':info['url'],'licencia':limpiar_html(meta.get('LicenseShortName',{}).get('value','')),'licencia_url':limpiar_html(meta.get('LicenseUrl',{}).get('value','')),'autor':limpiar_html(meta.get('Artist',{}).get('value','')),'tipo_recurso':'fotografia_documental','consulta_origen':e['consulta']}
-                fotos.append(path);creditos.append(c);banco.append((path,titulo,meta));elegido=(path,titulo);break
-            except EpisodioRecuperable:raise
-            except Exception:continue
         if elegido is None:
-            compatibles=[(p,t) for p,t,m in banco if _ent_score(t,m,e['anclas'])]
+            compatibles=[(p,t) for p,t,m in banco if _ent_score(t,m,anclas)]
             if compatibles:elegido=compatibles[0]
         if elegido is None:
-            _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',auditoria+[{'escena':i+1,'estado':'sin foto pertinente','consulta':e['consulta']}])
-            raise EpisodioRecuperable(f'Escena {i+1} sin fotografía pertinente; se conserva el guion, no se usa un fondo ajeno.')
-        mapa.append(str(elegido[0]));auditoria.append({'escena':i+1,'archivo':elegido[0].name,'titulo':elegido[1],'consulta':e['consulta'],'anclas':e['anclas'],'narracion':e['texto']})
+            _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',auditoria+[{'escena':i+1,'estado':'sin foto pertinente','consulta':e['consulta'],'anclas':e['anclas'],'diagnostico':diagnostico}])
+            raise EpisodioRecuperable(f'Escena {i+1} sin fotografía pertinente tras {len(diagnostico)} búsquedas; se conserva el guion.')
+        mapa.append(str(elegido[0]));auditoria.append({'escena':i+1,'archivo':elegido[0].name,'titulo':elegido[1],'consulta':e['consulta'],'anclas':e['anclas'],'narracion':e['texto'],'diagnostico':diagnostico})
         print('Escena',i+1,'|',elegido[1],flush=True)
         time.sleep(1)
     if len(fotos)<IMAGENES_MINIMAS:raise EpisodioRecuperable('Variedad fotográfica insuficiente.')
@@ -5696,6 +5728,8 @@ def _ent_test():
     assert _ent_score('Earth at night from orbit.jpg',{},['earth at night','city lights'])>0
     assert _ent_score('Portrait of scientist Earth at night.jpg',{},['earth at night'])==0
     assert _ent_score(' unrelated aircraft.jpg',{},['earth at night'])==0
+    assert _ent_score('Lights of the city.jpg',{},['city lights'])>0
+    assert len(_ent_queries({'consulta':'Earth at night from orbit','anclas':['earth at night','city lights']}))>3
     d={'titulo':'El tiempo que los humanos no pueden recuperar','tesis':'El tiempo perdido no puede recuperarse mediante una acumulación de bienes.','pregunta':'¿Qué harías con el tiempo que te queda?','categoria':'Existencia','mini_titulo':'EL TIEMPO','escenas':[{'texto':('Una interpretación filosófica del tiempo puede abrir una pregunta sobre nuestras decisiones. '*6).strip()+' Variante de prueba '+str(i),'consulta':'Earth at night from orbit','anclas':['earth at night','city lights']} for i in range(8)]}
     assert _ent_validar(d,[]) is d
     try:_ent_validar(d,[d])
