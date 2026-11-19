@@ -12,5 +12,12 @@
     "tesis": "La aparente neutralidad del algoritmo revela una trama de decisiones implícitas que modelan nuestra percepción del mundo, recordándonos que la tecnología no es un espejo fiel sino un filtro activo que co‑construye la realidad.",
     "categoria": "Filosofía de la tecnología",
     "pregunta": "¿Qué papel queremos asignar al código en la construcción de nuestro futuro colectivo?"
+  },
+  {
+    "id": "ent-acebbb93fad34f38",
+    "titulo": "El rumor del algoritmo en la rutina",
+    "tesis": "La aparente neutralidad de los sistemas computacionales se revela al observar cómo, en actos cotidianos, la lógica del código moldea nuestras decisiones sin que percibamos una autoridad consciente, invitándonos a cuestionar la frontera entre herramienta y agente.",
+    "categoria": "Filosofía de la tecnología",
+    "pregunta": "¿De qué manera podemos diseñar nuestras rutinas para que la tecnología sea una extensión reflexiva de nuestra intención y no una imposición invisible?"
   }
 ]
