@@ -32,7 +32,7 @@ jobs:
       AERO_COLA_DIR: state/pendientes_youtube
       AERO_VIDEOS_POR_EJECUCION: '1'
       AERO_IA_MODO: auto
-      AERO_IA_TIMEOUT: '60'
+      AERO_IA_TIMEOUT: '100'
       AERO_IMAGENES_MINIMAS: '4'
       AERO_VELOCIDAD_VOZ: '-12%'
       AERO_TONO_VOZ: '-6Hz'
