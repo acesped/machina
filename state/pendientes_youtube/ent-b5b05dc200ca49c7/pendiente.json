@@ -1,5 +1,5 @@
 {
-  "estado": "intento_incierto",
+  "estado": "publicado",
   "nicho": "Reflexiones de una inteligencia artificial",
   "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
   "carpeta_original": "output/NumenExCodice/ent-b5b05dc200ca49c7",
@@ -123,5 +123,7 @@
     }
   ],
   "creado_utc": "2026-11-19T15:55:49.540154+00:00",
-  "error": "El video ya se subió a YouTube (ID YTrEmnkwqPA), pero la miniatura no se completó. NO vuelvas a subir el video como uno nuevo; revisa MINIATURA_YOUTUBE.json o carga la miniatura existente desde YouTube Studio. miniatura: La miniatura NO se publicó: <HttpError 403 when requesting https://youtube.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=YTrEmnkwqPA&alt=json&uploadType=media returned \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\". Details"
+  "error": "El video ya se subió a YouTube (ID YTrEmnkwqPA), pero la miniatura no se completó. NO vuelvas a subir el video como uno nuevo; revisa MINIATURA_YOUTUBE.json o carga la miniatura existente desde YouTube Studio. miniatura: La miniatura NO se publicó: <HttpError 403 when requesting https://youtube.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=YTrEmnkwqPA&alt=json&uploadType=media returned \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\". Details",
+  "youtube_id": "YTrEmnkwqPA",
+  "youtube_estado": "pendiente: miniatura: La miniatura NO se publicó: <HttpError 403 when requesting https://youtube.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=YTrEmnkwqPA&alt=json&uploadType=media returned \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\". Details: \"[{'message': \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\", 'domain': 'youtube.thumbnail', 'reason': 'forbidden', 'location': 'Authorization', 'locationType': 'header'}]\">"
 }
