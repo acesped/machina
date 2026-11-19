@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-NumenExCodice · Motor autónomo de reflexión filosófica · versión 2.0
+NumenExCodice · Motor autónomo de reflexión filosófica · versión 2.1
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -3235,30 +3235,61 @@ def _bloque_musica_cinematica(desde_muestra, cantidad, sr, duracion, semilla, te
 
 
 def reverberar_narracion(voz, carpeta):
-    """Perfil vocal cósmico: más profundidad, aire y presencia, sin alterar la duración."""
-    destino = carpeta / 'narracion_reverb.wav'
-    with wave.open(str(voz), 'rb') as entrada:
-        muestras = entrada.getnframes()
-        sr = entrada.getframerate()
-    # Cadena sutil: limpieza, cuerpo, compresión ligera, eco corto y cola espacial.
-    # Se recorta exactamente al mismo número de muestras para no romper subtítulos.
-    filtro = (
-        'highpass=f=85,'
-        'lowpass=f=9000,'
-        'equalizer=f=180:t=q:w=1.0:g=1.8,'
-        'equalizer=f=2600:t=q:w=1.2:g=1.5,'
-        'compand=attacks=0:decays=0.18:points=-80/-80|-26/-20|-12/-9|0/-3:soft-knee=6:gain=2.5,'
-        'chorus=0.55:0.82:18|28:0.20|0.25:0.28|0.20:1.7|2.3,'
-        'aecho=0.88:0.62:35|71|121|181:0.16|0.12|0.08|0.05,'
-        'alimiter=limit=0.93:latency=1,apad,'
-        f'atrim=end_sample={muestras},asetpts=PTS-STARTPTS'
-    )
-    subprocess.run(['ffmpeg','-y','-hide_banner','-loglevel','error',
-                    '-i',str(voz),'-af',filtro,'-ar',str(sr),
-                    '-c:a','pcm_s16le',str(destino)],check=True)
+    """Voz de templo cósmico: señal directa, reverberación difusa estéreo y delay.
+    Convolución FFT local con respuesta impulsional sintética de 2.4 segundos.
+    Mantiene la duración exacta y el inicio de la señal directa para los subtítulos.
+    """
+    import numpy as np
+    carpeta=Path(carpeta)
+    limpio=carpeta/'narracion_ecualizada.wav'
+    destino=carpeta/'narracion_reverb.wav'
+    with wave.open(str(voz),'rb') as entrada:
+        muestras=entrada.getnframes(); sr=entrada.getframerate()
+    filtro=('highpass=f=75,lowpass=f=9000,equalizer=f=190:t=q:w=1:g=2,'
+            'equalizer=f=2800:t=q:w=1.2:g=1.5,'
+            'acompressor=threshold=0.12:ratio=2:attack=10:release=150:makeup=1.3')
+    subprocess.run(['ffmpeg','-y','-hide_banner','-loglevel','error','-i',str(voz),
+                    '-af',filtro,'-ac','1','-ar',str(sr),'-c:a','pcm_s16le',str(limpio)],check=True)
+    with wave.open(str(limpio),'rb') as f:
+        x=np.frombuffer(f.readframes(f.getnframes()),dtype='<i2').astype(np.float32)/32768
+    if len(x)!=muestras:raise RuntimeError('La ecualización cambió la duración')
+    # Respuesta estéreo decorrelacionada: predelay 45 ms, caída RT60 ~2.4 s.
+    pred=round(.045*sr); cola=round(2.4*sr); t=np.arange(cola,dtype=np.float64)/sr
+    rng=np.random.default_rng(20261119)
+    irs=[]
+    for lado in range(2):
+        ruido=rng.standard_normal(cola)
+        # Atenuar agudos de la cola con suavizado corto.
+        ruido=np.convolve(ruido,np.array([.10,.21,.38,.21,.10]),mode='same')
+        h=ruido*np.exp(-np.log(1000)*t/2.4)*np.minimum(t/.035,1)
+        h*=.30/max(np.linalg.norm(h),1e-12)
+        ir=np.zeros(pred+cola,dtype=np.float64);ir[pred:]=h
+        for ms,g in [(55,.11),(91,.085),(137,.06),(184,.04)]:
+            ir[round((ms+lado*9)*sr/1000)]+=g
+        # Delay audible pero discreto, alternado entre canales.
+        for ms,g in ([(210,.13),(425,.052),(640,.021)] if lado==0 else [(270,.13),(485,.052),(700,.021)]):
+            ir[round(ms*sr/1000)]+=g
+        # Microdoblaje fijo de baja intensidad para anchura sin desafinar.
+        ir[round((17+lado*9)*sr/1000)]+=.055
+        irs.append(ir)
+    # Overlap-add por bloques: memoria acotada incluso con episodios largos.
+    block=sr*4; nfft=1<<(block+len(irs[0])-2).bit_length()
+    H=[np.fft.rfft(h,nfft) for h in irs]
+    overlap=np.zeros((len(irs[0])-1,2),dtype=np.float64)
+    with wave.open(str(destino),'wb') as out:
+        out.setnchannels(2);out.setsampwidth(2);out.setframerate(sr)
+        for start in range(0,muestras,block):
+            chunk=x[start:start+block]; n=len(chunk); X=np.fft.rfft(chunk,nfft)
+            wet=np.column_stack([np.fft.irfft(X*h,nfft)[:n+len(irs[0])-1] for h in H])
+            wet[:len(overlap)]+=overlap; overlap=wet[n:].copy()
+            mezcla=.83*chunk[:,None]+wet[:n]
+            # Saturación suave, evita clipping sin modificar la línea de tiempo.
+            mezcla=np.tanh(mezcla*1.12)*.94
+            out.writeframes(np.rint(mezcla*32767).astype('<i2').tobytes())
     with wave.open(str(destino),'rb') as salida:
-        if salida.getnframes()!=muestras or salida.getframerate()!=sr:
-            raise RuntimeError('La reverberación alteró la duración de la narración')
+        if salida.getnframes()!=muestras or salida.getframerate()!=sr or salida.getnchannels()!=2:
+            raise RuntimeError('El efecto vocal alteró la duración o el formato')
+    limpio.unlink(missing_ok=True)
     return destino
 
 
@@ -5520,7 +5551,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '2.0'
+VERSION_SCRIPT = '2.1'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5895,7 +5926,7 @@ def _ent_main():
     bloques,cues,voz=generar_voces(plan,carpeta)
     inicio=next((b['inicio'] for b in bloques if b['tipo']=='cta'),None)
     srt,ass=subtitulos(cues,carpeta,inicio_cta=inicio)
-    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | tono {TONO_VOZ} | reverb cósmica',flush=True)
+    print(f'Voz femenina: {VOZ} | ritmo {VELOCIDAD} | tono {TONO_VOZ} | reverb templo 2.4s + delay estéreo 210/270ms',flush=True)
     audio=mezclar_cinematica(reverberar_narracion(voz,carpeta),carpeta)
     guardar_metadatos(caso,bloques,[],creditos,carpeta)
     base=renderizar_clips(bloques,fotos,caso,carpeta);video=finalizar_video(base,audio,ass,carpeta,caso)
