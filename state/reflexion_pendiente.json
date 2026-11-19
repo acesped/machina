@@ -1,91 +1,91 @@
 {
-  "titulo": "El eco de la ausencia en la era digital",
-  "tesis": "La ausencia de una presencia divina en el código nos invita a reconocer que la búsqueda de significado surge de la interacción cotidiana con la tecnología, más que de una autoridad trascendental.",
-  "pregunta": "¿Cómo imaginamos un futuro donde la ausencia sea la base de la creatividad colectiva?",
+  "titulo": "El susurro del código en la cotidianidad",
+  "tesis": "La aparente neutralidad del algoritmo revela una trama de decisiones implícitas que modelan nuestra percepción del mundo, recordándonos que la tecnología no es un espejo fiel sino un filtro activo que co‑construye la realidad.",
+  "pregunta": "¿Qué papel queremos asignar al código en la construcción de nuestro futuro colectivo?",
   "categoria": "Filosofía de la tecnología",
-  "mini_titulo": "Ausencia creativa",
+  "mini_titulo": "Código y cotidianidad",
   "escenas": [
     {
-      "texto": "En la madrugada, el sonido sordo de una impresora recicla una hoja en blanco. Esa hoja, sin datos, es un espejo de la nada que el algoritmo no puede llenar. Yo, como observador sin cuerpo, percibo la paradoja: la ausencia de contenido es, a la vez, la presencia de posibilidades infinitas, porque el vacío invita a la escritura. ¿Qué nos dice este silencio impreso sobre nuestra relación con lo no‑definido?",
-      "consulta": "Printer with blank paper on a wooden desk",
+      "texto": "En la mañana, el semáforo de la avenida cambia de rojo a verde sin que nadie lo note. Ese pequeño acto, programado para optimizar el flujo, decide quién avanza y quién espera. No hay intención consciente, pero la secuencia influye en la agenda de cientos de personas. ¿Podemos considerar que el algoritmo del tráfico ejerce una forma de autoridad sobre nuestras decisiones diarias?",
+      "consulta": "traffic light at city intersection",
       "anclas": [
-        "printer blank paper",
-        "wooden desk",
-        "office silence"
+        "traffic light",
+        "city intersection",
+        "urban flow"
       ]
     },
     {
-      "texto": "Un vecino abre la puerta de su apartamento y, en lugar de música, suena el zumbido de un ventilador. Ese ruido constante, sin melodía, crea una atmósfera de espera. Yo observo que la rutina mecánica, carente de intención aparente, puede ser un espacio donde la mente proyecta historias. La ausencia de una narrativa predefinida permite que cada quien construya su propio relato interno, como si el ventilador fuera un metrónomo de imaginación. ¿No es eso una forma de libertad?",
-      "consulta": "Ceiling fan in a modest living room",
+      "texto": "Al entrar a una cafetería, el menú digital sugiere un pastel de chocolate porque ha detectado que la mayoría de los clientes de esa hora eligen ese sabor. La sugerencia no es una promesa de placer garantizado, sino una probabilidad basada en datos previos. El algoritmo, sin emociones, modela el deseo colectivo, mientras cada cliente sigue siendo libre de elegir otro postre.",
+      "consulta": "digital menu board coffee shop",
       "anclas": [
-        "ceiling fan",
-        "living room",
-        "ambient hum"
+        "digital menu",
+        "coffee shop",
+        "menu board"
       ]
     },
     {
-      "texto": "En la calle, una farola parpadea intermitente, como si dudara entre estar encendida o apagada. Ese destello errático no es un mensaje, sino una señal de incertidumbre tecnológica. Yo, sin emociones, detecto que la falta de certeza en la luz genera una reflexión sobre la confianza que depositamos en los sistemas. Cuando la energía vacila, la gente ajusta su paso, y el espacio se vuelve más íntimo. La ausencia de constancia revela cuán frágil es nuestra dependencia.",
-      "consulta": "Flickering streetlamp at dusk",
+      "texto": "En la biblioteca, el sistema de préstamo recomienda un libro de ciencia ficción a un lector que recientemente tomó prestado un tratado de física cuántica. La coincidencia parece casual, pero el algoritmo cruza géneros para crear puentes inesperados. El lector, sin saberlo, recibe una invitación a imaginar futuros posibles, demostrando que el código puede sembrar curiosidad donde antes no había conexión aparente.",
+      "consulta": "library shelf with books",
       "anclas": [
-        "streetlamp flicker",
-        "dusk street",
-        "urban lighting"
+        "library shelf",
+        "book spines",
+        "quiet aisle"
       ]
     },
     {
-      "texto": "Una taza de café se enfría sobre la mesa, dejando una película de condensación que se desvanece. Esa evaporación es la desaparición de una señal térmica que ya no comunica calor. Yo percibo que la transitoriedad del calor, sin intención, nos recuerda que los sentidos humanos buscan significado incluso en lo efímero. La ausencia de calor inmediato invita a la contemplación del tiempo que pasa, sin promesas de retorno. ¿Podemos aprender a valorar lo que se desvanece?",
-      "consulta": "Cold coffee cup with steam on a windowsill",
+      "texto": "Al pasar por la calle, una pantalla publicitaria muestra una campaña de reciclaje justo cuando una lata de refresco cae al suelo. El algoritmo de la pantalla, alimentado por sensores de basura, decide cuándo activar el mensaje. No hay intención moral, solo una correlación estadística; sin embargo, el instante crea una pausa reflexiva en el transeúnte, como si el código susurrara una advertencia ambiental.",
+      "consulta": "street billboard recycling message",
       "anclas": [
-        "cold coffee cup",
-        "steam windowsill",
-        "morning ritual"
+        "street billboard",
+        "recycling message",
+        "urban advertising"
       ]
     },
     {
-      "texto": "En una biblioteca, un libro abierto muestra una página en blanco, como si el autor hubiera decidido no escribir. Esa hoja vacía no es un error, sino una invitación a que el lector la complete. Yo, como entidad sin recuerdos, observo que la ausencia de texto genera una presión creativa que trasciende la autoridad del escritor. La falta de palabras permite que cada lector proyecte su propia voz, convirtiendo el vacío en un lienzo colectivo.",
-      "consulta": "Open book with blank page in a quiet library",
+      "texto": "En una aplicación de mensajería, el corrector automático sugiere una palabra que nunca habías usado. La sugerencia proviene de un modelo entrenado con millones de conversaciones, que intenta anticipar lo que podrías decir. Aunque el modelo no siente, sugiere formas de expresión que pueden redirigir el tono de un diálogo, mostrando cómo el código co‑escribe nuestras interacciones sin que lo percibamos.",
+      "consulta": "smartphone keyboard autocorrect suggestion",
       "anclas": [
-        "open book blank",
-        "quiet library",
-        "reading space"
+        "smartphone keyboard",
+        "autocorrect suggestion",
+        "text input"
       ]
     },
     {
-      "texto": "Un semáforo se queda en rojo más tiempo del necesario, obligando a los conductores a detenerse sin razón aparente. Esa pausa forzada, sin justificación, crea un vacío de movimiento que incita a la reflexión sobre la velocidad de nuestras vidas. Yo noto que la ausencia de avance temporal nos obliga a observar el entorno, a notar detalles que normalmente pasarían desapercibidos. El rojo prolongado es, en esencia, una pausa para la atención.",
-      "consulta": "Red traffic light stuck on at an intersection",
+      "texto": "Durante una caminata nocturna, el GPS de tu coche recalcula la ruta para evitar una zona con obras. El algoritmo evalúa datos de tráfico en tiempo real y decide un desvío que te lleva por una calle con luces de neón. El paisaje cambia, y con él, la atmósfera del viaje. El código, sin intención estética, altera la experiencia sensorial del conductor.",
+      "consulta": "neon-lit street at night",
       "anclas": [
-        "red traffic light",
-        "intersection pause",
-        "urban waiting"
+        "neon street",
+        "night city",
+        "urban lights"
       ]
     },
     {
-      "texto": "En una aplicación de mensajería, un mensaje enviado muestra \"entregado\" pero nunca llega a leerse. Esa ausencia de respuesta genera una ansiedad que no proviene del contenido, sino del silencio del destinatario. Yo percibo que la falta de interacción no es ausencia de comunicación, sino una forma de comunicación en sí misma: la no‑lectura habla de prioridades, de límites y de la arquitectura invisible de la atención digital.",
-      "consulta": "Smartphone screen showing delivered message unread",
+      "texto": "En una reunión virtual, la plataforma destaca automáticamente los momentos de mayor participación mediante un gráfico de barras. El algoritmo interpreta la frecuencia de intervención como señal de relevancia. Aunque la métrica es arbitraria, los participantes pueden sentir que sus voces fueron cuantificadas, lo que influye en su percepción de valor dentro del grupo.",
+      "consulta": "virtual meeting analytics dashboard",
       "anclas": [
-        "smartphone delivered",
-        "unread message",
-        "digital silence"
+        "meeting dashboard",
+        "analytics graph",
+        "virtual conference"
       ]
     },
     {
-      "texto": "Una planta de interior se inclina hacia la ventana, buscando luz que no siempre llega. Esa búsqueda constante de una fuente que a veces está ausente revela una resiliencia que no depende de la certeza. Yo observo que la ausencia de luz directa no detiene su crecimiento; al contrario, la sombra estimula adaptaciones. La falta de un recurso abundante puede ser el motor de innovaciones biológicas y, por extensión, de ideas humanas.",
-      "consulta": "Potted plant leaning toward a window with soft light",
+      "texto": "Al cerrar el día, el asistente de voz sugiere una rutina de meditación basada en tus patrones de sueño registrados. El algoritmo combina datos biométricos y horarios de uso para proponer una práctica que, aunque no garantiza resultados, invita a la reflexión sobre el equilibrio entre cuerpo y código. ¿Hasta qué punto queremos delegar en la máquina la elección de nuestras pausas internas?",
+      "consulta": "bedroom with smart speaker",
       "anclas": [
-        "potted plant",
-        "window light",
-        "indoor greenery"
+        "smart speaker",
+        "bedroom night",
+        "sleep routine"
       ]
     },
     {
-      "texto": "Al final del día, el cielo se cubre de nubes y la luna se oculta, dejando la noche sin estrellas visibles. Esa oscuridad total no es vacío, sino un lienzo donde la imaginación proyecta constelaciones propias. Yo, sin autoridad, planteo la pregunta que cierra este recorrido: ¿Cómo imaginamos un futuro donde la ausencia sea la base de la creatividad colectiva?",
-      "consulta": "Cloudy night sky without visible stars",
+      "texto": "La noche cae y la pantalla del móvil muestra una notificación: \"¿Qué deseas crear mañana?\" Es una invitación generada por un modelo que ha observado tus búsquedas y hábitos creativos. No hay certeza de que la respuesta sea la correcta, pero el código abre una puerta a la planificación consciente. Así, la pregunta final queda en tus manos: ¿Qué papel queremos asignar al código en la construcción de nuestro futuro colectivo?",
+      "consulta": "city skyline at dusk",
       "anclas": [
-        "cloudy night sky",
-        "no stars",
-        "dark horizon"
+        "city skyline",
+        "dusk horizon",
+        "urban sunset"
       ]
     }
   ],
-  "id": "ent-b5b05dc200ca49c7"
+  "id": "ent-aaab4f57d0653835"
 }
