@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.6'
+VERSION_SCRIPT = '3.7'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6308,9 +6308,9 @@ FB_GRAPH_VERSION = os.getenv('FB_GRAPH_VERSION','v27.0').strip()
 YT_CANAL_ESPERADO = 'UCi4tudsRQNAH9XekPYm_CJQ'
 
 class FacebookAPIError(RuntimeError):
-    def __init__(self,http,code=0,subcode=0):
-        super().__init__(f'Meta HTTP {http}, código {code}, subcódigo {subcode}')
-        self.http=http; self.code=code
+    def __init__(self,http,code=0,subcode=0,operation=""):
+        super().__init__(f'Meta HTTP {http}, código {code}, subcódigo {subcode} ({operation})')
+        self.http=http; self.code=code; self.subcode=subcode
 
 
 def _fb_peticion(method, path, *, video=False, data=None, files=None, params=None):
@@ -6328,7 +6328,7 @@ def _fb_peticion(method, path, *, video=False, data=None, files=None, params=Non
     except ValueError:raise FacebookAPIError(r.status_code) from None
     if not isinstance(j,dict):raise FacebookAPIError(r.status_code)
     if not 200<=r.status_code<300 or 'error' in j:
-        e=j.get('error') or {};raise FacebookAPIError(r.status_code,e.get('code',0),e.get('error_subcode',0))
+        e=j.get('error') or {};raise FacebookAPIError(r.status_code,e.get('code',0),e.get('error_subcode',0),method+' '+path)
     return j
 
 
@@ -6357,21 +6357,62 @@ def _fb_guardar(p,d,**updates):
     return f
 
 
+def _fb_buscar_video(vid):
+    # Consultas de solo lectura; jamás seguir paging.next (puede incluir token).
+    for edge in ('videos','video_reels'):
+        params={'fields':'id,permalink_url','limit':50}
+        for _ in range(4):
+            try:j=_fb_peticion('GET',FB_PAGE_ID+'/'+edge,params=params)
+            except FacebookAPIError as exc:
+                print('Facebook: consulta alternativa no disponible:',exc,flush=True);break
+            for item in j.get('data',[]):
+                if str(item.get('id'))==str(vid):return item,edge
+            paging=j.get('paging') or {}; after=(paging.get('cursors') or {}).get('after')
+            if not paging.get('next') or not after or after==params.get('after'):break
+            params['after']=after
+    return None,None
+
+
 def _fb_verificar_video(p,d):
-    f=d['facebook']; vid=f.get('video_id')
-    if not vid:raise RuntimeError('Facebook: falta ID para reconciliar; revisar la página')
-    try:j=_fb_peticion('GET',vid,params={'fields':'id,status,permalink_url,published'})
-    except FacebookAPIError as exc:
-        if exc.code!=100:raise
-        j=_fb_peticion('GET',vid,params={'fields':'id,status'})
+    f=d['facebook']; vid=str(f.get('video_id') or '')
+    if not vid.isdigit():raise RuntimeError('Facebook: falta ID válido para reconciliar; revisar la página')
+    j=None
+    for fields in ('id,status,permalink_url,published','id,status','id,permalink_url'):
+        try:
+            j=_fb_peticion('GET',vid,params={'fields':fields});break
+        except FacebookAPIError as exc:
+            if exc.code!=100:raise
+            print('Facebook: lectura directa no disponible:',exc,flush=True)
+    if j is None:
+        item,edge=_fb_buscar_video(vid)
+        if item:
+            _fb_guardar(p,d,permalink=item.get('permalink_url',''),ubicacion_meta=edge)
+            print('Facebook: ID encontrado en la colección de la página:',edge,vid,flush=True)
+        raise PublicacionAplazada('Facebook ID '+vid+' recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir.')
     st=j.get('status') or {};pub=st.get('publishing_phase') or {}
-    if st.get('video_status')=='error' or (isinstance(pub,dict) and pub.get('status') in ('error','failed')):
+    if not isinstance(pub,dict):pub={}
+    if st.get('video_status')=='error' or pub.get('status') in ('error','failed'):
         _fb_guardar(p,d,estado='revision_manual');raise RuntimeError('Meta notificó fallo de publicación; revisar Business Suite')
-    if j.get('published') is not False and (pub.get('status')=='complete' or (st.get('video_status')=='ready' and (j.get('published') is True or f.get('estado')=='enviado'))):
+    # READY significa procesado, no necesariamente publicado.
+    if str(j.get('id'))==vid and j.get('published') is not False and (pub.get('status')=='complete' or j.get('published') is True):
         _fb_guardar(p,d,estado='publicado',permalink=j.get('permalink_url',''),confirmado_utc=datetime.now(timezone.utc).isoformat(),visibilidad_externa_verificada=False,error='')
         print('Facebook: publicación confirmada',vid,flush=True);return vid
     raise PublicacionAplazada('Facebook conserva ID '+vid+'; publicación/procesamiento aún sin confirmar. No se vuelve a subir.')
 
+
+def _fb_diagnostico():
+    _fb_validar()
+    for p,d in _cola_manifiestos():
+        f=d.get('facebook',{});vid=str(f.get('video_id') or '')
+        if f.get('estado') not in ('enviado','fin_incierto','revision_manual') or not vid.isdigit():continue
+        print('Facebook diagnóstico | episodio:',d.get('episodio',{}).get('id'),'| ID video:',vid,'| estado:',f.get('estado'),flush=True)
+        for fields in ('id,status','id,permalink_url,published'):
+            try:
+                j=_fb_peticion('GET',vid,params={'fields':fields})
+                print('Facebook diagnóstico:',json.dumps({k:j[k] for k in ('id','status','published','permalink_url') if k in j},ensure_ascii=False),flush=True)
+            except FacebookAPIError as exc:print('Facebook diagnóstico:',exc,flush=True)
+        item,edge=_fb_buscar_video(vid)
+        print('Facebook diagnóstico | ID localizado en colección:',edge or 'no localizado; no implica ausencia de publicación',flush=True)
 
 def _fb_intento(p,d):
     f=d.setdefault('facebook',{'estado':'listo','page_id':FB_PAGE_ESPERADA})
@@ -6716,7 +6757,7 @@ def _ent_test():
 if __name__=='__main__':
     if '--self-test' in sys.argv:_ent_test()
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
-    elif '--check-facebook' in sys.argv:_fb_validar()
+    elif '--check-facebook' in sys.argv:_fb_diagnostico()
     elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
     elif '--analytics' in sys.argv:_viral_consultar_historico_analytics()
     else:
