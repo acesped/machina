@@ -132,6 +132,6 @@
     "start": 44442504,
     "end": 44442504,
     "size": 44442504,
-    "error": "Facebook conserva ID 1750942740080634; publicación/procesamiento aún sin confirmar. No se vuelve a subir."
+    "error": "Meta HTTP 400, código 100, subcódigo 33"
   }
 }
