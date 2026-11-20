@@ -125,7 +125,7 @@
   "reintentar_desde": 1795223675.559004,
   "error": "uploadLimitExceeded",
   "facebook": {
-    "estado": "enviado",
+    "estado": "revision_manual",
     "page_id": "1977015905919254",
     "session_id": "1750942746747300",
     "video_id": "1750942740080634",
@@ -133,7 +133,7 @@
     "end": 44442504,
     "size": 44442504,
     "error": "Facebook ID 1750942740080634 recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir.",
-    "fallos_consecutivos": 2,
-    "reintentar_desde": 1795206773.7119458
+    "fallos_consecutivos": 3,
+    "reintentar_desde": 1795215254.610612
   }
 }

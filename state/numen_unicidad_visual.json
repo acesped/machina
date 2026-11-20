@@ -54,5 +54,15 @@
     "phash": "eecc3904754cb61a",
     "version": "cosmos-v1",
     "tema": "La fugacidad que da sentido a la vida"
+  },
+  "ent-420c251b16613ed1": {
+    "seed": 4569225634826703901,
+    "indice": 1,
+    "pose_id": 7,
+    "pose": "escucha_del_vacio",
+    "sha256": "78af0440b8a9e0293d933563ddb1296f1a8dc7cc79fa66da72818fd55150dbda",
+    "phash": "66965aae69668698",
+    "version": "cosmos-v2",
+    "tema": "El silencio que habla entre la rutina"
   }
 }
