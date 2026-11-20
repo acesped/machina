@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.7'
+VERSION_SCRIPT = '3.8'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6359,7 +6359,7 @@ def _fb_guardar(p,d,**updates):
 
 def _fb_buscar_video(vid):
     # Consultas de solo lectura; jamás seguir paging.next (puede incluir token).
-    for edge in ('videos','video_reels'):
+    for edge in ('videos',):
         params={'fields':'id,permalink_url','limit':50}
         for _ in range(4):
             try:j=_fb_peticion('GET',FB_PAGE_ID+'/'+edge,params=params)
@@ -6401,7 +6401,7 @@ def _fb_verificar_video(p,d):
 
 
 def _fb_diagnostico():
-    _fb_validar()
+    _fb_preflight()
     for p,d in _cola_manifiestos():
         f=d.get('facebook',{});vid=str(f.get('video_id') or '')
         if f.get('estado') not in ('enviado','fin_incierto','revision_manual') or not vid.isdigit():continue
@@ -6414,12 +6414,19 @@ def _fb_diagnostico():
         item,edge=_fb_buscar_video(vid)
         print('Facebook diagnóstico | ID localizado en colección:',edge or 'no localizado; no implica ausencia de publicación',flush=True)
 
+def _fb_preflight():
+    _fb_validar()
+    j=_fb_peticion('GET',FB_PAGE_ID+'/videos',params={'fields':'id','limit':1})
+    if not isinstance(j.get('data'),list):raise RuntimeError('Meta: lectura de videos no confirmada')
+    print('Facebook: acceso de lectura confirmado; escritura se verifica al publicar',flush=True)
+
+
 def _fb_intento(p,d):
     f=d.setdefault('facebook',{'estado':'listo','page_id':FB_PAGE_ESPERADA})
     if f.get('page_id')!=FB_PAGE_ESPERADA:raise RuntimeError('Fanpage de la cola no coincide')
     estado=f.get('estado','listo')
     if estado=='publicado':return f['video_id']
-    _fb_validar()
+    _fb_preflight()
     if estado in ('enviado','fin_incierto'):
         return _fb_verificar_video(p,d)
     if estado=='revision_manual':raise PublicacionAplazada('Facebook requiere revisión manual; no duplicar')
@@ -6428,6 +6435,7 @@ def _fb_intento(p,d):
     endpoint=FB_PAGE_ID+'/videos'
     if estado=='listo':
         # START no publica; puede dejar una sesión huérfana si se pierde la respuesta.
+        print('Facebook: START | bytes:',size,flush=True)
         j=_fb_peticion('POST',endpoint,video=True,data={'upload_phase':'start','file_size':str(size)})
         f=_fb_guardar(p,d,estado='transferencia',session_id=str(j['upload_session_id']),video_id=str(j['video_id']),start=int(j['start_offset']),end=int(j['end_offset']),size=size,error='')
     if f.get('estado')!='transferencia' or f.get('size')!=size:raise RuntimeError('Estado o tamaño de carga Facebook inválido')
@@ -6445,10 +6453,12 @@ def _fb_intento(p,d):
     if f['start']!=size:raise RuntimeError('Transferencia Facebook incompleta')
     descripcion=descripcion_youtube(d['caso'],d['fuentes'],d['creditos'])
     # Persistir antes del único FINISH que puede crear la publicación pública.
+    print('Facebook: FINISH | ID:',f['video_id'],flush=True)
     f=_fb_guardar(p,d,estado='fin_incierto')
     j=_fb_peticion('POST',endpoint,video=True,data={'upload_phase':'finish','upload_session_id':f['session_id'],'title':d['caso']['titulo'],'description':descripcion,'published':'true','no_story':'false','hide_from_newsfeed':'false'})
     if j.get('success') is not True:raise PublicacionAplazada('Facebook: respuesta FINISH no confirmada; reconciliar ID antes de repetir')
     _fb_guardar(p,d,estado='enviado',error='')
+    print('Facebook: FINISH aceptado; publicación aún no confirmada',flush=True)
     for intento in range(4):
         try:return _fb_verificar_video(p,d)
         except PublicacionAplazada:
@@ -6460,21 +6470,33 @@ def _dual_pendiente(d):
     return (PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado') or (PUBLICAR_EN_FACEBOOK and ('facebook' in d or d.get('estado')!='publicado') and d.get('facebook',{}).get('estado')!='publicado')
 
 
+# Presupuesto independiente: una carga/consulta por plataforma por ejecución.
+_DUAL_USADO=set()
+_DUAL_BLOQUEADO=set()
+
 def _dual_intento(p,d,historial):
     # Registrar intención Facebook ANTES de YouTube, para conservar el MP4.
     if PUBLICAR_EN_FACEBOOK and 'facebook' not in d and d.get('estado')!='publicado':
         _fb_guardar(p,d,estado='listo',page_id=FB_PAGE_ESPERADA)
-    if PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado':
+    if PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado' and (d.get('estado')!='intento_incierto' or any(r.get('episodio')==d['episodio']['id'] and r.get('youtube_id') for r in leer_historial(historial))) and 'yt' not in _DUAL_USADO and 'yt' not in _DUAL_BLOQUEADO and time.time()>=d.get('reintentar_desde',0):
+        _DUAL_USADO.add('yt')
         try:
             if d.get('estado') in ('listo','limite') and time.time()>=d.get('reintentar_desde',0):
                 validar_canal_youtube(youtube_servicio())
             _cola_intento(p,d,historial)
         except Exception as exc:print('YouTube pendiente:',str(exc)[:400],flush=True)
-    if PUBLICAR_EN_FACEBOOK and 'facebook' in d and d['facebook'].get('estado')!='publicado':
+    if PUBLICAR_EN_FACEBOOK and 'facebook' in d and d['facebook'].get('estado') not in ('publicado','revision_manual') and 'fb' not in _DUAL_USADO and time.time()>=d['facebook'].get('reintentar_desde',0):
+        _DUAL_USADO.add('fb')
         try:_fb_intento(p,d)
         except Exception as exc:
-            # Los errores de transporte Meta se sanitizan en _fb_peticion.
-            _fb_guardar(p,d,error=str(exc)[:400]);print('Facebook pendiente:',str(exc)[:400],flush=True)
+            f=d['facebook']; n=int(f.get('fallos_consecutivos',0))+1
+            # Nunca reiniciar automáticamente una carga cuyo FINISH pudo publicarse.
+            estado=f.get('estado','listo')
+            if n>=3 and estado in ('enviado','fin_incierto','transferencia'):
+                estado='revision_manual'
+            _fb_guardar(p,d,estado=estado,fallos_consecutivos=n,reintentar_desde=time.time()+min(86400,900*2**min(n,6)),error=str(exc)[:400])
+            print('Facebook pendiente:',str(exc)[:400],flush=True)
+
     print('Estado plataformas | YouTube:',d.get('estado'),'| Facebook:',d.get('facebook',{}).get('estado','no solicitado'),flush=True)
     if not _dual_pendiente(d):
         # No borrar medios mientras haya una plataforma pendiente, aunque esté deshabilitada.
@@ -6505,12 +6527,53 @@ def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,histor
 
 def _dual_reanudar(historial):
     activos=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
-    if not activos:return False
     if any(d.get('nicho')!=NICHO for _,d in activos):raise PublicacionAplazada('Cola de otro nicho; revisar manualmente')
-    # Prioridad al episodio pendiente; una ejecución no crea otro video.
-    p,d=activos[0]; completo=_dual_intento(p,d,historial)
-    _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'cola_procesada' if completo else 'publicacion_aplazada','episodio':d['episodio']['id'],'youtube':d.get('estado'),'facebook':d.get('facebook',{}).get('estado')})
-    return True
+    activos.sort(key=lambda x:(x[1].get('creado_utc',''),str(x[0])))
+    # El límite de YouTube se aplica al canal, no solo al episodio.
+    if any(d.get('estado')=='limite' and time.time()<d.get('reintentar_desde',0) for _,d in activos):
+        _DUAL_BLOQUEADO.add('yt');print('YouTube: límite del canal aún vigente',flush=True)
+    for p,d in activos:
+        _dual_intento(p,d,historial)
+    restantes=sum(_dual_pendiente(d) for _,d in _cola_manifiestos())
+    # Un límite explícito evita acumulación sin fin y expulsión de MP4 de la cache.
+    maximo=max(1,int(os.getenv('NUMEN_MAX_PENDIENTES','20')))
+    print(f'Cola independiente: {restantes} pendientes / máximo {maximo}',flush=True)
+    if restantes>=maximo:
+        _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'cola_llena','pendientes':restantes})
+        return True
+    return False
+
+
+def _fb_recuperar(historial):
+    if not PUBLICAR_EN_FACEBOOK or not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Facebook no autorizado')
+    vid=os.getenv('FB_RECUPERAR_ID','').strip()
+    if not vid.isdigit() or os.getenv('FB_CONFIRMAR_AUSENCIA','').lower()!='true':raise RuntimeError('Indicar ID anterior y confirmar ausencia en Business Suite')
+    matches=[(p,d) for p,d in _cola_manifiestos() if str(d.get('facebook',{}).get('video_id'))==vid]
+    if len(matches)!=1:raise RuntimeError('ID anterior no coincide con exactamente un pendiente')
+    p,d=matches[0];f=d['facebook']
+    if d.get('nicho')!=NICHO or f.get('page_id')!=FB_PAGE_ESPERADA or f.get('estado') not in ('enviado','fin_incierto','revision_manual','transferencia'):
+        raise RuntimeError('Estado no elegible para recuperación')
+    _fb_preflight()
+    # Si el objeto responde, no se autoriza una nueva carga por esta vía.
+    try:j=_fb_peticion('GET',vid,params={'fields':'id'})
+    except FacebookAPIError as exc:
+        if (exc.code,exc.subcode)!=(100,33):raise
+    else:raise RuntimeError('ID anterior todavía accesible; no se repite la carga')
+    item,edge=_fb_buscar_video(vid)
+    if item:raise RuntimeError('ID anterior localizado; no se repite la carga')
+    for k in ('video','miniatura','srt'):
+        if not (p.parent/d[k]).is_file():raise RuntimeError('Falta archivo pendiente '+d[k]+'; restaurar artefacto')
+    anteriores=list(f.get('recuperaciones',[]))
+    if any(str(x.get('video_id'))==vid for x in anteriores):raise RuntimeError('Recuperación anterior ya registrada')
+    anteriores.append({'video_id':vid,'estado':f.get('estado'),'utc':datetime.now(timezone.utc).isoformat(),'ausencia_confirmada_operador':True})
+    d['facebook']={'estado':'listo','page_id':FB_PAGE_ESPERADA,'recuperaciones':anteriores}
+    _fb_guardar(p,d)
+    print('Facebook: recuperación manual autorizada del ID',vid,'| reutilizando MP4',flush=True)
+    # Solo Facebook: no toca YouTube ni genera otro episodio.
+    try:_fb_intento(p,d)
+    except Exception as exc:
+        _fb_guardar(p,d,error=str(exc)[:400]);print('Facebook recuperación pendiente:',str(exc)[:400],flush=True)
+    print('Estado Facebook:',d['facebook']['estado'],flush=True)
 
 
 def _ent_main():
@@ -6758,6 +6821,7 @@ if __name__=='__main__':
     if '--self-test' in sys.argv:_ent_test()
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
     elif '--check-facebook' in sys.argv:_fb_diagnostico()
+    elif '--recover-facebook' in sys.argv:_fb_recuperar(ruta_historial())
     elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
     elif '--analytics' in sys.argv:_viral_consultar_historico_analytics()
     else:
