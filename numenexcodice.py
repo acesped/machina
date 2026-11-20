@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.9'
+VERSION_SCRIPT = '4.0'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6475,11 +6475,87 @@ def _dual_pendiente(d):
 _DUAL_USADO=set()
 _DUAL_BLOQUEADO=set()
 
+def _medio_valido(path,d,k):
+    path=Path(path)
+    if not path.is_file() or path.stat().st_size<=0:return False
+    if k=='video':
+        expected=(d.get('facebook') or {}).get('size') or d.get('video_bytes')
+        if expected and path.stat().st_size!=int(expected):return False
+    return True
+
+
+def _medios_faltantes(p,d,keys=('video','miniatura','srt')):
+    faltan=[]
+    for k in keys:
+        nombre=d[k]
+        if Path(nombre).name!=nombre:raise RuntimeError('Nombre de medio inválido en cola')
+        target=p.parent/nombre
+        if _medio_valido(target,d,k):continue
+        original=Path(d.get('carpeta_original') or OUTPUT_BASE/d['episodio']['id'])/nombre
+        if original.resolve()!=target.resolve() and _medio_valido(original,d,k):
+            shutil.copy2(original,target)
+            print('Cola: medio restaurado desde carpeta original |',d['episodio']['id'],nombre,flush=True)
+        else:faltan.append(k)
+    return faltan
+
+
+def _restaurar_medios_artifactos():
+    # Solo restaurar medios exactos de manifiestos actuales, nunca JSON antiguos.
+    import tempfile,zipfile
+    pendientes=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
+    def faltantes():
+        return [(p,d,k) for p,d in pendientes for k in _medios_faltantes(p,d)]
+    missing=faltantes()
+    if not missing:
+        print('Cola: todos los medios pendientes disponibles',flush=True);return
+    repo=os.getenv('GITHUB_REPOSITORY','')
+    if not repo or not os.getenv('GH_TOKEN'):
+        print('Cola: sin acceso a artefactos GitHub; conservar manifiestos',flush=True);return
+    try:
+        raw=subprocess.check_output(['gh','api',f'repos/{repo}/actions/artifacts?per_page=100'],timeout=45)
+        arts=[a for a in json.loads(raw).get('artifacts',[]) if not a.get('expired') and re.fullmatch(r'numenexcodice-\d+-\d+',a.get('name',''))]
+    except Exception as exc:
+        print('Cola: no se pudo listar artefactos |',type(exc).__name__,flush=True);return
+    # Buscar primero la ejecución manual indicada, si existe, después las recientes.
+    prefer=os.getenv('NUMEN_RESTORE_RUN_ID','').strip()
+    arts.sort(key=lambda a:(bool(prefer and str((a.get('workflow_run') or {}).get('id'))==prefer),a.get('created_at','')),reverse=True)
+    for a in arts[:5]:
+        if not missing:break
+        try:
+            with tempfile.TemporaryDirectory() as td:
+                archive=Path(td)/'respaldo.zip'
+                with archive.open('wb') as out:
+                    subprocess.run(['gh','api',f'repos/{repo}/actions/artifacts/{int(a["id"])}/zip'],stdout=out,check=True,timeout=180)
+                with zipfile.ZipFile(archive) as z:
+                    names=set(z.namelist())
+                    for p,d,k in missing:
+                        name=d[k]; eid=d['episodio']['id']; target=p.parent/name
+                        if _medio_valido(target,d,k):continue
+                        candidates=[f'state/pendientes_youtube/{eid}/{name}',f'output/NumenExCodice/{eid}/{name}',f'pendientes_youtube/{eid}/{name}']
+                        member=next((n for n in candidates if n in names),None)
+                        if not member:continue
+                        info=z.getinfo(member)
+                        if info.file_size<=0:continue
+                        tmp=target.with_name(target.name+'.restore-tmp')
+                        try:
+                            with z.open(info) as r,tmp.open('wb') as w:shutil.copyfileobj(r,w)
+                            if _medio_valido(tmp,d,k):
+                                os.replace(tmp,target)
+                                print('Cola: recuperado de artefacto |',eid,name,a['name'],flush=True)
+                        finally:tmp.unlink(missing_ok=True)
+        except Exception as exc:print('Cola: artefacto no restaurado |',a.get('name'),type(exc).__name__,flush=True)
+        missing=faltantes()
+    for p,d,k in missing:print('Cola: medio no recuperado; manifiesto conservado |',d['episodio']['id'],d[k],flush=True)
+
+
 def _dual_intento(p,d,historial):
     # Registrar intención Facebook ANTES de YouTube, para conservar el MP4.
     if PUBLICAR_EN_FACEBOOK and 'facebook' not in d and d.get('estado')!='publicado':
         _fb_guardar(p,d,estado='listo',page_id=FB_PAGE_ESPERADA)
-    if PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado' and (d.get('estado')!='intento_incierto' or any(r.get('episodio')==d['episodio']['id'] and r.get('youtube_id') for r in leer_historial(historial))) and 'yt' not in _DUAL_USADO and 'yt' not in _DUAL_BLOQUEADO and time.time()>=d.get('reintentar_desde',0):
+    yt_existente=PUBLICAR_EN_YOUTUBE and any(r.get('episodio')==d['episodio']['id'] and r.get('youtube_id') for r in leer_historial(historial))
+    yt_faltantes=_medios_faltantes(p,d) if PUBLICAR_EN_YOUTUBE and d.get('estado') in ('listo','limite') and not yt_existente else []
+    if yt_faltantes:print('YouTube: medios faltantes; no consume cupo |',d['episodio']['id'],','.join(yt_faltantes),flush=True)
+    if not yt_faltantes and PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado' and (d.get('estado')!='intento_incierto' or yt_existente) and 'yt' not in _DUAL_USADO and 'yt' not in _DUAL_BLOQUEADO and time.time()>=d.get('reintentar_desde',0):
         _DUAL_USADO.add('yt')
         try:
             if d.get('estado') in ('listo','limite') and time.time()>=d.get('reintentar_desde',0):
@@ -6494,6 +6570,8 @@ def _dual_intento(p,d,historial):
         elif estado!='publicado':
             if time.time()<f.get('reintentar_desde',0):
                 print('Facebook: reintento diferido |',d['episodio']['id'],flush=True)
+            elif cupo=='fb_subir' and _medios_faltantes(p,d,('video',)):
+                print('Facebook: MP4 faltante; no consume cupo |',d['episodio']['id'],flush=True)
             elif cupo in _DUAL_USADO:
                 print('Facebook: en cola; cupo de '+cupo+' utilizado |',d['episodio']['id'],flush=True)
             else:
@@ -6532,7 +6610,7 @@ def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,histor
     if p.exists():raise PublicacionAplazada('Ya existe la cola '+str(p))
     p.parent.mkdir(parents=True,exist_ok=True)
     for archivo in (video,thumb,srt):shutil.copy2(archivo,p.parent/Path(archivo).name)
-    d={'estado':'listo','nicho':NICHO,'canal_id':YT_CANAL_ESPERADO,'carpeta_original':str(carpeta),'privacidad':YOUTUBE_PRIVACY,'video':Path(video).name,'miniatura':Path(thumb).name,'srt':Path(srt).name,'caso':{k:v for k,v in caso.items() if not k.startswith('_') or k in ('_titulo_caso','_universal')},'episodio':episodio,'fuentes':fuentes,'creditos':creditos,'creado_utc':datetime.now(timezone.utc).isoformat()}
+    d={'estado':'listo','nicho':NICHO,'canal_id':YT_CANAL_ESPERADO,'carpeta_original':str(carpeta),'privacidad':YOUTUBE_PRIVACY,'video':Path(video).name,'miniatura':Path(thumb).name,'srt':Path(srt).name,'caso':{k:v for k,v in caso.items() if not k.startswith('_') or k in ('_titulo_caso','_universal')},'episodio':episodio,'fuentes':fuentes,'creditos':creditos,'creado_utc':datetime.now(timezone.utc).isoformat(),'video_bytes':Path(video).stat().st_size}
     if PUBLICAR_EN_FACEBOOK:d['facebook']={'estado':'listo','page_id':FB_PAGE_ESPERADA}
     _cola_json(p,d)
     return _dual_intento(p,d,historial)
@@ -6574,8 +6652,8 @@ def _fb_recuperar(historial):
     else:raise RuntimeError('ID anterior todavía accesible; no se repite la carga')
     item,edge=_fb_buscar_video(vid)
     if item:raise RuntimeError('ID anterior localizado; no se repite la carga')
-    for k in ('video','miniatura','srt'):
-        if not (p.parent/d[k]).is_file():raise RuntimeError('Falta archivo pendiente '+d[k]+'; restaurar artefacto')
+    faltan=_medios_faltantes(p,d,('video',))
+    if faltan:raise RuntimeError('Falta MP4 pendiente; restaurar artefacto antes de recuperar')
     anteriores=list(f.get('recuperaciones',[]))
     if any(str(x.get('video_id'))==vid for x in anteriores):raise RuntimeError('Recuperación anterior ya registrada')
     anteriores.append({'video_id':vid,'estado':f.get('estado'),'utc':datetime.now(timezone.utc).isoformat(),'ausencia_confirmada_operador':True})
@@ -6844,6 +6922,7 @@ if __name__=='__main__':
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
     elif '--check-facebook' in sys.argv:_fb_diagnostico()
     elif '--recover-facebook' in sys.argv:_fb_recuperar(ruta_historial())
+    elif '--restore-media' in sys.argv:_restaurar_medios_artifactos()
     elif '--publish-queue' in sys.argv:_dual_solo_cola()
     elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
     elif '--analytics' in sys.argv:_viral_consultar_historico_analytics()
