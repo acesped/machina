@@ -15,6 +15,10 @@ on:
         description: 'Confirmo que el video anterior NO aparece en Business Suite; acepto riesgo residual de duplicado'
         type: boolean
         default: false
+      restaurar_run_id:
+        description: 'ID de ejecución anterior para priorizar restauración de MP4 (opcional)'
+        type: string
+        default: ''
       solo_cola:
         description: 'Publicar videos pendientes sin generar una nueva reflexion'
         type: boolean
@@ -28,6 +32,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: numenexcodice-produccion
@@ -36,7 +41,7 @@ concurrency:
 jobs:
   producir:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       PYTHONUNBUFFERED: '1'
       PUBLICAR_EN_YOUTUBE: 'true'
@@ -157,11 +162,18 @@ jobs:
           set -euo pipefail
           mkdir -p state/pendientes_youtube
           # Los JSON confirmados en Git tienen prioridad sobre una cache antigua.
-          if git ls-files state/pendientes_youtube | grep -q .; then
-            git restore --source=HEAD --worktree -- state/pendientes_youtube
+          if git ls-files -- ':(glob)state/pendientes_youtube/**/*.json' | grep -q .; then
+            git restore --source=HEAD --worktree -- ':(glob)state/pendientes_youtube/**/*.json'
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - name: Restaurar medios faltantes desde artefactos
+        if: ${{ !inputs.verificar_facebook && !inputs.solo_guion }}
+        timeout-minutes: 18
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMEN_RESTORE_RUN_ID: ${{ inputs.restaurar_run_id }}
+        run: python numenexcodice.py --restore-media
       - name: Generar y publicar reflexion
         id: producir
         timeout-minutes: 55
@@ -186,6 +198,12 @@ jobs:
           else
             python numenexcodice.py
           fi
+      - name: Conservar cola de publicaciones
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state/pendientes_youtube
+          key: numenexcodice-cola-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Persistir memoria e historial
         if: always()
         shell: bash
@@ -223,12 +241,6 @@ jobs:
         with:
           path: state/visuales_numen
           key: numen-visuales-v14-${{ github.run_id }}-${{ github.run_attempt }}
-      - name: Conservar cola de publicaciones
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: state/pendientes_youtube
-          key: numenexcodice-cola-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Guardar respaldo de produccion y diagnosticos
         if: always()
         uses: actions/upload-artifact@v4
