@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.8'
+VERSION_SCRIPT = '3.9'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6470,7 +6470,8 @@ def _dual_pendiente(d):
     return (PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado') or (PUBLICAR_EN_FACEBOOK and ('facebook' in d or d.get('estado')!='publicado') and d.get('facebook',{}).get('estado')!='publicado')
 
 
-# Presupuesto independiente: una carga/consulta por plataforma por ejecución.
+# Presupuestos independientes: una subida Facebook y una reconciliación Facebook por ejecución.
+# Consultar un ID previo nunca consume el cupo de subida de un MP4 nuevo.
 _DUAL_USADO=set()
 _DUAL_BLOQUEADO=set()
 
@@ -6485,18 +6486,30 @@ def _dual_intento(p,d,historial):
                 validar_canal_youtube(youtube_servicio())
             _cola_intento(p,d,historial)
         except Exception as exc:print('YouTube pendiente:',str(exc)[:400],flush=True)
-    if PUBLICAR_EN_FACEBOOK and 'facebook' in d and d['facebook'].get('estado') not in ('publicado','revision_manual') and 'fb' not in _DUAL_USADO and time.time()>=d['facebook'].get('reintentar_desde',0):
-        _DUAL_USADO.add('fb')
-        try:_fb_intento(p,d)
-        except Exception as exc:
-            f=d['facebook']; n=int(f.get('fallos_consecutivos',0))+1
-            # Nunca reiniciar automáticamente una carga cuyo FINISH pudo publicarse.
-            estado=f.get('estado','listo')
-            if n>=3 and estado in ('enviado','fin_incierto','transferencia'):
-                estado='revision_manual'
-            _fb_guardar(p,d,estado=estado,fallos_consecutivos=n,reintentar_desde=time.time()+min(86400,900*2**min(n,6)),error=str(exc)[:400])
-            print('Facebook pendiente:',str(exc)[:400],flush=True)
-
+    if PUBLICAR_EN_FACEBOOK and 'facebook' in d:
+        f=d['facebook']; estado=f.get('estado','listo')
+        cupo='fb_verificar' if estado in ('enviado','fin_incierto') else 'fb_subir'
+        if estado=='revision_manual':
+            print('Facebook: revisión manual requerida |',d['episodio']['id'],flush=True)
+        elif estado!='publicado':
+            if time.time()<f.get('reintentar_desde',0):
+                print('Facebook: reintento diferido |',d['episodio']['id'],flush=True)
+            elif cupo in _DUAL_USADO:
+                print('Facebook: en cola; cupo de '+cupo+' utilizado |',d['episodio']['id'],flush=True)
+            else:
+                _DUAL_USADO.add(cupo)
+                print('Facebook: '+('verificar ID anterior' if cupo=='fb_verificar' else 'subir/reanudar MP4')+' |',d['episodio']['id'],flush=True)
+                try:_fb_intento(p,d)
+                except Exception as exc:
+                    f=d['facebook']; n=int(f.get('fallos_consecutivos',0))+1
+                    estado=f.get('estado','listo')
+                    # Nunca reiniciar automáticamente una carga cuyo FINISH pudo publicarse.
+                    if n>=3 and estado in ('enviado','fin_incierto','transferencia'):
+                        estado='revision_manual'
+                    _fb_guardar(p,d,estado=estado,fallos_consecutivos=n,reintentar_desde=time.time()+min(86400,900*2**min(n,6)),error=str(exc)[:400])
+                    print('Facebook pendiente:',str(exc)[:400],flush=True)
+    if PUBLICAR_EN_YOUTUBE and d.get('estado') in ('listo','limite'):
+        print('YouTube: en cola |',('límite del canal' if 'yt' in _DUAL_BLOQUEADO or d.get('estado')=='limite' else 'cupo de ejecución o reintento pendiente'), '|',d['episodio']['id'],flush=True)
     print('Estado plataformas | YouTube:',d.get('estado'),'| Facebook:',d.get('facebook',{}).get('estado','no solicitado'),flush=True)
     if not _dual_pendiente(d):
         # No borrar medios mientras haya una plataforma pendiente, aunque esté deshabilitada.
@@ -6574,6 +6587,15 @@ def _fb_recuperar(historial):
     except Exception as exc:
         _fb_guardar(p,d,error=str(exc)[:400]);print('Facebook recuperación pendiente:',str(exc)[:400],flush=True)
     print('Estado Facebook:',d['facebook']['estado'],flush=True)
+
+
+def _dual_solo_cola():
+    if AERO_IA_DRY_RUN or not PERMITIR_PUBLICACION_SIN_REVISION:
+        raise RuntimeError('Procesar cola requiere autorización de publicación y no combinar con solo_guion')
+    print('Deus Digitalis | motor reflexivo autónomo',VERSION_SCRIPT,'| solo cola',flush=True)
+    asegurar_dependencias()
+    _dual_reanudar(ruta_historial())
+    print('Solo cola: no se genera ni renderiza un episodio nuevo.',flush=True)
 
 
 def _ent_main():
@@ -6822,6 +6844,7 @@ if __name__=='__main__':
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
     elif '--check-facebook' in sys.argv:_fb_diagnostico()
     elif '--recover-facebook' in sys.argv:_fb_recuperar(ruta_historial())
+    elif '--publish-queue' in sys.argv:_dual_solo_cola()
     elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
     elif '--analytics' in sys.argv:_viral_consultar_historico_analytics()
     else:
