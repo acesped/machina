@@ -108,7 +108,16 @@
   "creado_utc": "2026-11-20T20:04:41.819264+00:00",
   "video_bytes": 46861930,
   "facebook": {
-    "estado": "listo",
-    "page_id": "1977015905919254"
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1504472961868970",
+    "video_id": "1504472958535637",
+    "start": 46861930,
+    "end": 46861930,
+    "size": 46861930,
+    "error": "",
+    "permalink": "/reel/1504472958535637/",
+    "confirmado_utc": "2026-11-20T21:07:57.862501+00:00",
+    "visibilidad_externa_verificada": false
   }
 }
