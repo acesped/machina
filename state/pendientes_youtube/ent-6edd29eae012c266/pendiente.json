@@ -124,6 +124,9 @@
   "creado_utc": "2026-11-20T19:02:47.544530+00:00",
   "facebook": {
     "estado": "listo",
-    "page_id": "1977015905919254"
+    "page_id": "1977015905919254",
+    "fallos_consecutivos": 1,
+    "reintentar_desde": 1795203629.7928107,
+    "error": "[Errno 2] No such file or directory: 'state/pendientes_youtube/ent-6edd29eae012c266/El tiempo como tejido de la vida.mp4'"
   }
 }
