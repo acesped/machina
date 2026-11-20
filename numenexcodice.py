@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.3
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.3.1
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '4.3'
+VERSION_SCRIPT = '4.3.1'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6396,7 +6396,73 @@ def _numen_halo_y_particulas(base_rgba, mask_l, perfil, rng, paleta):
     return out
 
 
-def _numen_composicion(seed, indice, pose_id=None, devolver_fondo=False):
+def _numen_composicion_v1(seed, indice, devolver_fondo=False):
+    """Nuevo universo procedural: nubes multiescala, galaxia, planetas y estrellas.
+    Conserva el androide original como sujeto recurrente; no es un modelo de difusión.
+    """
+    import base64, io
+    import numpy as np
+    from PIL import Image, ImageDraw, ImageFilter, ImageEnhance, ImageOps
+    rng=np.random.default_rng(seed)
+    W,H=960,540
+    yy,xx=np.mgrid[0:H,0:W].astype(np.float32)
+    X=(xx-W/2)/H;Y=(yy-H/2)/H
+    def nube():
+        n=np.zeros((H,W),np.float32)
+        for tam,amp in [(5,1.),(11,.64),(23,.38),(53,.19),(109,.10),(227,.045)]:
+            z=rng.integers(0,256,(tam,round(tam*W/H)),dtype=np.uint8)
+            n+=amp*np.asarray(Image.fromarray(z).resize((W,H),Image.Resampling.BICUBIC),dtype=np.float32)/255
+        return (n-n.min())/max(float(n.max()-n.min()),1e-6)
+    a,b=nube(),nube()
+    paletas=[((103,28,200),(18,143,250),(255,157,55)),((16,92,212),(34,216,211),(255,198,90)),((189,28,117),(76,39,217),(255,170,70)),((35,137,99),(27,88,198),(239,218,122)),((176,49,20),(126,27,164),(255,194,71)),((42,41,173),(207,69,220),(255,220,150)),((12,128,151),(96,30,167),(255,170,100)),((122,27,58),(32,58,180),(255,209,111))]
+    p=np.asarray(paletas[int(rng.integers(len(paletas)))],dtype=np.float32)/255
+    cx,cy=rng.uniform(-.82,.82),rng.uniform(-.4,.4)
+    ang=rng.uniform(0,2*np.pi); u=(X-cx)*np.cos(ang)+(Y-cy)*np.sin(ang);v=(-(X-cx)*np.sin(ang)+(Y-cy)*np.cos(ang))*rng.uniform(1.4,3.7)
+    r=np.hypot(u,v); theta=np.arctan2(v,u)
+    brazo=(.5+.5*np.cos(theta*rng.choice([2,3,4]) - r*rng.uniform(9,19)+b*3))**3
+    disco=np.exp(-r*rng.uniform(2.5,4.8))*brazo
+    curva=Y-rng.uniform(-.25,.25)-rng.uniform(.10,.30)*np.sin(X*rng.uniform(3,7)+rng.uniform(0,6.28))
+    filamento=np.exp(-np.abs(curva+(a-.5)*.45)*rng.uniform(5,12))
+    polvo=np.clip((a-.20)*1.35,0,1)**2
+    gas=np.clip((b-.28)*1.55,0,1)**2
+    rgb=np.zeros((H,W,3),np.float32)+np.array([.013,.009,.034],np.float32)
+    rgb+=(polvo*(.45+filamento*.75))[...,None]*p[0]
+    rgb+=(gas*(.23+filamento*.7))[...,None]*p[1]
+    rgb+=(disco*.9+np.exp(-r*19)*.95+np.maximum(0,a-.73)*filamento*1.8)[...,None]*p[2]
+    rgb*=np.clip(1.08-.24*(X*X+Y*Y),.55,1.0)[...,None]
+    fondo=Image.fromarray(np.uint8(np.clip(rgb,0,1)**.88*255),'RGB').convert('RGBA')
+    estrellas=Image.new('RGBA',(W,H));draw=ImageDraw.Draw(estrellas)
+    for _ in range(int(rng.integers(400,850))):
+        x,y=int(rng.integers(W)),int(rng.integers(H));q=int(rng.integers(60,235));rr=float(rng.choice([.4,.6,.8,1.1,1.8],p=[.29,.32,.25,.11,.03]));col=(220,234,255,q)
+        draw.ellipse((x-rr,y-rr,x+rr,y+rr),fill=col)
+        if rr>1.5:
+            draw.line((x-5,y,x+5,y),fill=(255,224,179,120));draw.line((x,y-5,x,y+5),fill=(255,224,179,120))
+    fondo=Image.alpha_composite(fondo,estrellas)
+    # Planeta con volumen, iluminación direccional y textura de nubes.
+    for _ in range(int(rng.integers(1,4))):
+        px=float(rng.choice([rng.uniform(35,210),rng.uniform(740,925)]));py=float(rng.uniform(45,405));ra=float(rng.uniform(24,94))
+        dx=(xx-px)/ra;dy=(yy-py)/ra;rr=dx*dx+dy*dy;z=np.sqrt(np.maximum(0,1-rr));l=np.clip(-.66*dx-.52*dy+.55*z,0,1)
+        tonos=(.11+.74*l[...,None])*p[1]+(.10+.26*a[...,None])*p[0]
+        tonos*= (.55+.6*b[...,None]);tonos+=np.exp(-np.abs(rr-1)*21)[...,None]*p[2]*.30
+        alpha=np.clip((1-rr)*45,0,1)
+        planeta=np.dstack((np.clip(tonos,0,1), alpha));fondo=Image.alpha_composite(fondo,Image.fromarray(np.uint8(planeta*255),'RGBA'))
+    fondo=fondo.convert('RGB').resize((1920,1080),Image.Resampling.LANCZOS)
+    with Image.open(io.BytesIO(base64.b64decode(_NUMEN_ARTE[indice]))) as raw:
+        sujeto=raw.convert('RGB').resize((1920,1080),Image.Resampling.LANCZOS)
+    # Desplazar ligeramente la composición completa sin estirar el rostro.
+    mask=Image.new('L',(480,270));md=ImageDraw.Draw(mask);md.polygon(_NUMEN_SILUETAS[indice],fill=255)
+    mask=mask.filter(ImageFilter.GaussianBlur(5)).resize((1920,1080),Image.Resampling.LANCZOS)
+    sujeto=ImageEnhance.Color(sujeto).enhance(float(rng.uniform(.90,1.13)))
+    if rng.random()<.5:
+        sujeto=ImageOps.mirror(sujeto);mask=ImageOps.mirror(mask)
+    # Pequeña parte de la nebulosa original conserva una transición fotográfica natural.
+    cosmos=fondo.copy() if devolver_fondo else None
+    fondo=Image.blend(fondo,sujeto,.16)
+    retrato=Image.composite(sujeto,fondo,mask)
+    return (retrato,cosmos) if devolver_fondo else retrato
+
+
+def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None):
     """Universo procedural + misma androide, con pose y encuadre variables por episodio."""
     import base64, io
     import numpy as np
@@ -6492,7 +6558,7 @@ def _ent_fotos(d, carpeta):
         indice=previo['indice'] if previo else seed%len(_NUMEN_ARTE)
         pose_id=previo.get('pose_id', (seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS)) if isinstance(previo,dict) else (seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS)
         if seed in semillas:continue
-        im,cosmos=_numen_composicion(seed,indice,pose_id=pose_id,devolver_fondo=True)
+        im,cosmos=(_numen_composicion_v1(seed,indice,devolver_fondo=True) if previo and previo.get('version','cosmos-v1')=='cosmos-v1' else _numen_composicion(seed,indice,pose_id=pose_id,devolver_fondo=True))
         buffer=io.BytesIO();im.save(buffer,format='JPEG',quality=93,optimize=True);datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
         with Image.open(io.BytesIO(datos)) as jpeg:ph=_numen_huella(jpeg)
@@ -6503,7 +6569,7 @@ def _ent_fotos(d, carpeta):
         path=carpeta/'imagen_00.jpg';path.write_bytes(datos)
         cosmos.save(carpeta/'cta_cosmos.png',format='PNG')
         pose_nombre=NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre']
-        registro[eid]={'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':'cosmos-v2','tema':d.get('titulo','')}
+        registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':'cosmos-v2','tema':d.get('titulo','')}
         _cola_json(NUMEN_REGISTRO_VISUAL,registro)
         c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':'banco original integrado + variación procedural por episodio','atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
         mapa=[str(path)]*len(d['escenas'])
@@ -6947,7 +7013,7 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 4.3 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 4.3.1 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
@@ -7191,7 +7257,7 @@ def _ent_test():
             with Image.open(cosmos) as im:assert im.size==(1920,1080)
             from PIL import ImageChops
             reserva=_ent_read(root/'registro.json',{})[d['id']]
-            retrato,limpio=_numen_composicion(reserva['seed'],reserva['indice'],True)
+            retrato,limpio=_numen_composicion(reserva['seed'],reserva['indice'],devolver_fondo=True,pose_id=reserva['pose_id'])
             with Image.open(cosmos) as im:assert ImageChops.difference(im.convert('RGB'),limpio).getbbox() is None
             assert ImageChops.difference(retrato,limpio).getbbox() is not None
             with Image.open(crear_cta_base(root/'uno')) as im:assert im.size==(1920,1080)
