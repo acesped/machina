@@ -132,6 +132,6 @@
     "start": 44442504,
     "end": 44442504,
     "size": 44442504,
-    "error": "Facebook ID 1750942740080634 recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir."
+    "error": "Meta HTTP 401, código 190, subcódigo 463 (GET me)"
   }
 }
