@@ -6,5 +6,13 @@
     "phash": "0ccc0d39867ef4e2",
     "version": "cosmos-v1",
     "tema": "La sombra de la certeza y el aliento de la libertad"
+  },
+  "ent-2ceb8044e3d92b9e": {
+    "seed": 4607530484454301871,
+    "indice": 3,
+    "sha256": "486a84df5d269fc8b82e4f9f5ae59ca012e079dcc0ac5b19dd1748fd3b575812",
+    "phash": "e33efb3840701cc6",
+    "version": "cosmos-v1",
+    "tema": "El valor del olvido en la construcción de la identidad"
   }
 }

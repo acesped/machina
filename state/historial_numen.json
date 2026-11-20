@@ -78,5 +78,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=RtmoNJkbmUA",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-605f55f821f5875f/La sombra de la certeza y el aliento de la libertad.mp4"
+  },
+  {
+    "episodio": "ent-2ceb8044e3d92b9e",
+    "caso": "ent-2ceb8044e3d92b9e",
+    "titulo": "El valor del olvido en la construcción de la identidad",
+    "fecha_utc": "2026-11-20T00:35:08.448232+00:00",
+    "youtube_id": "Hq_qy5A51ys",
+    "youtube_url": "https://www.youtube.com/watch?v=Hq_qy5A51ys",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-2ceb8044e3d92b9e/El valor del olvido en la construcción de la identidad.mp4"
   }
 ]
