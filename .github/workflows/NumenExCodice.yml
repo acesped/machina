@@ -7,6 +7,14 @@ on:
         description: 'Solo verificar identidad del token de Facebook, sin publicar'
         type: boolean
         default: false
+      recuperar_facebook_id:
+        description: 'ID anterior Facebook a recuperar (vacío = normal)'
+        type: string
+        default: ''
+      confirmar_ausencia_facebook:
+        description: 'Confirmo que el video anterior NO aparece en Business Suite; acepto riesgo residual de duplicado'
+        type: boolean
+        default: false
       solo_guion:
         description: 'Generar o recuperar reflexion sin publicar'
         type: boolean
@@ -29,6 +37,7 @@ jobs:
       PYTHONUNBUFFERED: '1'
       PUBLICAR_EN_YOUTUBE: 'true'
       PUBLICAR_EN_FACEBOOK: 'true'
+      NUMEN_MAX_PENDIENTES: ${{ vars.NUMEN_MAX_PENDIENTES || '20' }}
       FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
       FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
       FB_GRAPH_VERSION: ${{ vars.FB_GRAPH_VERSION || 'v27.0' }}
@@ -153,10 +162,17 @@ jobs:
         id: producir
         timeout-minutes: 55
         env:
+          FB_RECUPERAR_ID: ${{ inputs.recuperar_facebook_id }}
+          FB_CONFIRMAR_AUSENCIA: ${{ inputs.confirmar_ausencia_facebook && 'true' || 'false' }}
           SOLO_VERIFICAR_FACEBOOK: ${{ inputs.verificar_facebook && 'true' || 'false' }}
         run: |
           if [ "$SOLO_VERIFICAR_FACEBOOK" = true ]; then
             python numenexcodice.py --check-facebook
+          elif [ -n "$FB_RECUPERAR_ID" ] || [ "$FB_CONFIRMAR_AUSENCIA" = true ]; then
+            if [ "$AERO_IA_DRY_RUN" = true ]; then
+              echo 'No combinar recuperación con solo_guion'; exit 1
+            fi
+            python numenexcodice.py --recover-facebook
           else
             python numenexcodice.py
           fi
