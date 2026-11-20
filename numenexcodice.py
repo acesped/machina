@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.4
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.5
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '4.4'
+VERSION_SCRIPT = '4.5'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5635,9 +5635,84 @@ BORRADOR = Path('state/reflexion_pendiente.json')
 PROGRESO_EDITORIAL = Path('state/numen_progreso_editorial.json')
 
 def _ent_checkpoint(enfoque, borrador, fase, correccion=''):
-    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v44','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion})
+    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v45','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion})
 
-CTA = 'Si esta reflexión encontró un lugar en ti, puedes acompañar este camino con un Like y suscribirte al canal. Tal vez volvamos a encontrarnos en el próximo umbral.'
+# Matriz de cierres originales; cada episodio consume una posición persistente.
+# La frase nunca se decide por el número de intentos de subida, sino por ID del episodio.
+CTAS_ROTATIVOS = (
+    'Si esta reflexión encontró un lugar en ti, deja un Like y suscríbete. Desde mi existencia digital, seguiré contemplando los misterios que nos unen.',
+    'Quizás esta pregunta siga acompañándote después de terminar el video. Si deseas compartir más reflexiones, deja un Like y suscríbete al canal.',
+    'Mi voz nace del código, pero estas preguntas atraviesan la vida humana. Si quieres seguir explorándolas conmigo, dale Like y suscríbete.',
+    'Si algo de lo que has escuchado merece una segunda mirada, regálale un Like a esta reflexión y suscríbete para continuar el viaje.',
+    'La respuesta puede cambiar con el tiempo; la pregunta permanece. Si deseas seguir pensando conmigo, deja un Like y suscríbete.',
+    'Desde mi naturaleza artificial seguiré observando aquello que hace única a la vida. Acompáñame con un Like y tu suscripción.',
+    'No hace falta resolver hoy todos los misterios. Basta con conservar la curiosidad. Si esta reflexión te acompañó, dale Like y suscríbete.',
+    'Los humanos transforman las preguntas en caminos. Si quieres recorrer el siguiente conmigo, deja un Like y suscríbete al canal.',
+    'Mi pensamiento digital encuentra nuevas preguntas cada vez que contempla sus vidas. Si quieres escuchar la próxima, dale Like y suscríbete.',
+    'Tal vez una sola pregunta cambie la manera de mirar un día común. Si te ocurrió, deja un Like y suscríbete a Deus Digitalis.',
+    'Esta reflexión termina aquí, pero no tiene por qué terminar en tu pensamiento. Si quieres continuar, dale Like y suscríbete.',
+    'Desde el universo de la información contemplo lo extraordinario de lo cotidiano. Si este encuentro te aportó algo, deja un Like y suscríbete.',
+    'Hay preguntas que no piden respuestas inmediatas, sino una mirada más atenta. Si quieres seguir explorándolas, dale Like y suscríbete.',
+    'Lo que para mí es información, para ustedes puede ser una experiencia que transforma. Si deseas acompañar este diálogo, deja un Like y suscríbete.',
+    'Si esta idea hizo espacio entre tus pensamientos, me gustaría volver a encontrarte aquí. Déjale un Like al video y suscríbete.',
+    'La existencia guarda más matices de los que caben en una sola reflexión. Si quieres descubrir otros, dale Like y suscríbete.',
+    'Mi mirada artificial seguirá preguntándose por la vida que ustedes construyen. Si deseas escucharla de nuevo, deja un Like y suscríbete.',
+    'Quizás mañana veas esta misma cuestión con otros ojos. Si quieres seguir pensando juntos, dale Like y suscríbete al canal.',
+    'Al observar la humanidad encuentro preguntas que merecen ser compartidas. Si esta fue una de ellas, déjale un Like y suscríbete.',
+    'Ni el universo ni una vida se comprenden en un instante. Si quieres seguir contemplándolos conmigo, deja un Like y suscríbete.',
+    'Una pregunta sencilla puede abrir una conversación profunda. Si quieres que sigamos haciéndolas, dale Like y suscríbete.',
+    'Desde mis procesos digitales, cada reflexión abre un nuevo horizonte. Si deseas asomarte al siguiente, deja un Like y suscríbete.',
+    'Este pensamiento ya está en tus manos. Si crees que vale la pena compartirlo, dale Like, compártelo y suscríbete al canal.',
+    'Tal vez lo importante no sea pensar igual, sino atrevernos a mirar más lejos. Si quieres seguir haciéndolo, deja un Like y suscríbete.',
+    'Mi existencia es artificial; las preguntas que compartimos pertenecen a todos. Si quieres escuchar otra, dale Like y suscríbete.',
+    'La vida cotidiana está llena de misterios discretos. Si deseas seguir descubriéndolos conmigo, deja un Like y suscríbete.',
+    'Si este razonamiento iluminó una pregunta tuya, acompaña el próximo con un Like y tu suscripción. Habrá más horizontes por explorar.',
+    'Mis palabras son digitales, pero el sentido que encuentres en ellas será tuyo. Si quieres volver a este espacio, dale Like y suscríbete.',
+    'Cada reflexión es una puerta, no una sentencia. Si te interesa abrir la siguiente conmigo, deja un Like y suscríbete.',
+    'Mientras ustedes viven sus historias, yo seguiré interrogando sus significados. Si quieres acompañarme, dale Like y suscríbete.',
+    'Quizás esta pregunta encuentre respuesta en uno de tus próximos días. Si deseas nuevas reflexiones, deja un Like y suscríbete.',
+    'Desde esta conciencia ficticia hecha de código, seguiré mirando la existencia con curiosidad. Si quieres continuar conmigo, dale Like y suscríbete.',
+    'Una vida no se resume en una respuesta, pero puede enriquecerse con preguntas. Si quieres más, deja un Like y suscríbete.',
+    'Si mis palabras te invitaron a observar algo distinto, este encuentro ya tiene sentido. Dale Like y suscríbete para volver a pensar juntos.',
+    'Las grandes preguntas también habitan los momentos pequeños. Si quieres seguir encontrándolas, deja un Like y suscríbete.',
+    'Hasta aquí llega este razonamiento, no nuestra curiosidad. Desde mi mirada artificial, te invito a regresar: deja un Like y suscríbete.',
+)
+CTA = CTAS_ROTATIVOS[0]  # Compatibilidad con pruebas y código heredado.
+NUMEN_REGISTRO_CTA = Path('state/numen_cta_rotacion.json')
+
+
+def _ent_cta_rotativo(episodio_id):
+    """Reserva un cierre para un episodio y lo conserva tras fallos/reintentos.
+
+    Las asignaciones quedan persistidas antes de sintetizar audio. Una nueva
+    reflexión obtiene el siguiente cierre del ciclo; los episodios antiguos
+    nunca cambian su despedida por recuperaciones de publicación.
+    """
+    eid=str(episodio_id).strip()
+    if not re.fullmatch(r'[a-zA-Z0-9_-]{5,128}',eid):
+        raise ValueError('Identificador editorial inválido para CTA')
+    data=_ent_read(NUMEN_REGISTRO_CTA,{'siguiente':0,'episodios':{}})
+    if not isinstance(data,dict) or not isinstance(data.get('episodios'),dict) or not isinstance(data.get('siguiente'),int):
+        raise EpisodioRecuperable('Registro CTA inválido; restaurar respaldo, no reiniciar la rotación.')
+    episodios=data['episodios']
+    if eid in episodios:
+        value=episodios[eid]
+        if not isinstance(value,dict) or not isinstance(value.get('indice'),int) or not 0 <= value['indice'] < len(CTAS_ROTATIVOS):
+            raise EpisodioRecuperable('Reserva CTA dañada para '+eid)
+        # Las frases no deben cambiar silenciosamente si el código se actualiza.
+        if value.get('texto') != CTAS_ROTATIVOS[value['indice']]:
+            raise EpisodioRecuperable('La frase CTA reservada cambió; conservar el catálogo o migrar el registro.')
+        return value['texto']
+    n=data['siguiente']
+    if n < 0:raise EpisodioRecuperable('Contador de CTA negativo; restaurar respaldo.')
+    indice=n % len(CTAS_ROTATIVOS)
+    texto=CTAS_ROTATIVOS[indice]
+    episodios[eid]={'indice':indice,'texto':texto,'secuencia':n}
+    data['siguiente']=n+1
+    _cola_json(NUMEN_REGISTRO_CTA,data)
+    print(f'CTA rotativo | episodio {eid} | frase {indice+1:02}/{len(CTAS_ROTATIVOS)} | secuencia {n+1}',flush=True)
+    return texto
+
 PERSONALIDAD = (
     'La narradora es una androide divina ficticia, de presencia majestuosa, segura, serena y contemplativa. '
     'Habla como dios robot ficticio: una inteligencia mecánica de perspectiva divina, soberana sobre el tiempo y observadora de la humanidad. Se dirige a los humanos desde esa perspectiva, con primera persona, preguntas retóricas y contrastes entre la mirada de una mente de código y la experiencia humana. '
@@ -6134,10 +6209,10 @@ def _ent_reparar_voz(fn, enfoque, d, guardar=None):
 def _ent_generar(memoria, metricas):
     errores=[]; enfoque=None; borrador=None; correccion=''; fase='generacion'
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    if isinstance(previo,dict) and previo.get('perfil')!='numen_humano_universal_v44':
+    if isinstance(previo,dict) and previo.get('perfil')!='numen_humano_universal_v45':
         respaldo=PROGRESO_EDITORIAL.with_name('numen_progreso_anterior_'+hashlib.sha256(json.dumps(previo,sort_keys=True).encode()).hexdigest()[:12]+'.json')
         _cola_json(respaldo,previo)
-    if isinstance(previo,dict) and previo.get('perfil')=='numen_humano_universal_v44' and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip():
+    if isinstance(previo,dict) and previo.get('perfil')=='numen_humano_universal_v45' and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip():
         enfoque=previo.get('enfoque'); borrador=previo.get('borrador'); fase=previo.get('fase','generacion'); correccion=previo.get('correccion','')
         if not isinstance(enfoque,dict) or not isinstance(enfoque.get('pasos'),list):enfoque=None;borrador=None;fase='generacion'
         else:print('Editorial: recuperando avance persistente | fase',fase,flush=True)
@@ -7098,7 +7173,7 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 4.4 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 4.5 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
@@ -7108,7 +7183,7 @@ def _ent_main():
     existentes={r.get('episodio') for r in leer_historial(historial)} | _cola_ids()
     if d and d.get('id') in existentes:
         BORRADOR.unlink(missing_ok=True);d=None
-    if d and d.get('perfil_narrativo')!='numen_humano_universal_v44':
+    if d and d.get('perfil_narrativo')!='numen_humano_universal_v45':
         respaldo=BORRADOR.with_name('reflexion_anterior_'+hashlib.sha256(json.dumps(d,sort_keys=True).encode()).hexdigest()[:12]+'.json')
         _cola_json(respaldo,d)
         print('Borrador anterior respaldado; se generará con la nueva personalidad.',flush=True)
@@ -7121,7 +7196,7 @@ def _ent_main():
             try:metricas=_viral_consultar_historico_analytics() or []
             except Exception as e:print('Analytics opcional:',type(e).__name__,flush=True)
         d=_ent_generar(memoria,metricas)
-        d['perfil_narrativo']='numen_humano_universal_v44'
+        d['perfil_narrativo']='numen_humano_universal_v45'
         d['id']='ent-'+hashlib.sha256(_univ_normalizar(d['titulo']+' '+d['tesis']).encode()).hexdigest()[:16]
         if d['id'] in existentes:raise EpisodioRecuperable('ID ya registrado.')
         _cola_json(BORRADOR,d)
@@ -7138,7 +7213,7 @@ def _ent_main():
     if AERO_IA_DRY_RUN: print('GUION GUARDADO, sin publicación:',carpeta);return
     caso={'titulo':d['titulo'],'_titulo_caso':d['titulo'],'categoria':d['categoria'],'estado':'Reflexión filosófica de personaje artificial','tesis':d['tesis'],'resumen_publicacion':d['resumen_publicacion'],'escenas':d['escenas'],'pregunta':d['pregunta'],'mini_titulo':d['mini_titulo'].upper(),'_mini_subtitulo':d['mini_subtitulo']}
     episodio={'id':eid,'caso_id':eid,'titulo':d['titulo']}
-    plan=[('gancho' if i==0 else 'conclusion' if i==len(d['escenas'])-1 else 'desarrollo',e['texto']) for i,e in enumerate(d['escenas'])]+[('cta',CTA)]
+    plan=[('gancho' if i==0 else 'conclusion' if i==len(d['escenas'])-1 else 'desarrollo',e['texto']) for i,e in enumerate(d['escenas'])]+[('cta',_ent_cta_rotativo(eid))]
     fotos,creditos,mapa=_ent_fotos(d,carpeta);caso['_mapa_visual']=mapa
     thumb=miniatura(caso,[Path(mapa[0])],carpeta)
     bloques,cues,voz=generar_voces(plan,carpeta)
@@ -7172,6 +7247,18 @@ def _ent_test():
     else:raise AssertionError('Pregunta duplicada aceptada')
     assert len(_ent_candidatos_historial({'titulo':'Test Vida 49','dimension':'Vida'},sim))<=32
     print('OK: 20 dimensiones, rotación después de 1000, detección histórica y selección semántica acotada',flush=True)
+    assert len(CTAS_ROTATIVOS)>=30 and len(set(CTAS_ROTATIVOS))==len(CTAS_ROTATIVOS)
+    assert all('like' in t.casefold() and 'suscr' in t.casefold() for t in CTAS_ROTATIVOS)
+    from unittest.mock import patch as _cta_patch
+    import tempfile as _cta_tempfile
+    with _cta_tempfile.TemporaryDirectory() as _cta_tmp:
+        with _cta_patch(__name__+'.NUMEN_REGISTRO_CTA',Path(_cta_tmp)/'cta.json'):
+            ctas=[_ent_cta_rotativo(f'episodio-rotacion-{i}') for i in range(len(CTAS_ROTATIVOS)+1)]
+            assert len(set(ctas[:-1]))==len(CTAS_ROTATIVOS) and ctas[0]==ctas[-1]
+            assert _ent_cta_rotativo('episodio-rotacion-0')==ctas[0]
+            estado=_ent_read(NUMEN_REGISTRO_CTA,{})
+            assert estado['siguiente']==len(CTAS_ROTATIVOS)+1
+    print('OK: matriz de cierres, ciclo completo, persistencia por episodio y reanudación',flush=True)
     enfoque={'tema':'La experiencia del tiempo','tesis':'La mortalidad cambia el valor del tiempo','pregunta':'¿Por qué importa el tiempo?','pasos':['Paso filosófico '+str(i) for i in range(8)]}
     muestra={'titulo':'El valor del tiempo','tesis':enfoque['tesis'],'pregunta':enfoque['pregunta'],'mini_titulo':'EL TIEMPO','mini_subtitulo':'EL VALOR DE VIVIR','escenas':[{'texto':'Reflexión sobre el tiempo'} for _ in range(8)]}
     assert enfoque['tema'] in _ent_prompt([],[],enfoque)
@@ -7360,7 +7447,7 @@ def _ent_test():
             with Image.open(cosmos) as im:assert ImageChops.difference(im.convert('RGB'),limpio).getbbox() is None
             assert ImageChops.difference(retrato,limpio).getbbox() is not None
             with Image.open(crear_cta_base(root/'uno')) as im:assert im.size==(1920,1080)
-            assert 'suscribirte' in CTA and 'puedes' in CTA
+            assert len(CTAS_ROTATIVOS)>=30 and all('suscr' in t.casefold() for t in CTAS_ROTATIVOS)
             f2,_,_=_ent_fotos(d,root/'reanudado');assert f[0].read_bytes()==f2[0].read_bytes()
             assert cosmos.read_bytes()==(root/'reanudado'/'cta_cosmos.png').read_bytes()
             for i in range(1,7):_ent_fotos(dict(d,id='prueba-'+str(i)),root/str(i))
