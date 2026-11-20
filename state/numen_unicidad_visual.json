@@ -38,5 +38,13 @@
     "phash": "f326e6b8907a1cc2",
     "version": "cosmos-v1",
     "tema": "La verdadera libertad en la incertidumbre"
+  },
+  "ent-f4dda2fe9c656fbd": {
+    "seed": 7522798596586566548,
+    "indice": 0,
+    "sha256": "d6ed2229f6ac3c51dc3f39bebb41d7fb1bc996fb34109898d705739f9291febf",
+    "phash": "5846c77cd603b49a",
+    "version": "cosmos-v1",
+    "tema": "La elección que forja tu ser"
   }
 }
