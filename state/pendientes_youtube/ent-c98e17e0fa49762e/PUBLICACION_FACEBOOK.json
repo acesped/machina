@@ -5,5 +5,5 @@
   "start": 44442504,
   "end": 44442504,
   "size": 44442504,
-  "error": "Meta HTTP 401, código 190, subcódigo 463 (GET me)"
+  "error": "El token Meta no corresponde a la fanpage. Usa un Page Access Token."
 }
