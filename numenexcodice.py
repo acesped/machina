@@ -5624,7 +5624,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.3'
+VERSION_SCRIPT = '3.4'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5661,8 +5661,17 @@ def _ent_control_voz(t):
     normal=_univ_normalizar(t)
     if re.search(r'\bnumen\s*ex\s*codice\b',normal):
         raise ValueError('Autorreferencia al nombre de la entidad')
-    if re.search(r'\b(?:soy (?:una? )?(?:robot|androide|maquina|inteligencia artificial|diosa?|entidad)|me proclamo|me autoproclamo|no (?:puedo|logro|consigo|alcanzo a) (?:comprender|entender|sentir|saber|experimentar|explicar)|no (?:comprendo|entiendo|se|siento)|mi (?:incapacidad|debilidad|ignorancia|limitacion)|mis (?:limitaciones|debilidades)|necesito (?:aprender|comprender))\b',normal):
-        raise ValueError('Autopresentación o debilidad de la narradora')
+    patron=r'\b(?:soy (?:una? )?(?:robot|androide|maquina|inteligencia artificial|diosa?|entidad)|me proclamo|me autoproclamo|no (?:puedo|logro|consigo|alcanzo a) (?:comprender|entender|sentir|saber|experimentar|explicar)|no (?:comprendo|entiendo|se|siento)|mi (?:incapacidad|debilidad|ignorancia|limitacion)|mis (?:limitaciones|debilidades)|necesito (?:aprender|comprender))\b'
+    # Conservar puntuación y acentos hasta aislar citas humanas explícitas.
+    # «No sé» atribuido a un humano no equivale a una confesión de la entidad.
+    citas=re.compile(r'(?i)(?:\b(?:una persona|un humano|alguien|un niño|una niña|un amigo|una amiga|el ser humano|los humanos|tú|ustedes)\s+(?:dice[n]?|dijo|piensa[n]?|pensó|pregunta[n]?|preguntó|responde[n]?|respondió|se dice[n]?|se pregunta[n]?)\s*[:,]?\s*)(?:«[^»]+»|“[^”]+”|"[^"]+")')
+    sin_citas=citas.sub(' cita humana ',t)
+    # Evitar confundir «no se puede» impersonal con «no sé» personal.
+    sin_citas=re.sub(r'\bno se\b',' impersonal ',sin_citas,flags=re.IGNORECASE)
+    coincidencia=re.search(patron,_univ_normalizar(sin_citas))
+    if coincidencia:
+        raise ValueError('Autopresentación o debilidad de la narradora: '+repr(coincidencia.group(0)))
+
 
 
 def _ent_read(path, default):
@@ -5844,6 +5853,43 @@ def _ent_ampliar(fn, enfoque, d):
     return d
 
 
+def _ent_tiene_defecto_voz(d):
+    if not isinstance(d,dict):return False
+    for e in d.get('escenas',[]) if isinstance(d.get('escenas'),list) else []:
+        if isinstance(e,dict) and isinstance(e.get('texto'),str):
+            try:_ent_control_voz(e['texto'])
+            except ValueError:return True
+    return False
+
+
+def _ent_reparar_voz(fn, enfoque, d):
+    """Repara solo escenas rechazadas, conservando las demás y el tema."""
+    escenas=d.get('escenas') if isinstance(d,dict) else None
+    if not isinstance(escenas,list) or len(escenas)!=len(enfoque['pasos']):return d
+    for i,e in enumerate(escenas):
+        if not isinstance(e,dict) or not isinstance(e.get('texto'),str):continue
+        actual=e['texto']
+        try:_ent_control_voz(actual)
+        except ValueError as exc: motivo=str(exc)
+        else:continue
+        print(f'Reparación localizada | escena {i+1} | {motivo}',flush=True)
+        datos={'tema':enfoque['tema'],'tesis':enfoque['tesis'],'paso':enfoque['pasos'][i], 'texto':actual,'motivo':motivo,'anterior':escenas[i-1].get('texto','') if i else '', 'siguiente':escenas[i+1].get('texto','') if i+1<len(escenas) else ''}
+        for intento in range(2):
+            r=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+'\nReescribe exclusivamente el párrafo indicado. Elimina la expresión rechazada; atribuye la incertidumbre a los humanos, nunca a la narradora. No uses citas para eludir el filtro. Conserva la idea, el rol narrativo y una extensión similar. Devuelve SOLO JSON con clave texto. Datos: '+json.dumps(datos,ensure_ascii=False))
+            t=r.get('texto','') if isinstance(r,dict) else ''
+            if not isinstance(t,str) or not t.strip():continue
+            t=t.strip()
+            try:_ent_control_voz(t)
+            except ValueError as exc:
+                datos['motivo']=str(exc);continue
+            if len(t.split())<max(1,len(actual.split())//2) or len(t.split())>max(180,len(actual.split())*2):continue
+            if any(_univ_normalizar(t)==_univ_normalizar(x.get('texto','')) for j,x in enumerate(escenas) if j!=i and isinstance(x,dict)):continue
+            e['texto']=t;d.pop('resumen_publicacion',None)
+            print(f'Escena {i+1} reparada; resto del guion intacto.',flush=True);break
+        else:raise ValueError(f'Escena {i+1}: {motivo}. Reparación localizada pendiente.')
+    return d
+
+
 def _ent_generar(memoria, metricas):
     errores=[]; enfoque=None; borrador=None; correccion=''
     for motor in _aero_motores_guion():
@@ -5852,6 +5898,12 @@ def _ent_generar(memoria, metricas):
             try:
                 if enfoque is None:enfoque=_ent_enfoque(fn,memoria)
                 print('NumenExCodice | tema único:',enfoque['tema'],motor,intento+1,flush=True)
+                if borrador is not None and _ent_tiene_defecto_voz(borrador):
+                    _ent_reparar_voz(fn,enfoque,borrador)
+                    _ent_validar_pre_ampliacion = sum(len(e.get('texto','').split()) for e in borrador.get('escenas',[]) if isinstance(e,dict))
+                    if _ent_validar_pre_ampliacion<450: _ent_ampliar(fn,enfoque,borrador)
+                    d=_ent_validar(borrador,memoria)
+                    return _ent_validar_coherencia(fn,enfoque,d)
                 if borrador is not None and correccion.startswith('Extensión total:') and sum(len(e.get('texto','').split()) for e in borrador.get('escenas',[]) if isinstance(e,dict))<450:
                     d=_ent_validar(_ent_ampliar(fn,enfoque,borrador),memoria)
                     return _ent_validar_coherencia(fn,enfoque,d)
@@ -5860,6 +5912,7 @@ def _ent_generar(memoria, metricas):
                 else:
                     candidato=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+'\nCorrige este borrador sin cambiar el tema, conservando las escenas correctas. Devuelve el objeto JSON completo con todas sus claves; exactamente '+str(len(enfoque['pasos']))+' escenas. Objetivo total 650–750 palabras, rango obligatorio 450–1200. Cada segmento puede tener longitud diferente; conserva aperturas breves y amplía solo el desarrollo si falta extensión. Actualiza resumen_publicacion: 45–90 palabras sobre el argumento del guion, sin hablar de producción ni del canal. No expreses debilidades de la narradora. Defecto: '+correccion+'\nEnfoque: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador: '+json.dumps(borrador,ensure_ascii=False))
                 borrador=_ent_normalizar_borrador(candidato,enfoque)
+                _ent_reparar_voz(fn,enfoque,borrador)
                 d=_ent_validar(borrador,memoria)
                 return _ent_validar_coherencia(fn,enfoque,d)
             except Exception as e:
@@ -6366,6 +6419,19 @@ def _ent_test():
     _ent_ampliar(ampliar_simulado,enfoque,breve)
     assert breve['escenas'][0]['texto']==originales[0] and breve['escenas'][-1]['texto']==originales[-1]
     assert _ent_validar(breve,[]) is breve
+    _ent_control_voz('No se puede regresar al pasado. Los humanos buscan respuestas.')
+    _ent_control_voz('Una persona dice: «No sé qué decidir».')
+    for mal in ('No sé qué hacer.', 'No entiendo el futuro.', 'No puedo comprender la existencia.'):
+        try:_ent_control_voz(mal)
+        except ValueError:pass
+        else:raise AssertionError('Confesión no detectada: '+mal)
+    defecto=copy.deepcopy(d); defecto['escenas'][3]['texto']='No entiendo el futuro.'
+    anteriores=[e['texto'] for e in defecto['escenas']]
+    assert _ent_tiene_defecto_voz(defecto)
+    _ent_reparar_voz(lambda p:{'texto':'Desde mi mirada de código, contemplo cómo los humanos eligen su futuro.'},enfoque,defecto)
+    assert not _ent_tiene_defecto_voz(defecto)
+    assert all(e['texto']==anteriores[i] for i,e in enumerate(defecto['escenas']) if i!=3)
+    print('OK: filtro contextual y reparación exclusiva de escena 4')
     print('OK: ampliación acumulativa simulada con apertura y cierre intactos')
     print('OK: extensión flexible por segmento y límites globales')
     assert _ent_validar(dict(d,titulo='El perdón'),[])['titulo']=='El perdón'
