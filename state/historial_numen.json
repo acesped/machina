@@ -58,5 +58,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=fWWa867YTCY",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-da6ca3c0eb9c1def/El latido del cosmos en la carne humana.mp4"
+  },
+  {
+    "episodio": "ent-32d418d82575acef",
+    "caso": "ent-32d418d82575acef",
+    "titulo": "El peso del instante en la corriente del tiempo",
+    "fecha_utc": "2026-11-20T00:00:17.822157+00:00",
+    "youtube_id": "26En3inCE2s",
+    "youtube_url": "https://www.youtube.com/watch?v=26En3inCE2s",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-32d418d82575acef/El peso del instante en la corriente del tiempo.mp4"
   }
 ]
