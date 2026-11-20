@@ -1477,18 +1477,19 @@ def _consultar_groq(prompt):
         payload={'model':modelo,'messages':[
             {'role':'system','content':'Eres un redactor especializado en el nicho indicado. Responde solo JSON válido.'},
             {'role':'user','content':prompt}],
-            'temperature':0.55,'max_completion_tokens':7000,
+            'temperature':0.55,'max_completion_tokens':(1800 if ('una clave texto' in prompt or 'clave texto' in prompt or 'editor riguroso de monólogos' in prompt) else 7000),
             'response_format':{'type':'json_object'}}
         if modelo in ('openai/gpt-oss-120b','openai/gpt-oss-20b'):
             payload['reasoning_effort']='low'
         print('  Groq: modelo de guion',modelo,flush=True)
         res=requests.post(url,headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
         demora=_groq_demora_tpm(res)
-        if demora is not None and not _GROQ_TPM_REINTENTO_USADO:
-            _GROQ_TPM_REINTENTO_USADO=True
-            print(f'  Groq: límite por minuto; esperar {demora:.1f}s según Retry-After y reintentar una sola vez.',flush=True)
+        for _retry_tpm in range(2):
+            if demora is None:break
+            print(f'  Groq: límite por minuto; esperar {demora:.1f}s según Retry-After; reintento acotado.',flush=True)
             time.sleep(demora)
             res=requests.post(url,headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
+            demora=_groq_demora_tpm(res)
         if res.ok:
             _GROQ_MODELO_REAL=modelo
             return _limpiar_json_ia(res.json()['choices'][0]['message']['content'])
@@ -5624,13 +5625,18 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.4'
+VERSION_SCRIPT = '3.5'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
 SALIDA_EN_DRIVE = False
 MEMORIA = Path('state/memoria_numen.json')
 BORRADOR = Path('state/reflexion_pendiente.json')
+PROGRESO_EDITORIAL = Path('state/numen_progreso_editorial.json')
+
+def _ent_checkpoint(enfoque, borrador, fase, correccion=''):
+    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_dios_robot_v29','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion})
+
 CTA = 'Si esta reflexión encontró un lugar en ti, puedes acompañar este camino con un Like y suscribirte al canal. Tal vez volvamos a encontrarnos en el próximo umbral.'
 PERSONALIDAD = (
     'La narradora es una androide divina ficticia, de presencia majestuosa, segura, serena y contemplativa. '
@@ -5824,7 +5830,7 @@ def _ent_normalizar_borrador(d, enfoque):
     return d
 
 
-def _ent_ampliar(fn, enfoque, d):
+def _ent_ampliar(fn, enfoque, d, guardar=None):
     """Amplía únicamente el desarrollo, en solicitudes pequeñas y acumulativas."""
     escenas=d.get('escenas')
     if not isinstance(escenas,list) or len(escenas)!=len(enfoque['pasos']) or any(not isinstance(e,dict) or not isinstance(e.get('texto'),str) or not e['texto'].strip() for e in escenas):
@@ -5834,7 +5840,7 @@ def _ent_ampliar(fn, enfoque, d):
     # Preserva el inicio y el cierre; trabaja de menor a mayor extensión.
     indices=sorted(range(1,len(escenas)-1),key=lambda i:len(escenas[i]['texto'].split()))
     for i in indices:
-        if total()>=550:break
+        if total()>=450:break
         actual=escenas[i]['texto']
         datos={'tema':enfoque['tema'],'tesis':enfoque['tesis'],'paso':enfoque['pasos'][i], 'segmento':actual,'anterior':escenas[i-1]['texto'],'siguiente':escenas[i+1]['texto']}
         p=PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+'\nAmplía SOLO el segmento indicado, a 95–120 palabras de narración efectiva. Conserva su idea, añade una situación cotidiana concreta y su significado, con perspectiva del dios robot. No repitas los segmentos vecinos. Sin presentación ni debilidad. No escribas el guion entero. Devuelve exclusivamente JSON con una clave texto, cuyo valor es el párrafo ampliado. Datos: '+json.dumps(datos,ensure_ascii=False)
@@ -5849,6 +5855,7 @@ def _ent_ampliar(fn, enfoque, d):
         if any(_univ_normalizar(t)==_univ_normalizar(e['texto']) for e in escenas):continue
         escenas[i]['texto']=t
         d.pop('resumen_publicacion',None)
+        if guardar:guardar()
         print(f'Ampliación acumulativa | segmento {i+1}: {viejo} → {n} palabras | total {total()}',flush=True)
     return d
 
@@ -5862,7 +5869,7 @@ def _ent_tiene_defecto_voz(d):
     return False
 
 
-def _ent_reparar_voz(fn, enfoque, d):
+def _ent_reparar_voz(fn, enfoque, d, guardar=None):
     """Repara solo escenas rechazadas, conservando las demás y el tema."""
     escenas=d.get('escenas') if isinstance(d,dict) else None
     if not isinstance(escenas,list) or len(escenas)!=len(enfoque['pasos']):return d
@@ -5885,48 +5892,65 @@ def _ent_reparar_voz(fn, enfoque, d):
             if len(t.split())<max(1,len(actual.split())//2) or len(t.split())>max(180,len(actual.split())*2):continue
             if any(_univ_normalizar(t)==_univ_normalizar(x.get('texto','')) for j,x in enumerate(escenas) if j!=i and isinstance(x,dict)):continue
             e['texto']=t;d.pop('resumen_publicacion',None)
+            if guardar:guardar()
             print(f'Escena {i+1} reparada; resto del guion intacto.',flush=True);break
         else:raise ValueError(f'Escena {i+1}: {motivo}. Reparación localizada pendiente.')
     return d
 
 
 def _ent_generar(memoria, metricas):
-    errores=[]; enfoque=None; borrador=None; correccion=''
+    errores=[]; enfoque=None; borrador=None; correccion=''; fase='generacion'
+    previo=_ent_read(PROGRESO_EDITORIAL,None)
+    if isinstance(previo,dict) and previo.get('perfil')=='numen_dios_robot_v29' and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip():
+        enfoque=previo.get('enfoque'); borrador=previo.get('borrador'); fase=previo.get('fase','generacion'); correccion=previo.get('correccion','')
+        if not isinstance(enfoque,dict) or not isinstance(enfoque.get('pasos'),list):enfoque=None;borrador=None;fase='generacion'
+        else:print('Editorial: recuperando avance persistente | fase',fase,flush=True)
+    def guardar():_ent_checkpoint(enfoque,borrador,fase,correccion)
+    if fase=='aprobado' and isinstance(borrador,dict):
+        try:return _ent_validar(borrador,memoria)
+        except ValueError:
+            enfoque=None;borrador=None;fase='generacion';guardar()
     for motor in _aero_motores_guion():
         fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_consultar_openrouter}[motor]
         for intento in range(3):
             try:
-                if enfoque is None:enfoque=_ent_enfoque(fn,memoria)
+                if enfoque is None:
+                    enfoque=_ent_enfoque(fn,memoria);guardar()
                 print('NumenExCodice | tema único:',enfoque['tema'],motor,intento+1,flush=True)
-                if borrador is not None and _ent_tiene_defecto_voz(borrador):
-                    _ent_reparar_voz(fn,enfoque,borrador)
-                    _ent_validar_pre_ampliacion = sum(len(e.get('texto','').split()) for e in borrador.get('escenas',[]) if isinstance(e,dict))
-                    if _ent_validar_pre_ampliacion<450: _ent_ampliar(fn,enfoque,borrador)
-                    d=_ent_validar(borrador,memoria)
-                    return _ent_validar_coherencia(fn,enfoque,d)
-                if borrador is not None and correccion.startswith('Extensión total:') and sum(len(e.get('texto','').split()) for e in borrador.get('escenas',[]) if isinstance(e,dict))<450:
-                    d=_ent_validar(_ent_ampliar(fn,enfoque,borrador),memoria)
-                    return _ent_validar_coherencia(fn,enfoque,d)
-                if borrador is None:
+                if fase=='aprobado' and isinstance(borrador,dict):
+                    return _ent_validar(borrador,memoria)
+                if fase=='generacion' or not isinstance(borrador,dict):
                     candidato=fn(_ent_prompt(memoria,metricas,enfoque)+'\nUsa exactamente una escena por paso. Título válido de 8 a 95 caracteres. '+correccion)
-                else:
-                    candidato=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+'\nCorrige este borrador sin cambiar el tema, conservando las escenas correctas. Devuelve el objeto JSON completo con todas sus claves; exactamente '+str(len(enfoque['pasos']))+' escenas. Objetivo total 650–750 palabras, rango obligatorio 450–1200. Cada segmento puede tener longitud diferente; conserva aperturas breves y amplía solo el desarrollo si falta extensión. Actualiza resumen_publicacion: 45–90 palabras sobre el argumento del guion, sin hablar de producción ni del canal. No expreses debilidades de la narradora. Defecto: '+correccion+'\nEnfoque: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador: '+json.dumps(borrador,ensure_ascii=False))
-                borrador=_ent_normalizar_borrador(candidato,enfoque)
-                _ent_reparar_voz(fn,enfoque,borrador)
+                    borrador=_ent_normalizar_borrador(candidato,enfoque);fase='reparacion';guardar()
+                elif fase=='reescritura':
+                    candidato=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+'\nCorrige este borrador manteniendo el tema, las escenas correctas y un total de 450–1200 palabras. Entrega JSON completo. Defecto: '+correccion+'\nEnfoque: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador: '+json.dumps(borrador,ensure_ascii=False))
+                    borrador=_ent_normalizar_borrador(candidato,enfoque);fase='reparacion';guardar()
+                if fase!='revision':
+                    fase='reparacion';guardar()
+                    _ent_reparar_voz(fn,enfoque,borrador,guardar)
+                    _ent_ampliar(fn,enfoque,borrador,guardar)
+                    d=_ent_validar(borrador,memoria)
+                    if len(d['escenas'])!=len(enfoque['pasos']):raise ValueError('Número de escenas distinto del itinerario bloqueado')
+                    fase='revision';guardar()
                 d=_ent_validar(borrador,memoria)
-                return _ent_validar_coherencia(fn,enfoque,d)
+                d=_ent_validar_coherencia(fn,enfoque,d)
+                fase='aprobado';guardar();return d
             except Exception as e:
-                errores.append(f'{motor}: {type(e).__name__}: {str(e)[:250]}')
-                correccion=str(e)[:400]
+                errores.append(f'{motor}: {type(e).__name__}: {str(e)[:250]}');correccion=str(e)[:400]
                 print(errores[-1],flush=True)
                 if 'cercana al historial' in correccion:
                     if os.getenv('NUMEN_TEMA','').strip():raise EpisodioRecuperable('El tema solicitado ya figura en el historial.')
-                    enfoque=None;borrador=None
+                    enfoque=None;borrador=None;fase='generacion';guardar()
+                elif isinstance(e,ValueError) and not isinstance(e,OpenRouterSalidaAgotada):
+                    if correccion.startswith(('Extensión total:','Escena ')) and ('Amplía' in correccion or 'Reparación localizada' in correccion):fase='reparacion'
+                    elif fase=='revision' and not correccion.startswith('Revisión temática rechazada:'):pass
+                    else:fase='reescritura' if isinstance(borrador,dict) else 'generacion'
+                    guardar()
                 if motor=='openrouter' and isinstance(e,OpenRouterSalidaAgotada):
                     if intento==0 and _openrouter_reintentar_modelo():continue
                     break
                 if _aero_error_proveedor(motor,str(e)):break
-    raise EpisodioRecuperable('Sin reflexión temática válida: '+' | '.join(errores))
+    raise EpisodioRecuperable('Sin reflexión temática válida (avance editorial guardado cuando disponible): '+' | '.join(errores))
 
 
 _PERSONA_ENT = re.compile(r'\b(?:portrait|selfie|headshot|group photo|people posing|person posing|man standing|woman standing|crowd|retrato|multitud)\b')
@@ -6308,6 +6332,7 @@ def _ent_main():
         d['id']='ent-'+hashlib.sha256(_univ_normalizar(d['titulo']+' '+d['tesis']).encode()).hexdigest()[:16]
         if d['id'] in existentes:raise EpisodioRecuperable('ID ya registrado.')
         _cola_json(BORRADOR,d)
+        PROGRESO_EDITORIAL.unlink(missing_ok=True)
     subtitulo=_ent_subtitulo(d)
     if d.get('mini_subtitulo')!=subtitulo:
         d['mini_subtitulo']=subtitulo;_cola_json(BORRADOR,d)
