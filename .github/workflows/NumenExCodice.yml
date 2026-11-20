@@ -15,6 +15,10 @@ on:
         description: 'Confirmo que el video anterior NO aparece en Business Suite; acepto riesgo residual de duplicado'
         type: boolean
         default: false
+      solo_cola:
+        description: 'Publicar videos pendientes sin generar una nueva reflexion'
+        type: boolean
+        default: false
       solo_guion:
         description: 'Generar o recuperar reflexion sin publicar'
         type: boolean
@@ -165,6 +169,7 @@ jobs:
           FB_RECUPERAR_ID: ${{ inputs.recuperar_facebook_id }}
           FB_CONFIRMAR_AUSENCIA: ${{ inputs.confirmar_ausencia_facebook && 'true' || 'false' }}
           SOLO_VERIFICAR_FACEBOOK: ${{ inputs.verificar_facebook && 'true' || 'false' }}
+          SOLO_COLA: ${{ inputs.solo_cola && 'true' || 'false' }}
         run: |
           if [ "$SOLO_VERIFICAR_FACEBOOK" = true ]; then
             python numenexcodice.py --check-facebook
@@ -173,6 +178,11 @@ jobs:
               echo 'No combinar recuperación con solo_guion'; exit 1
             fi
             python numenexcodice.py --recover-facebook
+          elif [ "$SOLO_COLA" = true ]; then
+            if [ "$AERO_IA_DRY_RUN" = true ]; then
+              echo 'No combinar solo_cola con solo_guion'; exit 1
+            fi
+            python numenexcodice.py --publish-queue
           else
             python numenexcodice.py
           fi
