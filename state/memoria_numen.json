@@ -1,3 +1,10 @@
 [
-  { }
+  {},
+  {
+    "id": "ent-6edd29eae012c266",
+    "titulo": "El tiempo como tejido de la vida",
+    "tesis": "El tiempo no es solo una medida externa; es la estructura que da sentido a cada momento que vivimos.",
+    "categoria": "Filosofía cotidiana",
+    "pregunta": "¿Cómo influye la percepción del tiempo en nuestras decisiones cotidianas?"
+  }
 ]

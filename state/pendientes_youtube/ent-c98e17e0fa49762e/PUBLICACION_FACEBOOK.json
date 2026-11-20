@@ -5,5 +5,7 @@
   "start": 44442504,
   "end": 44442504,
   "size": 44442504,
-  "error": "Facebook ID 1750942740080634 recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir."
+  "error": "Facebook ID 1750942740080634 recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir.",
+  "fallos_consecutivos": 1,
+  "reintentar_desde": 1795202868.8780553
 }
