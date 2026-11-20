@@ -5142,7 +5142,7 @@ def _cola_intento(p,d,historial):
     d.update(estado='publicado',youtube_id=vid);_cola_json(p,d)
     # Keep manifest; remove duplicate media only when original still exists locally.
     original=Path(d.get('carpeta_original',''))
-    if original.is_dir() and original.resolve()!=p.parent.resolve() and all((original/d[k]).is_file() for k in ('video','miniatura','srt')):
+    if not d.get('facebook') and not globals().get('PUBLICAR_EN_FACEBOOK',False) and original.is_dir() and original.resolve()!=p.parent.resolve() and all((original/d[k]).is_file() for k in ('video','miniatura','srt')):
         for archivo in ('PUBLICACION_YOUTUBE.json','DECLARACION_IA_YOUTUBE.json','MINIATURA_YOUTUBE.json','PRIVACIDAD_YOUTUBE.json'):
             if (p.parent/archivo).is_file():shutil.copy2(p.parent/archivo,original/archivo)
         datos=leer_historial(historial)
@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '3.5'
+VERSION_SCRIPT = '3.6'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6278,7 +6278,7 @@ def descripcion_youtube(caso,fuentes,creditos):
     for c in creditos:
         if not _credito_recurso_visual_valido(c):raise RuntimeError('Licencia visual no admitida: '+c.get('titulo',''))
     resumen=_ent_resumen_publicacion(caso)
-    texto='\n\n'.join(x for x in (caso['titulo'],resumen,caso.get('pregunta',''),'#NumenExCodice #Reflexiones #Filosofia #Humanidad') if x)
+    texto='\n\n'.join(x for x in (caso['titulo'],resumen,caso.get('pregunta',''),'#DeusDigitalis #Reflexiones #Filosofia #Humanidad') if x)
     lineas=[]
     for c in creditos:
         licencia=c.get('licencia',''); url=c.get('licencia_url','')
@@ -6300,18 +6300,188 @@ def _numen_bloques_visuales(bloques):
     return [dict(narr[0],tipo='desarrollo',inicio=inicio,duracion=fin-inicio)]+cta
 
 
+# ==================== Deus Digitalis: publicación multiplataforma ====================
+PUBLICAR_EN_FACEBOOK = os.getenv('PUBLICAR_EN_FACEBOOK','false').lower() == 'true'
+FB_PAGE_ID = os.getenv('FB_PAGE_ID','').strip()
+FB_PAGE_ESPERADA = '1977015905919254'
+FB_GRAPH_VERSION = os.getenv('FB_GRAPH_VERSION','v27.0').strip()
+YT_CANAL_ESPERADO = 'UCi4tudsRQNAH9XekPYm_CJQ'
+
+class FacebookAPIError(RuntimeError):
+    def __init__(self,http,code=0,subcode=0):
+        super().__init__(f'Meta HTTP {http}, código {code}, subcódigo {subcode}')
+        self.http=http; self.code=code
+
+
+def _fb_peticion(method, path, *, video=False, data=None, files=None, params=None):
+    import requests
+    token=os.getenv('FB_PAGE_ACCESS_TOKEN','').strip()
+    if not token:raise RuntimeError('Falta FB_PAGE_ACCESS_TOKEN')
+    if not re.fullmatch(r'v[0-9]+\.0',FB_GRAPH_VERSION):raise RuntimeError('FB_GRAPH_VERSION inválida')
+    host='graph-video.facebook.com' if video else 'graph.facebook.com'
+    try:
+        r=requests.request(method,f'https://{host}/{FB_GRAPH_VERSION}/{path}',headers={'Authorization':'Bearer '+token},data=data,files=files,params=params,timeout=(15,180),allow_redirects=False)
+    except requests.RequestException as exc:
+        # Nunca imprimir URL, respuesta cruda ni credenciales.
+        raise RuntimeError('Conexión Meta: '+type(exc).__name__) from None
+    try:j=r.json()
+    except ValueError:raise FacebookAPIError(r.status_code) from None
+    if not isinstance(j,dict):raise FacebookAPIError(r.status_code)
+    if not 200<=r.status_code<300 or 'error' in j:
+        e=j.get('error') or {};raise FacebookAPIError(r.status_code,e.get('code',0),e.get('error_subcode',0))
+    return j
+
+
+def _fb_validar():
+    if FB_PAGE_ID!=FB_PAGE_ESPERADA:raise RuntimeError('FB_PAGE_ID debe corresponder a la fanpage autorizada '+FB_PAGE_ESPERADA)
+    j=_fb_peticion('GET','me',params={'fields':'id,name'})
+    if str(j.get('id'))!=FB_PAGE_ID:raise RuntimeError('El token Meta no corresponde a la fanpage. Usa un Page Access Token.')
+    print('Fanpage verificada:',j.get('name',''),FB_PAGE_ID,flush=True)
+    return FB_PAGE_ID
+
+
+def validar_canal_youtube(servicio):
+    # El nombre y el @ pueden cambiar; el ID del canal no.
+    items=servicio.channels().list(part='id,snippet',mine=True).execute().get('items',[])
+    objetivo=next((i for i in items if i.get('id')==YT_CANAL_ESPERADO),None)
+    if not objetivo:raise RuntimeError('OAuth YouTube no corresponde al canal esperado '+YT_CANAL_ESPERADO)
+    print('Canal OAuth verificado:',objetivo.get('snippet',{}).get('title',''),YT_CANAL_ESPERADO,flush=True)
+    return YT_CANAL_ESPERADO
+
+
+def _fb_guardar(p,d,**updates):
+    f=d.setdefault('facebook',{});f.update(updates)
+    _cola_json(p,d)
+    # Registro legible, sin token ni datos de autenticación.
+    _cola_json(p.parent/'PUBLICACION_FACEBOOK.json',{k:v for k,v in f.items() if k not in ('session_id',)})
+    return f
+
+
+def _fb_verificar_video(p,d):
+    f=d['facebook']; vid=f.get('video_id')
+    if not vid:raise RuntimeError('Facebook: falta ID para reconciliar; revisar la página')
+    try:j=_fb_peticion('GET',vid,params={'fields':'id,status,permalink_url,published'})
+    except FacebookAPIError as exc:
+        if exc.code!=100:raise
+        j=_fb_peticion('GET',vid,params={'fields':'id,status'})
+    st=j.get('status') or {};pub=st.get('publishing_phase') or {}
+    if st.get('video_status')=='error' or (isinstance(pub,dict) and pub.get('status') in ('error','failed')):
+        _fb_guardar(p,d,estado='revision_manual');raise RuntimeError('Meta notificó fallo de publicación; revisar Business Suite')
+    if j.get('published') is not False and (pub.get('status')=='complete' or (st.get('video_status')=='ready' and (j.get('published') is True or f.get('estado')=='enviado'))):
+        _fb_guardar(p,d,estado='publicado',permalink=j.get('permalink_url',''),confirmado_utc=datetime.now(timezone.utc).isoformat(),visibilidad_externa_verificada=False,error='')
+        print('Facebook: publicación confirmada',vid,flush=True);return vid
+    raise PublicacionAplazada('Facebook conserva ID '+vid+'; publicación/procesamiento aún sin confirmar. No se vuelve a subir.')
+
+
+def _fb_intento(p,d):
+    f=d.setdefault('facebook',{'estado':'listo','page_id':FB_PAGE_ESPERADA})
+    if f.get('page_id')!=FB_PAGE_ESPERADA:raise RuntimeError('Fanpage de la cola no coincide')
+    estado=f.get('estado','listo')
+    if estado=='publicado':return f['video_id']
+    _fb_validar()
+    if estado in ('enviado','fin_incierto'):
+        return _fb_verificar_video(p,d)
+    if estado=='revision_manual':raise PublicacionAplazada('Facebook requiere revisión manual; no duplicar')
+    path=p.parent/d['video'];size=path.stat().st_size
+    if not size:raise RuntimeError('MP4 vacío')
+    endpoint=FB_PAGE_ID+'/videos'
+    if estado=='listo':
+        # START no publica; puede dejar una sesión huérfana si se pierde la respuesta.
+        j=_fb_peticion('POST',endpoint,video=True,data={'upload_phase':'start','file_size':str(size)})
+        f=_fb_guardar(p,d,estado='transferencia',session_id=str(j['upload_session_id']),video_id=str(j['video_id']),start=int(j['start_offset']),end=int(j['end_offset']),size=size,error='')
+    if f.get('estado')!='transferencia' or f.get('size')!=size:raise RuntimeError('Estado o tamaño de carga Facebook inválido')
+    with path.open('rb') as stream:
+        while f['start']!=f['end']:
+            a,b=f['start'],f['end']
+            if not 0<=a<b<=size:raise RuntimeError('Offsets Meta inválidos')
+            stream.seek(a);chunk=stream.read(b-a)
+            if len(chunk)!=b-a:raise RuntimeError('MP4 incompleto')
+            j=_fb_peticion('POST',endpoint,video=True,data={'upload_phase':'transfer','upload_session_id':f['session_id'],'start_offset':str(a)},files={'video_file_chunk':('chunk.mp4',chunk,'application/octet-stream')})
+            na,nb=int(j['start_offset']),int(j['end_offset'])
+            if na<=a or not 0<=na<=nb<=size:raise RuntimeError('Meta no avanzó la transferencia; revisar sesión')
+            f=_fb_guardar(p,d,start=na,end=nb)
+            print(f'Facebook: transferencia {na*100//size}%',flush=True)
+    if f['start']!=size:raise RuntimeError('Transferencia Facebook incompleta')
+    descripcion=descripcion_youtube(d['caso'],d['fuentes'],d['creditos'])
+    # Persistir antes del único FINISH que puede crear la publicación pública.
+    f=_fb_guardar(p,d,estado='fin_incierto')
+    j=_fb_peticion('POST',endpoint,video=True,data={'upload_phase':'finish','upload_session_id':f['session_id'],'title':d['caso']['titulo'],'description':descripcion,'published':'true','no_story':'false','hide_from_newsfeed':'false'})
+    if j.get('success') is not True:raise PublicacionAplazada('Facebook: respuesta FINISH no confirmada; reconciliar ID antes de repetir')
+    _fb_guardar(p,d,estado='enviado',error='')
+    for intento in range(4):
+        try:return _fb_verificar_video(p,d)
+        except PublicacionAplazada:
+            if intento==3:raise
+            time.sleep(10)
+
+
+def _dual_pendiente(d):
+    return (PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado') or (PUBLICAR_EN_FACEBOOK and ('facebook' in d or d.get('estado')!='publicado') and d.get('facebook',{}).get('estado')!='publicado')
+
+
+def _dual_intento(p,d,historial):
+    # Registrar intención Facebook ANTES de YouTube, para conservar el MP4.
+    if PUBLICAR_EN_FACEBOOK and 'facebook' not in d and d.get('estado')!='publicado':
+        _fb_guardar(p,d,estado='listo',page_id=FB_PAGE_ESPERADA)
+    if PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado':
+        try:
+            if d.get('estado') in ('listo','limite') and time.time()>=d.get('reintentar_desde',0):
+                validar_canal_youtube(youtube_servicio())
+            _cola_intento(p,d,historial)
+        except Exception as exc:print('YouTube pendiente:',str(exc)[:400],flush=True)
+    if PUBLICAR_EN_FACEBOOK and 'facebook' in d and d['facebook'].get('estado')!='publicado':
+        try:_fb_intento(p,d)
+        except Exception as exc:
+            # Los errores de transporte Meta se sanitizan en _fb_peticion.
+            _fb_guardar(p,d,error=str(exc)[:400]);print('Facebook pendiente:',str(exc)[:400],flush=True)
+    print('Estado plataformas | YouTube:',d.get('estado'),'| Facebook:',d.get('facebook',{}).get('estado','no solicitado'),flush=True)
+    if not _dual_pendiente(d):
+        # No borrar medios mientras haya una plataforma pendiente, aunque esté deshabilitada.
+        if d.get('estado')=='publicado' and d.get('facebook',{}).get('estado','publicado')=='publicado':
+            original=Path(d.get('carpeta_original',''))
+            if original.resolve()!=p.parent.resolve() and all((original/d[k]).is_file() for k in ('video','miniatura','srt')):
+                for archivo in ('PUBLICACION_FACEBOOK.json','PUBLICACION_YOUTUBE.json','DECLARACION_IA_YOUTUBE.json','MINIATURA_YOUTUBE.json','PRIVACIDAD_YOUTUBE.json'):
+                    if (p.parent/archivo).is_file():shutil.copy2(p.parent/archivo,original/archivo)
+                datos=leer_historial(historial)
+                for r in datos:
+                    if r.get('episodio')==d['episodio']['id']:r['salida']=str(original/d['video'])
+                _cola_json(historial,datos)
+            for k in ('video','miniatura','srt'):(p.parent/d[k]).unlink(missing_ok=True)
+        return True
+    return False
+
+
+def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,historial):
+    p=AERO_COLA_DIR/episodio['id']/'pendiente.json'
+    if p.exists():raise PublicacionAplazada('Ya existe la cola '+str(p))
+    p.parent.mkdir(parents=True,exist_ok=True)
+    for archivo in (video,thumb,srt):shutil.copy2(archivo,p.parent/Path(archivo).name)
+    d={'estado':'listo','nicho':NICHO,'canal_id':YT_CANAL_ESPERADO,'carpeta_original':str(carpeta),'privacidad':YOUTUBE_PRIVACY,'video':Path(video).name,'miniatura':Path(thumb).name,'srt':Path(srt).name,'caso':{k:v for k,v in caso.items() if not k.startswith('_') or k in ('_titulo_caso','_universal')},'episodio':episodio,'fuentes':fuentes,'creditos':creditos,'creado_utc':datetime.now(timezone.utc).isoformat()}
+    if PUBLICAR_EN_FACEBOOK:d['facebook']={'estado':'listo','page_id':FB_PAGE_ESPERADA}
+    _cola_json(p,d)
+    return _dual_intento(p,d,historial)
+
+
+def _dual_reanudar(historial):
+    activos=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
+    if not activos:return False
+    if any(d.get('nicho')!=NICHO for _,d in activos):raise PublicacionAplazada('Cola de otro nicho; revisar manualmente')
+    # Prioridad al episodio pendiente; una ejecución no crea otro video.
+    p,d=activos[0]; completo=_dual_intento(p,d,historial)
+    _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'cola_procesada' if completo else 'publicacion_aplazada','episodio':d['episodio']['id'],'youtube':d.get('estado'),'facebook':d.get('facebook',{}).get('estado')})
+    return True
+
+
 def _ent_main():
     if not (OPENROUTER_MODELO=='openrouter/free' or OPENROUTER_MODELO.endswith(':free')):
         raise ValueError('NumenExCodice solo admite modelos gratuitos en OpenRouter.')
-    print('NumenExCodice | motor reflexivo autónomo',VERSION_SCRIPT,flush=True)
+    print('Deus Digitalis | motor reflexivo autónomo',VERSION_SCRIPT,flush=True)
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     asegurar_dependencias()
-    if PUBLICAR_EN_YOUTUBE and not AERO_IA_DRY_RUN:
-        if not YOUTUBE_CANAL.startswith('@'):raise RuntimeError('Configura NUMEN_YOUTUBE_HANDLE con el @handle del NUEVO canal.')
-        validar_canal_youtube(youtube_servicio())
-        prev=_cola_reanudar(historial,1)
-        if prev is not None:return
+    if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
+        if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
+        if _dual_reanudar(historial):return
     # A draft survives image/provider failures; keep ID stable for duplicate protection.
     d=_ent_read(BORRADOR,None)
     existentes={r.get('episodio') for r in leer_historial(historial)} | _cola_ids()
@@ -6360,7 +6530,9 @@ def _ent_main():
     # Store editorial memory before publication so the next episode can reason from it.
     if eid not in {m.get('id') for m in memoria}:
         memoria.append({k:d[k] for k in ('id','titulo','tesis','categoria','pregunta')});_cola_json(MEMORIA,memoria)
-    if PUBLICAR_EN_YOUTUBE:_cola_publicar(video,thumb,srt,caso,episodio,[],creditos,carpeta,historial)
+    if PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK:
+        completo=_dual_publicar(video,thumb,srt,caso,episodio,[],creditos,carpeta,historial)
+        _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'publicado' if completo else 'publicacion_aplazada','episodio':eid})
     else:anotar_historial(historial,{'episodio':eid,'titulo':d['titulo'],'salida':str(video),'estado':'generado_local'})
     BORRADOR.unlink(missing_ok=True)
     print('NumenExCodice | video terminado:',video,flush=True)
@@ -6544,9 +6716,8 @@ def _ent_test():
 if __name__=='__main__':
     if '--self-test' in sys.argv:_ent_test()
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
-    elif '--check-auth' in sys.argv:
-        if not YOUTUBE_CANAL.startswith('@'):raise RuntimeError('Configura NUMEN_YOUTUBE_HANDLE.')
-        validar_canal_youtube(youtube_servicio())
+    elif '--check-facebook' in sys.argv:_fb_validar()
+    elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
     elif '--analytics' in sys.argv:_viral_consultar_historico_analytics()
     else:
         try:_ent_main()
