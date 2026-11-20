@@ -123,5 +123,15 @@
   ],
   "creado_utc": "2026-11-20T01:14:34.848714+00:00",
   "reintentar_desde": 1795223675.559004,
-  "error": "uploadLimitExceeded"
+  "error": "uploadLimitExceeded",
+  "facebook": {
+    "estado": "enviado",
+    "page_id": "1977015905919254",
+    "session_id": "1750942746747300",
+    "video_id": "1750942740080634",
+    "start": 44442504,
+    "end": 44442504,
+    "size": 44442504,
+    "error": "Facebook conserva ID 1750942740080634; publicación/procesamiento aún sin confirmar. No se vuelve a subir."
+  }
 }
