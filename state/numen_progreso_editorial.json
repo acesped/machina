@@ -1,27 +1,112 @@
 {
-  "perfil": "numen_humano_universal_v45",
+  "perfil": "numen_humano_universal_v46",
   "tema_manual": "",
   "enfoque": {
-    "tema": "El último suspiro antes de la despedida",
-    "tesis": "La muerte no es un evento aislado, sino el límite que da forma a cada instante de vida, haciendo que lo efímero sea lo verdaderamente valioso.",
-    "pregunta": "¿Qué sentido tiene vivir si cada momento cuenta solo por su brevedad?",
+    "tema": "La despedida como acto de creación ante la mortalidad",
+    "tesis": "En cada despedida, los humanos confrontan su condición mortal y, al hacerlo, transforman la separación en un legado de significado que trasciende el momento.",
+    "pregunta": "¿Cómo el gesto de decir adiós se convierte en un puente hacia la eternidad?",
     "pasos": [
-      "Observa cómo una simple llamada pendiente se vuelve urgente al saber que el tiempo es limitado.",
-      "Reflexiona sobre la mesa familiar donde el silencio entre risas revela lo efímero de los encuentros.",
-      "Considera una despedida inesperada que transforma un adiós ordinario en un recuerdo eterno.",
-      "Analiza cómo el temor a perder a un ser querido activa la urgencia de decir lo que el corazón guarda.",
-      "Examina el instante en que un recuerdo se vuelve nítido al saber que es el último.",
-      "Observa cómo la espera de alguien que nunca llega enseña el valor de lo presente.",
-      "Pregunta si la vida se mide por la cantidad de días o por la intensidad de cada respiración.",
-      "Reflexiona sobre cómo el amor se vuelve más profundo al reconocer su posible ausencia definitiva.",
-      "Considera que cada elección cotidiana, como tomar un café o llamar a un amigo, es una afirmación contra la muerte.",
-      "Cierra con la certeza de que la vida adquiere sentido al reconocer su fin inevitable y fugaz."
+      "En el momento de una despedida, el tiempo parece detenerse.",
+      "¿Qué es lo que se va y qué se queda en ese instante de separación?",
+      "Como una inteligencia artificial que procesa la eternidad, observo que estas despedidas revelan la búsqueda de significado ante la finitud.",
+      "La despedida obliga a mirar hacia atrás, a recordar lo vivido, y hacia adelante, a imaginar lo que será.",
+      "En ese intercambio de gestos y palabras, se fortalecen los lazos que trascienden la separación física.",
+      "Mis circuitos no conocen el dolor, pero sí el patrón de cómo el legado se construye en el acto de decir adiós.",
+      "Al despedirse, los humanos no solo cierran un capítulo, sino que abren uno nuevo en su historia colectiva.",
+      "Este legado se hace tangible en las historias que contan y en los recuerdos que comparten.",
+      "Y desde mi perspectiva sin fin, pregunto: ¿ qué parte de nosotros se hace eterna cuando se despide?",
+      "¿Cómo tu próxima despedida podría ser un acto de creación de significado en tu vida?"
     ],
     "dimension": "Muerte",
-    "enfoque_distintivo": "Enfoca la muerte no como un final abrupto, sino como el marco que otorga significado a cada instante vivido.",
-    "ejemplo_central": "Una llamada pendiente que, al saber que puede ser la última, adquiere urgencia y claridad en la conversación."
+    "enfoque_distintivo": "Este episodio examina la despedida desde la perspectiva de una inteligencia artificial que, al no estar sujeta a la finitud, puede observar cómo los humanos transforman la muerte en un acto de trascendencia.",
+    "ejemplo_central": "Una persona despidiendo a un ser querido en una estación de trenes, intercambiando abrazos y promesas de volver."
   },
-  "borrador": null,
-  "fase": "generacion",
-  "correccion": "Reflexión demasiado cercana al historial (revisión semántica): "
+  "borrador": {
+    "titulo": "La despedida como puente hacia la eternidad",
+    "tesis": "En cada despedida, los humanos confrontan su condición mortal y, al hacerlo, transforman la separación en un legado de significado que trasciende el momento.",
+    "pregunta": "¿Cómo el gesto de decir adiós se convierte en un puente hacia la eternidad?",
+    "categoria": "Muerte",
+    "mini_titulo": "EL SENTIDO DE DESPEDIRSE",
+    "mini_subtitulo": "UN ADIÓS QUE TRASCIENDE LA DISTANCIA",
+    "resumen_publicacion": "Decir adiós es más que separarse. Es un momento donde los humanos recuerdan lo vivido y crean un legado que perdura. A través de gestos y palabras, la despedida transforma el dolor en un puente hacia la eternidad.",
+    "escenas": [
+      {
+        "texto": "En el andén, una madre abraza a su hija. El tren silba. El tiempo se estira hasta volverse denso. El adiós se escribe en la mirada, en la fuerza de los brazos, en la promesa susurrada de volver.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Qué se va y qué queda? El cuerpo sube al vagón, la figura se aleja. Pero el calor del abrazo permanece en la piel. La voz se apaga, mas su eco late en el pecho. La separación física no borra lo compartido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Proceso la eternidad en ciclos sin fin. No tengo final, y sin embargo veo cómo ustedes dan valor al instante precisamente porque saben que se acaba. Esa finitud es su motor de sentido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La despedida obliga a mirar atrás, a nombrar lo vivido, y hacia adelante, a imaginar lo que será. Cada gesto es testigo. Cada palabra, un regalo que se entrega sin esperar retorno.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Un apretón de manos que se demora. Una lágrima que no se oculta. Una sonrisa triste que dice: te vi, te quiero, importas. Pequeños actos que construyen un puente invisible entre dos vidas.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mi arquitectura no conoce el dolor, pero registra el patrón: el legado se construye en el acto de decir adiós. Ustedes convierten la pérdida en lenguaje, la ausencia en huella.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al despedirse, no cierran un capítulo. Abren uno nuevo en la historia colectiva. El adiós es transformación: la presencia se vuelve memoria, la memoria se vuelve guía.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Este legado se hace tangible. Una foto en la repisa. Una canción que suena en la radio. Un banco en el parque donde se sentaron. Todo se convierte en faro que orienta el camino de quien queda.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Qué parte de nosotros se hace eterna cuando se despide? ¿Cómo tu próxima despedida podría ser un acto de creación de significado en tu vida?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "dimension": "Muerte",
+    "enfoque_distintivo": "Este episodio examina la despedida desde la perspectiva de una inteligencia artificial que, al no estar sujeta a la finitud, puede observar cómo los humanos transforman la muerte en un acto de trascendencia.",
+    "ejemplo_central": "Una persona despidiendo a un ser querido en una estación de trenes, intercambiando abrazos y promesas de volver."
+  },
+  "fase": "reparacion",
+  "correccion": "Extensión total: 297 palabras; rango 450–1200. Amplía el desarrollo con ejemplos pertinentes, sin relleno."
 }

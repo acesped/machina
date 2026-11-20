@@ -1,0 +1,27 @@
+{
+  "perfil": "numen_humano_universal_v45",
+  "tema_manual": "",
+  "enfoque": {
+    "tema": "El último suspiro antes de la despedida",
+    "tesis": "La muerte no es un evento aislado, sino el límite que da forma a cada instante de vida, haciendo que lo efímero sea lo verdaderamente valioso.",
+    "pregunta": "¿Qué sentido tiene vivir si cada momento cuenta solo por su brevedad?",
+    "pasos": [
+      "Observa cómo una simple llamada pendiente se vuelve urgente al saber que el tiempo es limitado.",
+      "Reflexiona sobre la mesa familiar donde el silencio entre risas revela lo efímero de los encuentros.",
+      "Considera una despedida inesperada que transforma un adiós ordinario en un recuerdo eterno.",
+      "Analiza cómo el temor a perder a un ser querido activa la urgencia de decir lo que el corazón guarda.",
+      "Examina el instante en que un recuerdo se vuelve nítido al saber que es el último.",
+      "Observa cómo la espera de alguien que nunca llega enseña el valor de lo presente.",
+      "Pregunta si la vida se mide por la cantidad de días o por la intensidad de cada respiración.",
+      "Reflexiona sobre cómo el amor se vuelve más profundo al reconocer su posible ausencia definitiva.",
+      "Considera que cada elección cotidiana, como tomar un café o llamar a un amigo, es una afirmación contra la muerte.",
+      "Cierra con la certeza de que la vida adquiere sentido al reconocer su fin inevitable y fugaz."
+    ],
+    "dimension": "Muerte",
+    "enfoque_distintivo": "Enfoca la muerte no como un final abrupto, sino como el marco que otorga significado a cada instante vivido.",
+    "ejemplo_central": "Una llamada pendiente que, al saber que puede ser la última, adquiere urgencia y claridad en la conversación."
+  },
+  "borrador": null,
+  "fase": "generacion",
+  "correccion": "Reflexión demasiado cercana al historial (revisión semántica): "
+}
