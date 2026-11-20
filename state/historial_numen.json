@@ -68,5 +68,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=26En3inCE2s",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-32d418d82575acef/El peso del instante en la corriente del tiempo.mp4"
+  },
+  {
+    "episodio": "ent-605f55f821f5875f",
+    "caso": "ent-605f55f821f5875f",
+    "titulo": "La sombra de la certeza y el aliento de la libertad",
+    "fecha_utc": "2026-11-20T00:16:49.100142+00:00",
+    "youtube_id": "RtmoNJkbmUA",
+    "youtube_url": "https://www.youtube.com/watch?v=RtmoNJkbmUA",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-605f55f821f5875f/La sombra de la certeza y el aliento de la libertad.mp4"
   }
 ]
