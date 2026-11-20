@@ -123,10 +123,18 @@
   ],
   "creado_utc": "2026-11-20T19:02:47.544530+00:00",
   "facebook": {
-    "estado": "listo",
+    "estado": "publicado",
     "page_id": "1977015905919254",
     "fallos_consecutivos": 1,
     "reintentar_desde": 1795203629.7928107,
-    "error": "[Errno 2] No such file or directory: 'state/pendientes_youtube/ent-6edd29eae012c266/El tiempo como tejido de la vida.mp4'"
+    "error": "",
+    "session_id": "2209353460019572",
+    "video_id": "2209353456686239",
+    "start": 42784215,
+    "end": 42784215,
+    "size": 42784215,
+    "permalink": "/reel/2209353456686239/",
+    "confirmado_utc": "2026-11-20T20:02:21.904955+00:00",
+    "visibilidad_externa_verificada": false
   }
 }
