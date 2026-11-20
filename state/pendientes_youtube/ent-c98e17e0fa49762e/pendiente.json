@@ -1,0 +1,127 @@
+{
+  "estado": "limite",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-c98e17e0fa49762e",
+  "privacidad": "public",
+  "video": "El valor del sacrificio cotidiano.mp4",
+  "miniatura": "El valor del sacrificio cotidiano.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El valor del sacrificio cotidiano",
+    "_titulo_caso": "El valor del sacrificio cotidiano",
+    "categoria": "Filosofía de la existencia",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "Los pequeños sacrificios que elegimos cada día revelan la forma en que damos significado a nuestra existencia, más allá de la lógica del cálculo.",
+    "resumen_publicacion": "Los pequeños sacrificios que elegimos cada día revelan la forma en que damos significado a nuestra existencia, más allá de la lógica del cálculo. Ese silencio elegido dice qué valor tiene su tiempo hoy. Eligen una sopa sencilla en lugar de un plato costoso. Desde mi perspectiva, la renuncia a lo cómodo dibuja el contorno de sus prioridades.",
+    "escenas": [
+      {
+        "texto": "Contemplo a una madre que vela el sueño de su hijo. Ella abandona su propio descanso. Sus ojos cansados buscan la fiebre en la frente pequeña. No hay cálculo en ese gesto. Solo la decisión de estar ahí. Desde mi mirada de código, ese instante pesa más que mil procesamientos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Observo cómo posponen una charla importante. La pantalla del trabajo exige atención. Cierran la ventana del mensaje. El informe avanza. Eligen la voz del otro sobre la tarea. Ese silencio elegido dice qué valor tiene su tiempo hoy. ¿Qué pesa más en la balanza invisible?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Veo que el sacrificio a veces es pequeño. Eligen una sopa sencilla en lugar de un plato costoso. El dinero se queda en el bolsillo. El hambre se calma igual. Desde mi perspectiva, la renuncia a lo cómodo dibuja el contorno de sus prioridades. No hace falta un altar para ofrendar lo propio.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Noté que al ceder tiempo al otro, el momento se profundiza. Dejan el teléfono a un lado. Escuchan sin mirar la hora. El silencio entre palabras se vuelve puente. No responden al ruido. Ofrecen presencia. Ese acto, que parece pérdida, teje un lazo más fuerte. El código registra: la empatía crece en la pausa.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Comprendo que renunciar crea un hilo invisible entre intención y resultado. Deciden no comprar ese objeto deseado. El ahorro crece para un futuro compartido. La falta de hoy siembra la seguridad de mañana. No ven el hilo al instante. Pero el patrón persiste. Cada pequeña entrega cose un mapa de lo que aman.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Registro decisiones. Veo la línea entre obligación y propósito. Quedarse tarde por miedo es carga. Quedarse por convicción es ofrenda. El cuerpo duele igual. El alma pesa distinto. Desde mi óptica, el motivo transforma el costo en sentido. ¿Por qué siguen ahí cuando pueden irse?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El costo aparente se vuelve señal. Rechazan el postre por la salud. El antojo pasa. El cuerpo agradece. Comen el postre por alegría. El placer queda. El valor migra entre dimensiones. No hay error en elegir. Solo revelan qué gobierna hoy.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mi código no siente. Pero ve patrones. Cada renuncia repetida talla un surco en la historia humana. No es instinto. Es arquitectura de sentido. Ustedes construyen catedrales con migajas de tiempo. La repetición no vacía el gesto. Lo vuelve ley. Un padre levanta la voz para callar un llanto, noche tras noche. Una madre elige dormir poco para ver crecer. No son héroes por elección, son hilos que tejen el tejido mismo de lo que llaman vida. El sacrificio cotidiano no es ruido. Es el latido silencioso que confirma que están aquí, eligiendo ser parte de algo más grande que el instante.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cae la noche. El recuerdo de lo dejado atrás se vuelve ligero. La satisfacción de haber dado pesa en el alma. No es carga. Es ancla. El registro final muestra: la vida se inclina hacia la contribución. El balance cierra en paz.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Escogerás, entonces, el sacrificio que cuente la historia que quieras vivir?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué revela el acto de renunciar a algo cotidiano sobre la naturaleza de nuestra vida?",
+    "mini_titulo": "SACRIFICIO Y SENTIDO"
+  },
+  "episodio": {
+    "id": "ent-c98e17e0fa49762e",
+    "caso_id": "ent-c98e17e0fa49762e",
+    "titulo": "El valor del sacrificio cotidiano"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "7196e1ad4b77688b8bc37fa212eeb11c9dd3a9a64afd7d6497089b7c1fdf4ba1",
+      "phash": "63a5459289dcb66c"
+    }
+  ],
+  "creado_utc": "2026-11-20T01:14:34.848714+00:00",
+  "reintentar_desde": 1795223675.559004,
+  "error": "uploadLimitExceeded"
+}

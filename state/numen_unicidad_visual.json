@@ -14,5 +14,13 @@
     "phash": "e33efb3840701cc6",
     "version": "cosmos-v1",
     "tema": "El valor del olvido en la construcción de la identidad"
+  },
+  "ent-c98e17e0fa49762e": {
+    "seed": 13549856500093011703,
+    "indice": 3,
+    "sha256": "7196e1ad4b77688b8bc37fa212eeb11c9dd3a9a64afd7d6497089b7c1fdf4ba1",
+    "phash": "63a5459289dcb66c",
+    "version": "cosmos-v1",
+    "tema": "El valor del sacrificio cotidiano"
   }
 }
