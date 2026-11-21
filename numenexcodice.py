@@ -6695,11 +6695,21 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 5.9 | borrador viable guardado; revisión remota única',flush=True)
+                print('Editorial 5.9 | borrador viable guardado; revisión remota',flush=True)
             else:
                 print('Editorial 5.9 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
-            # Si esta API está saturada, el guion prevalidado seguirá disponible.
-            d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
+            # Una corrección localizada conserva el argumento del borrador.
+            try:
+                d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
+            except AutorreferenciasExcesivas as exc:
+                print(f'Editorial 5.9 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                corregido=_ent_reducir_refs_excesivas(
+                    fn,enfoque,pendiente,memoria,forzar=True,citas=exc.citas)
+                _ent_balance_eficiente(corregido)
+                pendiente=_ent_validar(corregido,memoria)
+                guardar()
+                print('Editorial 5.9 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
             d=_ent_validar(d,memoria)
             print('Editorial 5.9 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
