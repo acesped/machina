@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '5.2'
+VERSION_SCRIPT = '5.3'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45446,10 +45446,13 @@ def _fb_intento(p,d):
 
 
 
-# Sincronización maestra por episodio. En modo predeterminado no se crean nuevas
-# reflexiones hasta reconciliar la cola histórica. Cada nuevo MP4 se sube primero
-# a YouTube y luego a Facebook; Meta puede modificar la interfaz de visualización.
-NUMEN_SINCRONIZAR_EPISODIOS = os.getenv('NUMEN_SINCRONIZAR_EPISODIOS','true').strip().lower() == 'true'
+# Deus Digitalis 5.3: SOLO episodios NUEVOS en ejecuciones normales.
+# Los manifiestos antiguos permanecen intactos, pero jamás se reanudan ni
+# consumen cupo. El mismo MP4 nuevo se intenta enviar a AMBAS plataformas
+# durante la MISMA ejecución, independientemente de que una de ellas falle.
+# Las peticiones no son atómicas: cada API confirma su publicación por separado.
+NUMEN_SOLO_EPISODIOS_NUEVOS = True
+NUMEN_SINCRONIZAR_EPISODIOS = False
 
 def _numen_comprobar_mp4_16_9(path, d=None, guardar=None):
     """Comprueba el archivo maestro y su huella antes de cualquier nueva subida."""
@@ -45520,6 +45523,9 @@ def _medios_faltantes(p,d,keys=('video','miniatura','srt')):
 
 
 def _restaurar_medios_artifactos():
+    if NUMEN_SOLO_EPISODIOS_NUEVOS:
+        print('Modo solo nuevos: no se restauran MP4 de episodios históricos.',flush=True)
+        return
     # Solo restaurar medios exactos de manifiestos actuales, nunca JSON antiguos.
     import tempfile,zipfile
     pendientes=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
@@ -45644,6 +45650,9 @@ def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,histor
 
 
 def _dual_reanudar(historial):
+    if NUMEN_SOLO_EPISODIOS_NUEVOS:
+        print('Modo solo nuevos: cola histórica ignorada, sin reintentos.',flush=True)
+        return False
     activos=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
     if any(d.get('nicho')!=NICHO for _,d in activos):
         raise PublicacionAplazada('Cola de otro nicho; revisar manualmente')
@@ -45711,6 +45720,9 @@ def _fb_recuperar(historial):
 
 
 def _dual_solo_cola():
+    if NUMEN_SOLO_EPISODIOS_NUEVOS:
+        print('Modo solo nuevos: --publish-queue deshabilitado; no se publican atrasados.',flush=True)
+        return
     if AERO_IA_DRY_RUN or not PERMITIR_PUBLICACION_SIN_REVISION:
         raise RuntimeError('Procesar cola requiere autorización de publicación y no combinar con solo_guion')
     print('Deus Digitalis | motor reflexivo autónomo',VERSION_SCRIPT,'| solo cola',flush=True)
@@ -45726,11 +45738,13 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 5.2 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 5.3 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
-        if _dual_reanudar(historial):return
+        if NUMEN_SOLO_EPISODIOS_NUEVOS:
+            print('Publicación 5.3 | generar episodio nuevo y enviar el MISMO MP4 a YouTube y Facebook en esta ejecución; cola antigua ignorada.',flush=True)
+        elif _dual_reanudar(historial):return
     # A draft survives image/provider failures; keep ID stable for duplicate protection.
     d=_ent_read(BORRADOR,None)
     existentes={r.get('episodio') for r in leer_historial(historial)} | _cola_ids()
@@ -45782,6 +45796,7 @@ def _ent_main():
     if eid not in {m.get('id') for m in memoria}:
         memoria.append(dict({k:d[k] for k in ('id','titulo','tesis','categoria','pregunta','dimension','enfoque_distintivo','ejemplo_central','conclusion') if k in d},autorreferencias=d['revision_tematica']['autorreferencias']));_cola_json(MEMORIA,memoria)
     if PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK:
+        print('Publicación de pareja NUEVA | episodio:',eid,'| archivo:',Path(video).name,'| ambos destinos en la misma ejecución',flush=True)
         completo=_dual_publicar(video,thumb,srt,caso,episodio,[],creditos,carpeta,historial)
         _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'publicado' if completo else 'publicacion_aplazada','episodio':eid})
     else:anotar_historial(historial,{'episodio':eid,'titulo':d['titulo'],'salida':str(video),'estado':'generado_local'})
@@ -46047,6 +46062,14 @@ def _ent_test():
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
     print('OK: un fondo Full HD por episodio, registro persistente, distancia perceptual, reanudación y plano continuo')
+    assert NUMEN_SOLO_EPISODIOS_NUEVOS is True
+    assert NUMEN_SINCRONIZAR_EPISODIOS is False
+    from unittest.mock import patch as _new_only_patch
+    with _new_only_patch(__name__+'._cola_manifiestos',side_effect=AssertionError('No consultar cola antigua')):
+        assert _dual_reanudar(Path('state/no_usado.json')) is False
+        assert _dual_solo_cola() is None
+        assert _restaurar_medios_artifactos() is None
+    print('OK: modo solo nuevos ignora cola histórica y desactiva recuperación de medios antiguos',flush=True)
     assert NUMEN_SINCRONIZAR_EPISODIOS in (True,False)
     from unittest.mock import patch as _sync_patch
     import types as _sync_types
@@ -46068,7 +46091,10 @@ if __name__=='__main__':
     if '--self-test' in sys.argv:_ent_test()
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
     elif '--check-facebook' in sys.argv:_fb_diagnostico()
-    elif '--recover-facebook' in sys.argv:_fb_recuperar(ruta_historial())
+    elif '--recover-facebook' in sys.argv:
+        if NUMEN_SOLO_EPISODIOS_NUEVOS:
+            print('Modo solo nuevos: recuperación manual de episodios antiguos deshabilitada.',flush=True)
+        else:_fb_recuperar(ruta_historial())
     elif '--restore-media' in sys.argv:_restaurar_medios_artifactos()
     elif '--publish-queue' in sys.argv:_dual_solo_cola()
     elif '--check-auth' in sys.argv:validar_canal_youtube(youtube_servicio())
