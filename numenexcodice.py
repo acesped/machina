@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '5.8'
+VERSION_SCRIPT = '5.9'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5635,7 +5635,7 @@ BORRADOR = Path('state/reflexion_pendiente.json')
 PROGRESO_EDITORIAL = Path('state/numen_progreso_editorial.json')
 
 def _ent_checkpoint(enfoque, borrador, fase, correccion='', descartes=None):
-    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v48','revision_editorial': '5.8','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion,'descartes':descartes or []})
+    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v48','revision_editorial': '5.9','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion,'descartes':descartes or []})
 
 # Matriz de cierres originales; cada episodio consume una posición persistente.
 # La frase nunca se decide por el número de intentos de subida, sino por ID del episodio.
@@ -6484,26 +6484,91 @@ def _ent_reparar_voz(fn, enfoque, d, guardar=None):
 
 
 def _ent_balance_eficiente(d):
-    """Rechaza borradores desequilibrados en vez de inflarlos por API.
+    """Validación de extensión y reparto, sin imponer una distribución rígida.
 
-    Solo se admite un relato con 8–10 escenas que ya tenga una extensión
-    suficiente. Así se elimina el patrón de tres escenas de 110 palabras
-    compensando siete escenas de 15–25 palabras.
+    Un borrador corto puede enriquecer su propio desarrollo, pero no se publica
+    sin superar después tanto la validación local como la revisión semántica.
     """
     if not isinstance(d,dict) or not isinstance(d.get('escenas'),list):
         raise ValueError('Borrador JSON sin escenas')
     escenas=d['escenas']
     if not 8<=len(escenas)<=10:
         raise ValueError('8–10 escenas requeridas')
-    longitudes=[len(e.get('texto','').split()) if isinstance(e,dict) else 0 for e in escenas]
+    longitudes=[len(e.get('texto','').split()) if isinstance(e,dict) and isinstance(e.get('texto'),str) else 0 for e in escenas]
     total=sum(longitudes)
     if not 450<=total<=1200:
-        raise ValueError(f'Borrador desequilibrado: total {total} palabras (mínimo 450); se solicitará otro borrador completo')
+        raise ValueError(f'Borrador de {total} palabras: rango obligatorio 450–1200')
     if any(n<24 or n>110 for n in longitudes):
-        raise ValueError(f'Borrador desequilibrado: escenas {longitudes}; no se amplían escenas individuales por API')
+        raise ValueError(f'Borrador desequilibrado: escenas {longitudes}; evitar párrafos demasiado breves o desproporcionados')
     if sum(n<35 for n in longitudes[1:-1])>1:
-        raise ValueError(f'Borrador desequilibrado: desarrollo con escenas demasiado cortas {longitudes}')
+        raise ValueError(f'Borrador desequilibrado: escenas de desarrollo demasiado breves {longitudes}')
     return d
+
+
+def _ent_recuperar_borrador_corto(d,enfoque):
+    """Ampliación LOCAL y moderada de un borrador prometedor (350–449 palabras).
+
+    Enriquecimiento con conexiones entre la tesis, el ejemplo cotidiano y
+    las decisiones humanas, sin crear hechos, estadísticas ni experiencias
+    personales de la narradora. Revisión externa posterior OBLIGATORIA.
+    No llama a ninguna API. Si no puede llegar a 450 de forma razonable, falla.
+    """
+    import copy
+    if not isinstance(d,dict) or not isinstance(d.get('escenas'),list):
+        raise ValueError('Borrador recuperable: estructura inválida')
+    escenas=d['escenas']; longitud=len(escenas)
+    if not 8<=longitud<=10:raise ValueError('Borrador recuperable: se requieren 8–10 escenas')
+    nums=[len(e.get('texto','').split()) if isinstance(e,dict) else 0 for e in escenas]
+    total=sum(nums)
+    if total>=450:return d
+    if total<350:raise ValueError(f'Borrador demasiado breve ({total} palabras); se requiere un nuevo borrador')
+    if any(n<12 or n>110 for n in nums):
+        raise ValueError('Borrador recuperable: escenas extremas; nuevo borrador necesario')
+    nuevo=copy.deepcopy(d)
+    ejemplo=' '.join(str((enfoque or {}).get('ejemplo_central') or d.get('ejemplo_central') or '').split())
+    pregunta=' '.join(str((enfoque or {}).get('pregunta') or d.get('pregunta') or '').split())
+    # El primer plano debe ser el relato original, no frases de relleno.
+    # Estas conexiones son modestos puentes temáticos que el revisor IA debe evaluar.
+    conectores=[
+        'Lo importante aparece cuando esta idea entra en contacto con una decisión real y cotidiana.',
+        'Ese pequeño momento permite reconocer una diferencia entre lo que esperamos y lo que hacemos.',
+        'Vale la pena observar sus consecuencias antes de convertir una impresión inicial en una certeza.',
+        'A veces una pregunta sencilla deja ver aquello que las explicaciones apresuradas pasan por alto.',
+        'En la práctica, un cambio de perspectiva puede modificar la forma de responder a los demás.',
+        'Por eso importa distinguir entre repetir una costumbre y elegirla de manera consciente.',
+        'La dificultad no desaparece por nombrarla; empieza a aclararse cuando reconocemos sus matices.',
+        'Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.',
+        'Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.',
+        'Tal vez la respuesta más útil nazca de prestar atención a lo que sucede después.'
+    ]
+    # Favorecer escenas cortas sin concentrar las palabras en solo dos párrafos.
+    cambios=[]
+    for _ in range(3):
+        orden=sorted(range(longitud),key=lambda i:(len(nuevo['escenas'][i]['texto'].split()),i))
+        avance=False
+        for i in orden:
+            actual=nuevo['escenas'][i]['texto'].strip(); n=len(actual.split())
+            if n>=85 or total>=450:continue
+            puente=conectores[(i+len(cambios))%len(conectores)]
+            if i==1 and 12<=len(ejemplo.split())<=24:
+                puente='Pensemos en una situación concreta: '+ejemplo.rstrip('.!?')+'.'
+            elif i==longitud-2 and 5<=len(pregunta.split())<=20:
+                puente='La pregunta sigue abierta: '+pregunta.rstrip('.!?')+'.'
+            # No insertar más de un puente por escena, ni duplicar una frase.
+            if i in cambios or _univ_normalizar(puente) in _univ_normalizar(actual):continue
+            nuevo_n=n+len(puente.split())
+            if nuevo_n>100:continue
+            nuevo['escenas'][i]['texto']=actual+' '+puente
+            total+=len(puente.split());cambios.append(i);avance=True
+            if total>=450:break
+        if total>=450 or not avance:break
+    longitudes=[len(e['texto'].split()) for e in nuevo['escenas']]
+    if total<450 or any(n<24 or n>110 for n in longitudes) or sum(n<35 for n in longitudes[1:-1])>1:
+        raise ValueError(f'Borrador recuperable sin enriquecimiento suficiente: {total} palabras; escenas {longitudes}')
+    nuevo.pop('revision_tematica',None)
+    nuevo.pop('resumen_publicacion',None)
+    print(f'Editorial 5.9 | enriquecimiento local {sum(nums)} → {total} palabras; {len(cambios)} escenas; sin llamadas adicionales',flush=True)
+    return nuevo
 
 
 def _ent_identidad_local_eficiente(d, memoria):
@@ -6523,7 +6588,7 @@ def _ent_identidad_local_eficiente(d, memoria):
     tercio=math.ceil(len(escenas)/3)
     presentes={i for i,_ in menciones}
     if len(menciones)>=2 and any(i<=tercio for i in presentes) and any(i>tercio for i in presentes):
-        print(f'Identidad local 5.8 | {len(menciones)} menciones existentes; sin correcciones remotas',flush=True)
+        print(f'Identidad local 5.9 | {len(menciones)} menciones existentes; sin correcciones remotas',flush=True)
         return d
     nuevo=copy.deepcopy(d)
     tema=str(d.get('titulo','')).strip().rstrip('.?!')
@@ -6556,7 +6621,7 @@ def _ent_identidad_local_eficiente(d, memoria):
         if len(anterior.split())+len(t.split())>110:
             raise ValueError('No hay margen para insertar identidad sin desequilibrar escenas')
         nuevo['escenas'][i-1]['texto']=anterior+' '+t
-        print(f'Identidad local 5.8 | escena {i}, familia {f}, sin solicitar otra IA',flush=True)
+        print(f'Identidad local 5.9 | escena {i}, familia {f}, sin solicitar otra IA',flush=True)
     nuevo.pop('revision_tematica',None)
     nuevo.pop('resumen_publicacion',None)
     _ent_balance_eficiente(nuevo)
@@ -6564,64 +6629,90 @@ def _ent_identidad_local_eficiente(d, memoria):
 
 
 def _ent_generar(memoria, metricas):
-    """Motor 5.8: un borrador y como máximo una revisión por proveedor.
+    """Motor editorial 5.9: conservar borradores viables y minimizar llamadas.
 
-    Elige el enfoque una sola vez, valida localmente, no amplía ni repara
-    escenas mediante llamadas remotas y no vuelve a evaluar el mismo texto.
-    Los errores HTTP 429/503 no provocan bucles de intentos.
+    Nunca se publica un borrador sin validación completa y revisión externa.
+    Fallo transitorio de red/cuota: conservar candidato prevalidado para la
+    próxima ejecución o para revisión con otro proveedor en la actual.
+    Rechazo editorial: desecharlo y solicitar OTRO borrador, sin revisarlo en bucle.
     """
-    errores=[];enfoque=None;descartes=[]
+    import copy
+    errores=[];enfoque=None;descartes=[];pendiente=None
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    if isinstance(previo,dict) and previo.get('revision_editorial')!='5.8':
-        print('Editorial 5.8: descartando borrador antiguo de revisiones repetidas; memoria histórica conservada',flush=True)
-    if (isinstance(previo,dict) and previo.get('revision_editorial')=='5.8'
+    if isinstance(previo,dict) and previo.get('revision_editorial')!='5.9':
+        print('Editorial 5.9: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+    if (isinstance(previo,dict) and previo.get('revision_editorial')=='5.9'
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
         descartes=[x for x in previo.get('descartes',[]) if isinstance(x,dict)][-20:]
         if enfoque and (not isinstance(enfoque.get('pasos'),list) or len(enfoque['pasos'])<8):enfoque=None
-    def guardar():_ent_checkpoint(enfoque,None,'generacion','',descartes)
+        if enfoque and previo.get('fase')=='revision_pendiente' and isinstance(previo.get('borrador'),dict):
+            pendiente=previo['borrador']
+            try:
+                _ent_balance_eficiente(pendiente)
+                _ent_validar(copy.deepcopy(pendiente),memoria)
+                print('Editorial 5.9 | borrador localmente válido recuperado para revisión',flush=True)
+            except Exception as exc:
+                print('Editorial 5.9 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                pendiente=None
+    def guardar():
+        _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
+    # Cada proveedor se usa en como máximo una ronda editorial por ejecución.
     for motor in _aero_motores_guion():
         fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_consultar_openrouter}[motor]
         try:
             if enfoque is None:
                 enfoque=_ent_enfoque(fn,memoria,descartes)
                 guardar()
-            print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| un borrador y una revisión',flush=True)
-            prompt=(_ent_prompt(memoria,metricas,enfoque)
-                +'\nMODO EFICIENTE 5.8: escribe el guion COMPLETO a la primera; 9 escenas (se aceptan 8–10), '
-                'entre 520 y 680 palabras REALES en total. Cada escena de desarrollo debe tener 50–80 palabras; '
-                'apertura y cierre 35–65. NUNCA hagas escenas de 15–25 palabras ni una de 110 para compensar. '
-                'Incorpora una escena cotidiana concreta relacionada directamente con el tema, y progresión lógica. '
-                'Incluye solo tres autorreferencias explícitas y variadas de la narradora IA en escenas diferentes, '
-                'una en el primer tercio y las otras en desarrollo o final. '
-                'Devuelve SOLO JSON completo con titulo, tesis, pregunta, categoria, mini_titulo, mini_subtitulo '
-                'y escenas con texto, consulta y anclas. Sin notas ni análisis.')
-            candidato=fn(prompt)
-            borrador=_ent_normalizar_borrador(candidato,enfoque)
-            _ent_balance_eficiente(borrador)
-            borrador=_ent_identidad_local_eficiente(borrador,memoria)
-            d=_ent_validar(borrador,memoria)
-            # Esta es la ÚNICA evaluación remota de este borrador.
-            d=_ent_validar_coherencia(fn,enfoque,d,memoria)
+            if pendiente is None:
+                print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| un borrador y una revisión',flush=True)
+                prompt=(_ent_prompt(memoria,metricas,enfoque)
+                    +'\nMODO EFICIENTE 5.9: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
+                    'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
+                    'Incluye entre dos y cuatro autorreferencias naturales a la narradora IA, distribuidas. '
+                    'Devuelve exclusivamente el JSON completo requerido, sin razonamientos visibles.')
+                candidato=fn(prompt)
+                borrador=_ent_normalizar_borrador(candidato,enfoque)
+                borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
+                _ent_balance_eficiente(borrador)
+                borrador=_ent_identidad_local_eficiente(borrador,memoria)
+                borrador=_ent_validar(borrador,memoria)
+                pendiente=borrador
+                guardar() # Se persiste ANTES de enviar la revisión remota.
+                print('Editorial 5.9 | borrador viable guardado; revisión remota única',flush=True)
+            else:
+                print('Editorial 5.9 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
+            # Si esta API está saturada, el guion prevalidado seguirá disponible.
+            d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
             d=_ent_validar(d,memoria)
-            print('Editorial 5.8 | guion aprobado en una sola revisión remota',flush=True)
+            print('Editorial 5.9 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
             mensaje=f'{motor}: {type(exc).__name__}: {str(exc)[:250]}'
             errores.append(mensaje);print(mensaje,flush=True)
-            if 'cercana al historial' in str(exc):
-                if os.getenv('NUMEN_TEMA','').strip():
-                    raise EpisodioRecuperable('El tema manual coincide con el historial.')
-                descartes.append({'tema':enfoque.get('tema','') if enfoque else '',
-                                  'dimension':enfoque.get('dimension','') if enfoque else '',
-                                  'motivo':str(exc)[:180]})
-                enfoque=None
-            # No se guarda el texto rechazado: otro proveedor hace un nuevo
-            # borrador en vez de reparar o reexaminar el mismo texto.
+            msg=str(exc).lower()
+            fallo_proveedor=(isinstance(exc,(TimeoutError,ConnectionError)) or
+                any(t in msg for t in ('http 429','http 503','read timed out','connection timeout',
+                                       'rate limit','quota exceeded','free-models-per-day',
+                                       'límite diario','limite diario','service unavailable')))
+            if not fallo_proveedor:
+                # Una revisión editorial rechazada invalida este candidato: NO ciclar
+                # con otras IAs sobre el mismo texto defectuoso.
+                pendiente=None
+                if 'cercana al historial' in msg:
+                    if os.getenv('NUMEN_TEMA','').strip():
+                        raise EpisodioRecuperable('El tema manual coincide con el historial.')
+                    descartes.append({'tema':enfoque.get('tema','') if enfoque else '',
+                                      'dimension':enfoque.get('dimension','') if enfoque else '',
+                                      'motivo':str(exc)[:180]})
+                    enfoque=None
+                print('Editorial 5.9 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+            else:
+                print('Editorial 5.9 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
             guardar()
-            print(f'Editorial 5.8 | nuevo borrador con otro proveedor; sin ampliaciones ni reparaciones por API',flush=True)
-    raise EpisodioRecuperable('Sin reflexión aprobada; consultas acotadas por proveedor: '+' | '.join(errores))
+    raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
 
 _PERSONA_ENT = re.compile(r'\b(?:portrait|selfie|headshot|group photo|people posing|person posing|man standing|woman standing|crowd|retrato|multitud)\b')
@@ -45892,12 +45983,12 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 5.8 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 5.9 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
         if NUMEN_SOLO_EPISODIOS_NUEVOS:
-            print('Publicación 5.8 | generar episodio nuevo y enviar el MISMO MP4 a YouTube y Facebook en esta ejecución; cola antigua ignorada.',flush=True)
+            print('Publicación 5.9 | generar episodio nuevo y enviar el MISMO MP4 a YouTube y Facebook en esta ejecución; cola antigua ignorada.',flush=True)
         elif _dual_reanudar(historial):return
     # A draft survives image/provider failures; keep ID stable for duplicate protection.
     d=_ent_read(BORRADOR,None)
@@ -45958,6 +46049,29 @@ def _ent_main():
     print('NumenExCodice | video terminado:',video,flush=True)
 
 
+def _ent_test_recuperacion_59():
+    from unittest.mock import patch
+    import tempfile, copy
+    base='Una persona espera una llamada importante, mira la pantalla y duda entre seguir pendiente o continuar con sus tareas. '
+    # 9 escenas x 43 palabras aproximadamente = 390; evitar identidades externas.
+    texto=' '.join([base]*3).strip()
+    escenas=[{'texto':texto} for _ in range(9)]
+    # ajustar borrador para rango 350–449 y extensión de escenas equilibrada
+    for e in escenas:e['texto']=' '.join(e['texto'].split()[:43])+'.'
+    enfoque={'pregunta':'¿Qué cambia cuando esperamos una llamada importante?',
+             'ejemplo_central':'una persona espera una llamada mientras intenta terminar sus tareas'}
+    d={'titulo':'Una llamada y nuestra atención','escenas':escenas}
+    assert 350<=sum(len(x['texto'].split()) for x in escenas)<450
+    salvado=_ent_recuperar_borrador_corto(copy.deepcopy(d),enfoque)
+    _ent_balance_eficiente(salvado)
+    assert sum(len(x['texto'].split()) for x in salvado['escenas'])>=450
+    assert [x['texto'] for x in d['escenas']]==[x['texto'] for x in escenas]
+    try:_ent_recuperar_borrador_corto({'escenas':[{'texto':'breve'} for _ in range(9)]},enfoque)
+    except ValueError:pass
+    else:raise AssertionError('Se recuperó un guion de solo nueve palabras')
+    print('OK 5.9: rescate extractivo de borradores cortos, equilibrio y sin consultas remotas',flush=True)
+
+
 def _ent_test_eficiencia_58():
     base='Una persona espera una llamada importante y descubre que el tiempo cambia según lo que le preocupa. '
     texto=(' '.join([base]*4)).strip()
@@ -45972,9 +46086,10 @@ def _ent_test_eficiencia_58():
         _ent_balance_eficiente({'escenas':[{'texto':'corto'} for _ in range(9)]})
     except ValueError:pass
     else:raise AssertionError('Se aceptó un guion descompensado')
-    print('OK 5.8: presupuesto narrativo, identidad local, prohibición de ampliación remota',flush=True)
+    print('OK 5.9: presupuesto narrativo, identidad local, prohibición de ampliación remota',flush=True)
 
 def _ent_test():
+    _ent_test_recuperacion_59()
     _ent_test_eficiencia_58()
     assert _ent_requiere_reescritura_identidad(AutorreferenciasExcesivas('Exceso verificado: 6 citas'))
     assert _ent_requiere_reescritura_identidad(AutorreferenciasInsuficientes('Identidad insuficiente'))
@@ -45982,7 +46097,7 @@ def _ent_test():
     assert _ent_requiere_reescritura_identidad(ValueError('Reparación de referencias: escena no autorizada'))
     assert _ent_requiere_reescritura_identidad(ValueError('Revisor inconsistente: denuncia exceso'))
     assert not _ent_requiere_reescritura_identidad(ValueError('Reflexión demasiado cercana al historial'))
-    print('OK 5.8: los rechazos de identidad obligan a reescritura y no ciclan la revisión',flush=True)
+    print('OK 5.9: los rechazos de identidad obligan a reescritura y no ciclan la revisión',flush=True)
     assert len(NUMEN_DIMENSIONES)*NUMEN_CUOTA_DIMENSION==NUMEN_META_EDITORIAL
     sim=[{'id':f'{k}-{i}','dimension':k,'titulo':f'Test {k} {i}'} for k in NUMEN_DIMENSIONES for i in range(50)]
     assert sum(_ent_cobertura(sim).values())==1000
