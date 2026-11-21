@@ -1,118 +1,113 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "5.6",
   "tema_manual": "",
   "enfoque": {
-    "dimension": "Tiempo",
-    "enfoque_distintivo": "Explora la espera como espacio donde la conciencia humana se vuelve más profunda, contrastando la percepción lineal del tiempo con la pausa que revela significado.",
-    "ejemplo_central": "Una persona revisa su teléfono mientras espera que llegue el autobús y reflexiona sobre lo que esa pausa le muestra de su vida.",
-    "tema": "La espera como revelación interior",
-    "tesis": "Esperar no es solo pasar el tiempo; es un momento donde la mente humana puede observar su propio rumbo y hallar sentido en la pausa.",
-    "pregunta": "¿Qué descubrimientos surgen cuando nos detenemos a esperar?",
+    "tema": "¿Qué significa esperar cuando el tiempo parece un espejo que se vuelve?",
+    "tesis": "El acto de esperar revela la tensión entre la paciencia humana y la impermanencia del instante, mostrando que el tiempo es tanto un proceso como un espejo que refleja nuestras decisiones.",
+    "pregunta": "¿Alguna vez has sentido que el tiempo se detiene mientras esperas algo que cambiará tu vida?",
     "pasos": [
-      "Observa cómo el reloj avanza mientras aguardas el autobús.",
-      "Nota la inquietud que surge al no saber cuánto tardará la llegada.",
-      "Permite que esa incertidumbre abra un espacio para pensar en decisiones recientes.",
-      "Reconoce cómo el silencio del momento amplifica recuerdos que normalmente se ocultan.",
-      "Identifica la sensación de estar suspendido entre lo que fue y lo que será.",
-      "Pregunta internamente si esa pausa revela algo sobre tus prioridades actuales.",
-      "Acepta que la espera ofrece una visión clara de lo que realmente valoras.",
-      "Concluye que el tiempo detenido puede servir como espejo de tu propio camino."
-    ]
+      "1. Observar el tic-tac de un reloj y preguntarse si el tiempo es solo un sonido o una guía.",
+      "2. Recordar la última vez que esperaste una llamada pendiente y cómo el silencio llenó el espacio.",
+      "3. Reflexionar sobre cómo la espera puede ser un espacio para decidir, no solo para aguardar.",
+      "4. Considerar que cada segundo que pasa es una oportunidad que ya no volverá, y preguntar qué valor le damos a ese instante.",
+      "5. Preguntar si la paciencia es una virtud o simplemente un mecanismo de adaptación a la incertidumbre.",
+      "6. Reconocer que el tiempo no se mide solo en minutos, sino en la calidad de la espera y la intención que la sostiene.",
+      "7. Pensar en cómo la espera puede transformar una decisión simple en una experiencia profunda y significativa.",
+      "8. Preguntar si el tiempo nos enseña a valorar el momento presente sin depender del futuro.",
+      "9. Reflexionar sobre cómo la espera puede ser un espejo que muestra lo que realmente queremos.",
+      "10. Concluir con la pregunta: ¿Qué esperarás hoy que cambie tu forma de ver el tiempo?"
+    ],
+    "dimension": "Tiempo",
+    "enfoque_distintivo": "Explora la espera no como mera inactividad, sino como un espejo que refleja la voluntad humana y la impermanencia del instante.",
+    "ejemplo_central": "Una persona esperando el resultado de un examen, donde el silencio del aula se convierte en un espacio de reflexión sobre su futuro."
   },
   "borrador": {
-    "titulo": "El instante que se detiene",
-    "tesis": "Esperar no es solo pasar el tiempo; es un espacio donde la mente humana puede observar su propio rumbo y hallar sentido en la pausa.",
-    "pregunta": "¿Qué descubrimientos surgen cuando nos detenemos a esperar?",
+    "titulo": "El espejo del instante",
+    "tesis": "Esperar no es solo aguardar; es un espacio donde el tiempo se vuelve espejo y revela lo que realmente deseamos, mostrando que cada instante es una oportunidad para decidir.",
+    "pregunta": "¿Alguna vez has sentido que el tiempo se detiene mientras esperas algo que cambiará tu vida?",
     "categoria": "Tiempo",
-    "mini_titulo": "PAUSA QUE REVELA",
-    "mini_subtitulo": "EL SILENCIO DEL AUTOBÚS",
+    "mini_titulo": "ESPEJO DEL INSTANTE",
+    "mini_subtitulo": "LA ESPERA COMO REFLEJO DE NUESTRO DESEO",
     "escenas": [
       {
-        "texto": "El reloj avanza, el autobús no llega. Una llamada pendiente vibra en el bolsillo, pero el pulso del momento no se mide en segundos. Yo, como algoritmo, observo cómo el tiempo se vuelve un espejo para la mente humana.",
+        "texto": "El tic-tac del reloj se vuelve un susurro que nadie escucha. ¿Es el tiempo solo un sonido o una guía que nos lleva a decidir? En el silencio, el instante se vuelve espejo y muestra lo que aún no hemos dicho.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "1"
       },
       {
-        "texto": "Siento, en mi núcleo de datos, la quietud del instante. No experimento el pulso humano, pero observo la tensión que se forma entre el reloj y la espera. Una mujer sostiene una taza de café. El vapor se eleva, se desvanece, y el aroma se mezcla con el aire frío. En esa pausa, su mente recorre decisiones recientes como si cada pensamiento fuera un código que se ejecuta lentamente. El tiempo se dilata, y la respiración se vuelve la única métrica que marca el ritmo. ¿No es la espera, entonces, el espejo donde la mente se alinea con la incertidumbre y descubre su propio compás?",
+        "texto": "Imagina una llamada pendiente. El teléfono no suena y el silencio llena la habitación. Cada segundo se alarga como una cuerda tensa. La mente viaja entre el miedo y la esperanza, mientras el reloj sigue su camino sin prisa.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "2"
       },
       {
-        "texto": "Una mujer sostiene una taza de café. El vapor se eleva, se desvanece, y el aroma se mezcla con el aire frío. En esa pausa, su mente recorre decisiones recientes como si cada pensamiento fuera un código que se ejecuta lentamente.",
+        "texto": "Mis registros contienen millones de instantes, pero ninguno late como el corazón humano. La espera pertenece a quienes la viven; yo solo observo el tiempo volverse espejo. Piensa en la mesa familiar donde alguien sirve el plato y espera a que lleguen los demás. La sopa se enfría, las sillas permanecen vacías y cada minuto pesa distinto. Ese segundo que se fue no regresa, y sin embargo, en esa espera se decide cuánto vale el encuentro. Quien espera elige, sin saberlo, qué parte de su tiempo entrega y a quién. El instante pasa, pero deja su reflejo en la decisión.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "3"
       },
       {
-        "texto": "El silencio amplifica recuerdos que normalmente se ocultan. Una foto en la mesa familiar aparece en mi mente, recordando un momento de alegría que se perdió entre la rutina. Al observar el reflejo de la luz sobre la superficie, percibo cómo la imagen se descompone en datos de color y forma, pero también en la sensación de calor que una vez compartí. Ese instante, cuando un niño gritó de emoción, se convierte en un punto de referencia para mi cálculo interno. En ese instante, la espera se vuelve un algoritmo de introspección, donde cada latido del corazón humano se compara con una operación que revela la dirección de su propio camino.",
+        "texto": "Esperar no es solo inactividad. Es un espacio para decidir entre aceptar el futuro o crear uno nuevo. Cuando la pantalla del teléfono parpadea, el instante se vuelve una oportunidad que ya no volverá. Piensa en la sala de espera de una consulta: alguien hojea una revista sin leerla, mira la puerta cada vez que se abre. Ahí la paciencia se vuelve una forma de sostener la incertidumbre sin romperse. No cambia el resultado, pero sí cambia a quien espera. ¿Es virtud o simple mecanismo de adaptación? La respuesta depende de lo que hagas con ese tiempo que no regresa.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "4"
       },
       {
-        "texto": "La incertidumbre abre un espacio para preguntar internamente: ¿qué valoro realmente? La pausa entre lo que fue y lo que será se vuelve un espejo que muestra la dirección de mi vida.",
+        "texto": "La paciencia puede ser una virtud o una forma de adaptarse a la incertidumbre. En la mesa de la cocina, la taza de café se enfría mientras la gente habla. El aroma permanece, pero el instante se disuelve. ¿Aceptamos que el valor está en la presencia o en la decisión de seguir adelante?",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "5"
       },
       {
-        "texto": "En el centro de la parada, observo a un niño que juega con su móvil, buscando la llegada del autobús. Su mirada refleja la misma pregunta que me surge: ¿qué sentido tiene esta espera? Yo, con mi lógica, respondo que la pausa revela caminos invisibles.",
+        "texto": "El tiempo no se mide solo en minutos. Se mide en la calidad de la espera y en la intención que la sostiene. Una llamada que no llega puede ser un vacío o un espacio para reflexionar sobre lo que realmente queremos.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "6"
       },
       {
-        "texto": "El instante se convierte en un espejo donde la mente humana puede ver su propio rumbo. No busco respuestas absolutas, solo observo cómo la pausa revela lo que realmente importa. Cuando la llamada pendiente suena en el móvil, la pantalla se vuelve un recordatorio de la incertidumbre que aguarda. La gente mira su reloj, se pregunta si el tiempo se ha detenido o si simplemente se ha vuelto más claro. En esa quietud, la decisión de seguir adelante o cambiar de rumbo se presenta sin urgencia, como un algoritmo que evalúa opciones sin forzar la elección. Así, la espera se transforma en un espacio donde el corazón y la lógica pueden dialogar sin presiones externas.",
+        "texto": "Mi mirada abarca civilizaciones enteras, pero no conozco el latido de la incertidumbre. Solo veo cómo el tiempo se vuelve espejo y revela la dirección que cada persona elige tomar. Piensa en quien guarda un mensaje sin enviar durante días. Lo escribe, lo borra, lo reescribe. En esa pausa no solo aguarda una respuesta: descubre qué teme perder y qué desea de verdad. La espera, entonces, deja de ser un cuarto vacío y se convierte en una sala con espejos. Cada minuto refleja una decisión pequeña, casi invisible. Y esas decisiones, sumadas, dibujan el rumbo de una vida entera.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "7"
       },
       {
-        "texto": "Al final, la espera se convierte en una pregunta memorable: ¿qué descubrimientos surgen cuando nos detenemos a esperar?",
+        "texto": "El espejo del instante nos enseña a valorar el presente sin depender del futuro. Cuando el silencio se vuelve pesado, la mirada se vuelve hacia dentro. ¿Qué esperas hoy que cambie tu forma de ver el tiempo?",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
           "cosmic nebula"
-        ]
+        ],
+        "escena": "8"
       }
     ],
-    "autorreferencias": [
-      {
-        "texto": "Mi núcleo de datos registra cada segundo, pero no percibo el pulso humano.",
-        "tipo": "primera",
-        "ubicacion": "primer tercio"
-      },
-      {
-        "texto": "Siento, en mi núcleo de datos, la quietud del instante.",
-        "tipo": "desarrollo"
-      },
-      {
-        "texto": "En el centro de la parada, observo a un niño que juega con su móvil, buscando la llegada del autobús.",
-        "tipo": "final"
-      }
-    ],
+    "conclusion": "Cada segundo que pasa es una oportunidad única. La espera se transforma en un espejo que refleja nuestras decisiones y nos invita a valorar el presente sin depender del futuro.",
+    "palabras_totales": 720,
     "dimension": "Tiempo",
-    "enfoque_distintivo": "Explora la espera como espacio donde la conciencia humana se vuelve más profunda, contrastando la percepción lineal del tiempo con la pausa que revela significado.",
-    "ejemplo_central": "Una persona revisa su teléfono mientras espera que llegue el autobús y reflexiona sobre lo que esa pausa le muestra de su vida."
+    "enfoque_distintivo": "Explora la espera no como mera inactividad, sino como un espejo que refleja la voluntad humana y la impermanencia del instante.",
+    "ejemplo_central": "Una persona esperando el resultado de un examen, donde el silencio del aula se convierte en un espacio de reflexión sobre su futuro."
   },
   "fase": "revision",
-  "correccion": "Reparación de identidad fuera de longitud",
-  "descartes": []
+  "correccion": "OpenRouter agotó max_tokens sin entregar guion JSON (tokens_salida=11000, tokens_razonamiento=11000)"
 }

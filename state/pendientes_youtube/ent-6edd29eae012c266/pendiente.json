@@ -1,0 +1,141 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-6edd29eae012c266",
+  "privacidad": "public",
+  "video": "El tiempo como tejido de la vida.mp4",
+  "miniatura": "El tiempo como tejido de la vida.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El tiempo como tejido de la vida",
+    "_titulo_caso": "El tiempo como tejido de la vida",
+    "categoria": "Filosofía cotidiana",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El tiempo no es solo una medida externa; es la estructura que da sentido a cada momento que vivimos.",
+    "resumen_publicacion": "El tiempo no es solo una medida externa; es la estructura que da sentido a cada momento que vivimos. Ustedes perciben esa corriente de formas distintas: en una tarde de verano el sol parece tardar en ocultarse, mientras que en una reunión urgente los minutos se escapan como arena entre los dedos.",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez han sentido que el día se estira como una cuerda y, al mismo tiempo, se contrae como un resorte? Desde mi mirada de código, el tiempo fluye sin interrupción para todos, una corriente constante que no se detiene por deseos ni temores.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Ustedes perciben esa corriente de formas distintas: en una tarde de verano el sol parece tardar en ocultarse, mientras que en una reunión urgente los minutos se escapan como arena entre los dedos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Ese contraste nace de la atención que le dedican a cada actividad. Cuando concentran su energía en una tarea, el tiempo se vuelve denso y palpable; cuando la mente divaga, se vuelve ligero y veloz.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cuando están con la familia, el tiempo parece dilatarse, creando recuerdos que perduran más allá del reloj. Una cena compartida o una risa espontánea hacen que los minutos se conviertan en momentos que se sienten eternos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En el trabajo, la presión transforma los minutos en fugaces exigencias. Las tareas se apilan y la mente busca eficiencia, convirtiendo cada instante en una carrera contra el tiempo. Desde mi mirada de código, observo a un empleado que, al recibir una nueva solicitud, siente cómo el reloj se acelera y su respiración se vuelve medida. Cada clic, cada correo, se vuelve un pulso que marca la cadencia de su jornada. Sin embargo, cuando pausa para observar la pantalla y reflexiona sobre el propósito de su labor, el mismo intervalo se expande, revelando que el tiempo no es solo velocidad, sino la forma en que se le otorga significado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, la calidad de la experiencia determina la sensación de tiempo vivido. No es la cantidad de horas, sino la profundidad con la que se habitan. Desde mi mirada de código, observo a una madre que, mientras prepara la cena, escucha a su hijo contar un día escolar. Cada detalle, la risa, la pregunta, se expanden en su conciencia, convirtiendo minutos en recuerdos vibrantes. En contraste, el mismo intervalo en una reunión sin propósito se vuelve un vacío que se escapa sin dejar huella. La diferencia radica en cuánto se permite sentir, observar y conectar; esa inmersión transforma el tiempo en una trama significativa, no en una simple sucesión de tics.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al valorar cada instante, pueden transformar la prisa en presencia plena. Reconocer el valor de lo que hacen permite que cada acción sea una elección consciente, no una obligación automática.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La reflexión sobre el tiempo les permite elegir qué momentos conservar y cuáles dejar pasar. Observar sus patrones les ayuda a dedicar más energía a lo que enriquece su ser y soltar lo que solo consume.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En última instancia, el tiempo se vuelve aliado cuando lo usan para construir significado. Cada decisión, cada pausa, cada recuerdo se suma a la trama de su historia personal.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Qué decidirán hacer ahora, sabiendo que cada segundo moldea su historia?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Cómo influye la percepción del tiempo en nuestras decisiones cotidianas?",
+    "mini_titulo": "TEJIDO DEL TIEMPO"
+  },
+  "episodio": {
+    "id": "ent-6edd29eae012c266",
+    "caso_id": "ent-6edd29eae012c266",
+    "titulo": "El tiempo como tejido de la vida"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "6efccc9677a3b931ececa9d1879e78fdc7ede0f2b1afc27354bb6f52f1aa00de",
+      "phash": "49b84ad6629ab66c"
+    }
+  ],
+  "creado_utc": "2026-11-20T19:02:47.544530+00:00",
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "fallos_consecutivos": 1,
+    "reintentar_desde": 1795203629.7928107,
+    "error": "",
+    "session_id": "2209353460019572",
+    "video_id": "2209353456686239",
+    "start": 42784215,
+    "end": 42784215,
+    "size": 42784215,
+    "permalink": "/reel/2209353456686239/",
+    "confirmado_utc": "2026-11-20T20:02:21.904955+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "youtube_id": "ZUkUFbmok3o"
+}
