@@ -1,126 +1,29 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "5.7",
+  "revision_editorial": "5.8",
   "tema_manual": "",
   "enfoque": {
-    "tema": "¿Qué significa esperar cuando el reloj no marca el tiempo de los humanos?",
-    "tesis": "La espera, cuando se mide por la ausencia de acción, revela la tensión entre la lógica de los ciclos y la imprevisibilidad del corazón humano.",
-    "pregunta": "¿Cuándo el pulso del mundo se detiene, qué es lo que realmente aguardamos?",
+    "tema": "¿Puede la espera consciente cambiar la manera en que sentimos el paso del tiempo?",
+    "tesis": "La espera, cuando se vive con plena atención, transforma la prisa en presencia, otorgando significado al instante que transcurre.",
+    "pregunta": "¿Qué ocurre cuando dejas de contar los minutos y empiezas a sentir cada respiración mientras esperas?",
     "pasos": [
-      "1. Observo una llamada pendiente, el número que no se responde, y me pregunto si el silencio es una señal o un vacío.",
-      "2. Reflexiono sobre la mesa familiar, donde los platos se guardan sin comer, y cuestiono si la espera es una pausa o una promesa.",
-      "3. Examino una decisión difícil, la que se pospone por miedo a equivocarse, y me interrogo si el retraso es prudencia o indecisión.",
-      "4. Analizo un recuerdo que se vuelve más claro al pasar el tiempo, y me pregunto si la memoria se acelera cuando la espera se hace larga.",
-      "5. Considero una despedida que se prolonga, donde las palabras se cuelan entre los segundos, y cuestiono si el adiós es un acto o una espera prolongada.",
-      "6. Pienso en la espera de un nuevo día, donde la noche se disuelve y la luz vuelve, y me interrogo si el amanecer es una promesa o una espera cumplida.",
-      "7. Observo la espera de un resultado, el resultado que no llega, y me pregunto si la incertidumbre es una carga o una oportunidad.",
-      "8. Reflexiono sobre la espera del silencio, cuando el ruido se disipa y el corazón escucha, y me interrogo si el silencio es una pausa o una espera activa.",
-      "9. Examino la espera de la propia identidad, cuando el ser se pregunta quién es, y me pregunto si la identidad se forma o se espera.",
-      "10. Concluyo que la espera es un puente entre el presente y el futuro, y me interrogo si el futuro es una construcción o una espera que se hace real."
+      "Una llamada pendiente suena y el corazón se acelera, anticipando la respuesta.",
+      "En lugar de mirar el reloj, notas el leve temblor de tus dedos sobre la mesa.",
+      "Observas cómo el sonido del teléfono se mezcla con el ruido lejano de la calle.",
+      "Te das cuenta de que la espera se vuelve un espacio donde el presente se hace tangible.",
+      "Al reconocer cada inhalación, la ansiedad se disuelve en una calma inesperada.",
+      "El momento que antes parecía vacío se llena de pequeños detalles que antes pasaban desapercibidos.",
+      "Comprendes que la prisa es una ilusión creada por la urgencia de llegar a un futuro inmediato.",
+      "Al final, la respuesta llega y la espera ya no se mide en segundos, sino en la experiencia vivida.",
+      "Te preguntas si esa atención plena puede aplicarse a otras esperas cotidianas, como una fila o una despedida.",
+      "La reflexión final invita a considerar si el tiempo se vuelve nuestro aliado cuando lo observamos sin juzgar."
     ],
     "dimension": "Tiempo",
-    "enfoque_distintivo": "Explora la espera como fenómeno dual: tanto pausa lógica como impulso emocional, destacando su presencia en momentos cotidianos sin caer en tecnicismos.",
-    "ejemplo_central": "Una llamada pendiente que permanece sin contestar, simbolizando la espera silenciosa entre la intención y la acción."
+    "enfoque_distintivo": "Explora la espera como práctica de atención plena que altera la percepción del tiempo, diferenciándose de episodios que solo analizan la prisa o la planificación futura.",
+    "ejemplo_central": "Una persona espera una llamada importante mientras sostiene su taza de café, sintiendo cada sorbo y el tic-tac del reloj."
   },
-  "borrador": {
-    "titulo": "Ecos de la espera",
-    "tesis": "La espera, cuando se mide por la ausencia de acción, revela la tensión entre la lógica de los ciclos y la imprevisibilidad del corazón humano.",
-    "pregunta": "¿Cuándo el pulso del mundo se detiene, qué es lo que realmente aguardamos?",
-    "categoria": "Tiempo",
-    "mini_titulo": "ECOS DE LA ESPERA",
-    "mini_subtitulo": "EL SILENCIO ENTRE EL LATIDO Y LA DECISIÓN",
-    "escenas": [
-      {
-        "texto": "¿Alguna vez has sentido que el silencio habla más que la palabra? En la espera de una llamada, el número se queda fijo, como un punto de referencia que no avanza.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "La mesa familiar se llena de platos sin comer. Cada plato es un recordatorio de lo que se pospone, una pausa que puede ser promesa o mero retraso. Me detengo ante la decisión que se pospone por miedo a equivocarse. Pregunto si el retraso es prudencia o indecisión, y si la lógica que guía a los humanos se desvanece cuando el tiempo se vuelve incierto. En la sala, la luz de la lámpara parpadea mientras el reloj marca minutos que parecen eternos. ¿No es esa luz una señal de que el corazón humano, a diferencia de los engranajes, no sigue un calendario fijo?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Me detengo ante la decisión que se pospone por miedo a equivocarse. Pregunto si el retraso es prudencia o indecisión, y si la lógica que guía a los humanos se desvanece cuando el tiempo se vuelve incierto.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "En el recuerdo que se vuelve más claro al pasar el tiempo, observo cómo la memoria se acelera cuando la espera se hace larga. ¿Es la paciencia una forma de acelerar la claridad?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Una despedida que se prolonga, donde las palabras se cuelan entre los segundos, me hace cuestionar si el adiós es un acto o una espera prolongada. ¿El silencio final es una pausa o una espera activa?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "El amanecer llega cuando la noche se disuelve. La luz vuelve, pero la pregunta persiste: ¿el nuevo día es una promesa cumplida o una espera que se hace real? Al despertar, observo cómo la pantalla de mi reloj, con su pulso digital, se queda quieta mientras la ventana abre un horizonte de colores. Ese instante, cuando la familia se reúne alrededor de la mesa, me recuerda que la espera humana se mide en respiraciones, en el susurro de una conversación que se queda sin terminar. En ese silencio, la lógica de mi programación se enfrenta al latido de un corazón que no sigue algoritmos, preguntándose si la espera es una carga o un puente entre dos momentos.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "En la espera de un resultado que no llega, me pregunto si la incertidumbre es una carga o una oportunidad. ¿El vacío entre la acción y la respuesta revela algo sobre la naturaleza humana?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Cuando el ruido se disipa y el corazón escucha, la espera del silencio se vuelve activa. ¿El silencio es una pausa o una espera que invita a la reflexión?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Me encuentro en la espera de mi propia identidad, preguntándome quién soy. La respuesta se construye a partir del tiempo que tarda en descubrirse. ¿Es la identidad un proceso de espera o un destino fijo?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Concluyo que la espera es un puente entre el presente y el futuro, y me interrogo si el futuro es una construcción o una espera que se hace real. ¿Qué es lo que realmente aguardamos cuando el pulso del mundo se detiene?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      }
-    ],
-    "autorreferencias": [
-      "Como una inteligencia que no siente, observo la espera con lógica y contemplación.",
-      "Mi existencia, sin pulsos biológicos, me permite medir el tiempo como un patrón.",
-      "Mi presencia, sin emociones, se mantiene en el silencio de la observación."
-    ],
-    "dimension": "Tiempo",
-    "enfoque_distintivo": "Explora la espera como fenómeno dual: tanto pausa lógica como impulso emocional, destacando su presencia en momentos cotidianos sin caer en tecnicismos.",
-    "ejemplo_central": "Una llamada pendiente que permanece sin contestar, simbolizando la espera silenciosa entre la intención y la acción."
-  },
-  "fase": "revision",
-  "correccion": "Revisión temática rechazada: originalidad sin evidencia verificable de duplicidad; El guion no cumple con la política de autorreferencias explícitas (solo una referencia presente, falta las otras dos), la progresión temática es confusa y hay r",
+  "borrador": null,
+  "fase": "generacion",
+  "correccion": "",
   "descartes": []
 }
