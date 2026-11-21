@@ -49,5 +49,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=q2H5H8IH72I",
     "youtube_estado": "completo",
     "salida": "state/pendientes_youtube/ent-7b67d9bd486745b5/La fugacidad que da sentido a la vida.mp4"
+  },
+  {
+    "episodio": "ent-47c71ed5f7cb0647",
+    "caso": "ent-47c71ed5f7cb0647",
+    "titulo": "El eco de la espera",
+    "fecha_utc": "2026-11-21T12:18:30.190335+00:00",
+    "youtube_id": "yiXnxzV8Fgo",
+    "youtube_url": "https://www.youtube.com/watch?v=yiXnxzV8Fgo",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-47c71ed5f7cb0647/El eco de la espera.mp4"
   }
 ]
