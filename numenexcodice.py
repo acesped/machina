@@ -6505,6 +6505,10 @@ def _ent_balance_eficiente(d):
     return d
 
 
+class BorradorDemasiadoBreve(ValueError):
+    """El proveedor debe volver a redactar el guion completo."""
+
+
 def _ent_recuperar_borrador_corto(d,enfoque):
     """Ampliación LOCAL y moderada de un borrador prometedor (350–449 palabras).
 
@@ -6521,7 +6525,7 @@ def _ent_recuperar_borrador_corto(d,enfoque):
     nums=[len(e.get('texto','').split()) if isinstance(e,dict) else 0 for e in escenas]
     total=sum(nums)
     if total>=450:return d
-    if total<350:raise ValueError(f'Borrador demasiado breve ({total} palabras); se requiere un nuevo borrador')
+    if total<350:raise BorradorDemasiadoBreve(f'Borrador demasiado breve ({total} palabras); se requiere un nuevo borrador')
     if any(n<12 or n>110 for n in nums):
         raise ValueError('Borrador recuperable: escenas extremas; nuevo borrador necesario')
     nuevo=copy.deepcopy(d)
@@ -6657,7 +6661,7 @@ def _ent_generar(memoria, metricas):
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
-    # Cada proveedor se usa en como máximo una ronda editorial por ejecución.
+    # Cada proveedor puede redactar dos veces si el primer texto es demasiado breve.
     for motor in _aero_motores_guion():
         fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_consultar_openrouter}[motor]
         try:
@@ -6665,16 +6669,27 @@ def _ent_generar(memoria, metricas):
                 enfoque=_ent_enfoque(fn,memoria,descartes)
                 guardar()
             if pendiente is None:
-                print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| un borrador y una revisión',flush=True)
+                print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
                     +'\nMODO EFICIENTE 5.9: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye entre dos y cuatro autorreferencias naturales a la narradora IA, distribuidas. '
                     'Devuelve exclusivamente el JSON completo requerido, sin razonamientos visibles.')
-                candidato=fn(prompt)
-                borrador=_ent_normalizar_borrador(candidato,enfoque)
-                borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
+                borrador=_ent_normalizar_borrador(fn(prompt),enfoque)
+                try:
+                    borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
+                except BorradorDemasiadoBreve as exc:
+                    print(f'Editorial 5.9 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    prompt += (
+                        '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
+                        'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
+                        'Escribe exactamente 9 escenas de 60–72 palabras narradas cada una. '
+                        'Cuenta solo el campo texto de cada escena: apunta a 540–648 palabras. '
+                        'Desarrolla el ejemplo cotidiano con acciones, decisiones y consecuencias concretas.'
+                    )
+                    borrador=_ent_normalizar_borrador(fn(prompt),enfoque)
+                    borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 _ent_balance_eficiente(borrador)
                 borrador=_ent_identidad_local_eficiente(borrador,memoria)
                 borrador=_ent_validar(borrador,memoria)
