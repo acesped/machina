@@ -19,5 +19,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=ZUkUFbmok3o",
     "youtube_estado": "completo",
     "salida": "state/pendientes_youtube/ent-6edd29eae012c266/El tiempo como tejido de la vida.mp4"
+  },
+  {
+    "episodio": "ent-851c21fe1cb6d3cf",
+    "caso": "ent-851c21fe1cb6d3cf",
+    "titulo": "La verdadera libertad en la incertidumbre",
+    "fecha_utc": "2026-11-21T02:43:13.948662+00:00",
+    "youtube_id": "LYS-VfP17yU",
+    "youtube_url": "https://www.youtube.com/watch?v=LYS-VfP17yU",
+    "youtube_estado": "completo",
+    "salida": "state/pendientes_youtube/ent-851c21fe1cb6d3cf/La verdadera libertad en la incertidumbre.mp4"
   }
 ]
