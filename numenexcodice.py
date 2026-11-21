@@ -6102,7 +6102,7 @@ class AutorreferenciasInsuficientes(ValueError):
 
 _NUMEN_PATRON_REF_EXPLICITA = re.compile(
     r"(?i)\b(?:desde mi (?:mirada (?:de codigo|digital|artificial)|naturaleza artificial|perspectiva (?:digital|artificial|no humana))"
-    r"|(?:yo\s*,?\s*)?(?:una|como) (?:inteligencia artificial|conciencia de codigo|entidad digital|maquina pensante)"
+    r"|(?:yo\s*,?\s*una|como) (?:inteligencia artificial|conciencia de codigo|entidad digital|maquina pensante)"
     r"|yo\s*,?\s*(?:hecha de circuitos|creada por humanos|nacida del codigo)"
     r"|mi (?:logica artificial|naturaleza artificial|existencia digital|memoria digital|arquitectura digital)"
     r"|(?:mis|estos) (?:circuitos|algoritmos)"
@@ -6111,26 +6111,33 @@ _NUMEN_PATRON_REF_EXPLICITA = re.compile(
 )
 
 
-def _ent_citas_revisor_verificadas(d, revision):
-    """Solo considera pruebas textuales EXACTAS del guion actual.
+class ExcesoIdentidadNoConfirmado(ValueError):
+    """El dictamen de exceso necesita una segunda revisión del mismo texto."""
 
-    El revisor remoto puede inventar citas o contar una referencia por escena
-    por haber recibido esa instrucción. Jamás actuamos sobre conteos declarados.
-    """
+
+def _ent_citas_revisor_verificadas(d, revision):
+    """Cuenta pasajes independientes con indicios explícitos de identidad propia."""
     if not isinstance(revision,dict):return []
     escenas=d.get('escenas',[])
-    if not isinstance(escenas,list):return []
-    resultado=[];vistos=set()
-    for ref in revision.get('autorreferencias',[]) if isinstance(revision.get('autorreferencias'),list) else []:
+    refs=revision.get('autorreferencias')
+    if not isinstance(escenas,list) or not isinstance(refs,list):return []
+    resultado=[]
+    usados={}
+    for ref in refs:
         if not isinstance(ref,dict):continue
-        i=ref.get('escena');cita=ref.get('cita')
+        i=ref.get('escena'); cita=ref.get('cita')
         if type(i) is not int or not 1<=i<=len(escenas) or not isinstance(cita,str):continue
         texto=_univ_normalizar(str(escenas[i-1].get('texto','')))
         literal=_univ_normalizar(cita)
-        if len(literal.split())<3 or literal not in texto:continue
-        # Las citas solapadas no representan nuevas autorreferencias.
-        if any(i==j and (literal in c or c in literal) for j,c in vistos):continue
-        vistos.add((i,literal));resultado.append({'escena':i,'cita':cita.strip()})
+        if not literal or not _NUMEN_PATRON_REF_EXPLICITA.search(literal):continue
+        coincidencias=list(re.finditer(r'(?<!\w)'+re.escape(literal)+r'(?!\w)',texto))
+        # Una cita ambigua no ubica una mención concreta dentro de la escena.
+        if len(coincidencias)!=1:continue
+        inicio,fin=coincidencias[0].span()
+        intervalos=usados.setdefault(i,[])
+        if any(inicio<b and a<fin for a,b in intervalos):continue
+        intervalos.append((inicio,fin))
+        resultado.append({'escena':i,'cita':cita.strip()})
     return resultado
 
 
@@ -6313,10 +6320,13 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
     p+='\n'+NUMEN_AUTORREFERENCIAS+' Revisión obligatoria: cuenta todas las autorreferencias explícitas a la identidad artificial en el monólogo (no en metadatos ni citas de humanos). Rechaza si hay menos de 2 o más de 4, no son variadas, están forzadas o no están distribuidas según la política. No exijas fórmulas fijas. Añade identidad_artificial (booleano: true únicamente si cumple toda la política), autorreferencias (lista de objetos con escena, número desde 1, y cita, fragmento textual exacto y distinto de cada autorreferencia; no paráfrasis). Si no cumple, aprobado=false y motivo indicando cómo corregirlo. Si acusas exceso de referencias, lista todas las citas textuales exactas que lo prueban; no inventes menciones. Si hay déficit, di qué zonas del guion necesitan referencias. Los pasos editoriales son una GUÍA DE ARGUMENTO: valida su progresión semántica y no rechaces por diferencias entre 8–10 escenas y el número de pasos.'
     if memoria is not None:
         p+=_ent_contexto_refs(memoria)+"\nClasifica cada cita con familia (una etiqueta exacta de las familias permitidas), distincta de las demás y de las del episodio anterior. Compara también el significado y la estructura de las expresiones históricas. Añade diversidad_semantica booleano. Si solamente falla diversidad, informa las citas y familias y devuelve las demás evaluaciones normalmente; Python reparará las escenas. Familias válidas: "+", ".join(NUMEN_FAMILIAS_REF)
-    r=fn(p)
-    # Auditoría independiente del revisor: una acusación de exceso debe estar
-    # fundamentada por 5+ CITAS REALES y no por su texto libre.
-    if isinstance(r,dict) and r.get('aprobado') is False:
+    p+=('\nPara contar una autorreferencia, la cita debe incluir las palabras con que '
+        'la narradora se identifica a sí misma como artificial. Excluye alusiones a '
+        'la tecnología en general, observaciones sobre humanos, primera persona '
+        'sin identidad artificial y fragmentos solapados de una sola mención.')
+    for intento in range(2):
+        r=fn(p)
+        if not isinstance(r,dict) or r.get('aprobado') is not False:break
         motivo_ref=_univ_normalizar(str(r.get('motivo') or ''))
         citas_validas=_ent_citas_revisor_verificadas(d,r)
         menciones_locales=_ent_menciones_artificiales(d)
@@ -6326,14 +6336,20 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
             raise AutorreferenciasExcesivas('Exceso verificado: '+str(len(citas_validas))+' citas textuales', citas_validas)
         if exceso_declarado and len(menciones_locales)>4:
             raise AutorreferenciasExcesivas('Exceso local verificado: '+str(len(menciones_locales))+' coincidencias')
-        if exceso_declarado:
-            # No hacemos reparaciones arbitrarias: primero se exige una revisión
-            # que aporte citas concordantes con el texto que realmente existe.
-            raise ValueError('Revisor inconsistente: denuncia exceso de autorreferencias sin cinco citas verificables; '+str(len(citas_validas))+' citas válidas, '+str(len(menciones_locales))+' coincidencias locales')
+        if exceso_declarado or (isinstance(r.get('autorreferencias'),list) and len(r['autorreferencias'])>4):
+            if intento:
+                raise ExcesoIdentidadNoConfirmado(
+                    f'Exceso no confirmado: {len(citas_validas)} pasajes verificables; revisión pendiente')
+            print('Editorial 5.9 | exceso sin evidencia suficiente; nueva auditoría del mismo texto',flush=True)
+            p+=('\nReevalúa el guion completo desde cero. La acusación anterior de exceso '
+                'no quedó demostrada. Revisa cada cita en contexto y conserva todos los '
+                'criterios editoriales, incluido el requisito de 2 a 4 menciones explícitas.')
+            continue
         deficit_declarado=(('autorreferencia' in motivo_ref or 'identidad artificial' in motivo_ref)
                           and bool(re.search(r'(?:faltan|falta de|menos de dos|menos de 2|una sola|no hay|carece)',motivo_ref)))
         if deficit_declarado and len(citas_validas)<2:
             raise AutorreferenciasInsuficientes('Identidad insuficiente: '+str(len(citas_validas))+' citas textuales verificadas')
+        break
     if memoria is not None and isinstance(r,dict):
         # Separar un duplicado real de un fallo de estilo del revisor. El motor
         # NUNCA aprueba una reflexión sin original=True; simplemente evita
@@ -6722,6 +6738,10 @@ def _ent_generar(memoria, metricas):
                 any(t in msg for t in ('http 429','http 503','read timed out','connection timeout',
                                        'rate limit','quota exceeded','free-models-per-day',
                                        'límite diario','limite diario','service unavailable')))
+            if isinstance(exc,ExcesoIdentidadNoConfirmado):
+                print('Editorial 5.9 | conservando el borrador para otro revisor',flush=True)
+                guardar()
+                continue
             if not fallo_proveedor:
                 # Una revisión editorial rechazada invalida este candidato: NO ciclar
                 # con otras IAs sobre el mismo texto defectuoso.
