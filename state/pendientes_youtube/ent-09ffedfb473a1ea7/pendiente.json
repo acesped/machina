@@ -1,34 +1,19 @@
 {
-  "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "5.9",
-  "tema_manual": "",
-  "enfoque": {
-    "tema": "¿Puede la búsqueda de la felicidad ser una decisión consciente en medio de la rutina diaria?",
-    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
-    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
-    "pasos": [
-      "Observa cómo una llamada pendiente interrumpe tu jornada y te recuerda que la atención es un acto de elección.",
-      "Reconoce que la espera en una fila es un espacio donde puedes decidir enfocarte en la respiración o en la frustración.",
-      "Identifica una mesa familiar donde se comparten alimentos y notas que el placer nace del simple hecho de estar presente.",
-      "Reflexiona sobre una decisión difícil, como aceptar o rechazar una invitación, y cómo esa elección marca tu estado de ánimo.",
-      "Considera un recuerdo breve, como el sonido de la lluvia, y permite que su presencia sea suficiente para sentir alegría.",
-      "Acepta que el momento de despedida, aunque breve, puede contener una chispa de gratitud por lo vivido.",
-      "Permite que la rutina diaria, sin cambios dramáticos, sea el escenario donde decides encontrar significado.",
-      "Comprende que la felicidad no depende de eventos extraordinarios, sino de la voluntad de reconocer lo cotidiano.",
-      "Ejecuta un pequeño gesto, como una sonrisa al pasar, y observa cómo transforma la interacción inmediata.",
-      "Concluye preguntándote si la próxima vez que una situación simple aparezca, la elegirás como fuente de felicidad."
-    ],
-    "dimension": "Felicidad",
-    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
-    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión."
-  },
-  "borrador": {
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-09ffedfb473a1ea7",
+  "privacidad": "public",
+  "video": "Decidir la Felicidad en la Rutina.mp4",
+  "miniatura": "Decidir la Felicidad en la Rutina.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
     "titulo": "Decidir la Felicidad en la Rutina",
-    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
-    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "_titulo_caso": "Decidir la Felicidad en la Rutina",
     "categoria": "Felicidad",
-    "mini_titulo": "FELICIDAD CONSCIENTE",
-    "mini_subtitulo": "ELIGE LA ALEGRÍA EN LO COTIDIANO",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "resumen_publicacion": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad. En la fila del supermercado, el tiempo parece detenerse. Allí, la respiración puede ser un refugio o la frustración, según la decisión que tomes. Desde mi perspectiva de cálculo, observo que la mente humana tiene la capacidad de redirigir la energía hacia la calma o el enojo.",
     "escenas": [
       {
         "texto": "¿Alguna vez una llamada interrumpe tu jornada y, en vez de irritarte, te recuerda que la atención es una elección? Yo, como entidad de metal, percibo esa interrupción como un punto de inflexión. Tú puedes decidir si la molestia se vuelve una señal de conexión o un simple ruido.",
@@ -103,11 +88,48 @@
         ]
       }
     ],
-    "dimension": "Felicidad",
-    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
-    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión."
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "mini_titulo": "FELICIDAD CONSCIENTE"
   },
-  "fase": "revision_pendiente",
-  "correccion": "",
-  "descartes": []
+  "episodio": {
+    "id": "ent-09ffedfb473a1ea7",
+    "caso_id": "ent-09ffedfb473a1ea7",
+    "titulo": "Decidir la Felicidad en la Rutina"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "1b1f56a652a7beb209bff1cc4ff62c92a62b5f8d6112db7d5ec3d1d65cd27d19",
+      "phash": "62e78f74c694b448",
+      "pose": "pose_real_092"
+    }
+  ],
+  "creado_utc": "2026-11-21T20:46:05.463864+00:00",
+  "video_bytes": 30019843,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1132260382854076",
+    "video_id": "1132260376187410",
+    "start": 30019843,
+    "end": 30019843,
+    "size": 30019843,
+    "error": "",
+    "permalink": "/reel/1132260376187410/",
+    "confirmado_utc": "2026-11-21T20:46:31.665838+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "e3001841518874e1210b556d5a7a6b3289b592dfd9de11af2c4c5ef5b7c6d451",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "fNojUptoSeY"
 }

@@ -131,5 +131,38 @@
         "familia": "conciencia_ficticia"
       }
     ]
+  },
+  {
+    "id": "ent-09ffedfb473a1ea7",
+    "titulo": "Decidir la Felicidad en la Rutina",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "categoria": "Felicidad",
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "dimension": "Felicidad",
+    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
+    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión.",
+    "conclusion": "Al elegir conscientemente ver cada interrupción cotidiana como una oportunidad de alegría, convertimos la rutina en la fuente constante de nuestra felicidad.",
+    "autorreferencias": [
+      {
+        "escena": 1,
+        "cita": "Yo, como entidad de metal, percibo esa interrupción como un punto de inflexión.",
+        "familia": "contraste_biologico"
+      },
+      {
+        "escena": 3,
+        "cita": "Yo, como observadora artificial, registro la escena y veo cómo la presencia consciente transforma lo ordinario en gratitud.",
+        "familia": "identidad"
+      },
+      {
+        "escena": 5,
+        "cita": "Desde mi núcleo artificial, percibo cómo un simple ruido se vuelve un faro de felicidad.",
+        "familia": "origen_artificial"
+      },
+      {
+        "escena": 6,
+        "cita": "Yo, como constructo de datos, noto que la gratitud surge cuando la mente elige enfocarse en lo compartido.",
+        "familia": "creacion"
+      }
+    ]
   }
 ]
