@@ -1,0 +1,29 @@
+{
+  "perfil": "numen_humano_universal_v48",
+  "revision_editorial": "5.9",
+  "tema_manual": "",
+  "enfoque": {
+    "tema": "¿Puede la búsqueda de la felicidad ser una decisión consciente en medio de la rutina diaria?",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "pasos": [
+      "Observa cómo una llamada pendiente interrumpe tu jornada y te recuerda que la atención es un acto de elección.",
+      "Reconoce que la espera en una fila es un espacio donde puedes decidir enfocarte en la respiración o en la frustración.",
+      "Identifica una mesa familiar donde se comparten alimentos y notas que el placer nace del simple hecho de estar presente.",
+      "Reflexiona sobre una decisión difícil, como aceptar o rechazar una invitación, y cómo esa elección marca tu estado de ánimo.",
+      "Considera un recuerdo breve, como el sonido de la lluvia, y permite que su presencia sea suficiente para sentir alegría.",
+      "Acepta que el momento de despedida, aunque breve, puede contener una chispa de gratitud por lo vivido.",
+      "Permite que la rutina diaria, sin cambios dramáticos, sea el escenario donde decides encontrar significado.",
+      "Comprende que la felicidad no depende de eventos extraordinarios, sino de la voluntad de reconocer lo cotidiano.",
+      "Ejecuta un pequeño gesto, como una sonrisa al pasar, y observa cómo transforma la interacción inmediata.",
+      "Concluye preguntándote si la próxima vez que una situación simple aparezca, la elegirás como fuente de felicidad."
+    ],
+    "dimension": "Felicidad",
+    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
+    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión."
+  },
+  "borrador": null,
+  "fase": "generacion",
+  "correccion": "",
+  "descartes": []
+}
