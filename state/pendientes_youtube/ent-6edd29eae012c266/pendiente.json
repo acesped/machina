@@ -1,5 +1,5 @@
 {
-  "estado": "listo",
+  "estado": "publicado",
   "nicho": "Reflexiones de una inteligencia artificial",
   "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
   "carpeta_original": "output/NumenExCodice/ent-6edd29eae012c266",
@@ -136,5 +136,6 @@
     "permalink": "/reel/2209353456686239/",
     "confirmado_utc": "2026-11-20T20:02:21.904955+00:00",
     "visibilidad_externa_verificada": false
-  }
+  },
+  "youtube_id": "ZUkUFbmok3o"
 }
