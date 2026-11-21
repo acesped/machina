@@ -64,5 +64,15 @@
     "phash": "66965aae69668698",
     "version": "cosmos-v2",
     "tema": "El silencio que habla entre la rutina"
+  },
+  "ent-eada3f15c243abd0": {
+    "seed": 17615283350056292909,
+    "indice": 1,
+    "pose_id": 11,
+    "pose": "mirada_a_la_nebulosa",
+    "sha256": "88019dba05db6065bf054e1d7cd99417de0fb2d0c8c803b5b1db078ae5fc1290",
+    "phash": "66cf19942f269698",
+    "version": "cosmos-v2",
+    "tema": "El arte de decir adiós"
   }
 }

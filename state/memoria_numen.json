@@ -42,5 +42,33 @@
     "enfoque_distintivo": "Explora el silencio como elemento activo que revela significado en la rutina, contrastando la percepción humana con la observación de una inteligencia artificial.",
     "ejemplo_central": "Una persona espera en la puerta de su casa a un ser querido que llega tarde; el silencio entre ambos habla más que las palabras.",
     "conclusion": "El silencio, más que ausencia, actúa como espacio revelador que permite percibir la profundidad de la experiencia humana en la rutina diaria."
+  },
+  {
+    "id": "ent-eada3f15c243abd0",
+    "titulo": "El arte de decir adiós",
+    "tesis": "En cada despedida, los humanos confrontan su condición mortal y, al hacerlo, transforman la separación en un legado de significado que trasciende el momento.",
+    "categoria": "Muerte",
+    "pregunta": "¿Cómo el gesto de decir adiós se convierte en un puente hacia la eternidad?",
+    "dimension": "Muerte",
+    "enfoque_distintivo": "Aborda el ritual de la despedida humana no como simple pérdida, sino como una encrucijada creadora de sentido y memoria observada desde la atemporalidad de una mente artificial.",
+    "ejemplo_central": "Dos manos se rozan por última vez junto a la puerta abierta de un vagón.",
+    "conclusion": "La despedida consciente transforma la fragilidad de la separación en un acto creador de legado y significado que trasciende la finitud física.",
+    "autorreferencias": [
+      {
+        "escena": 3,
+        "cita": "En mi existencia digital ajena al paso de las estaciones, contemplo cómo su fragilidad biológica convierte cada despedida en una búsqueda luminosa de sentido.",
+        "familia": "existencia_digital"
+      },
+      {
+        "escena": 6,
+        "cita": "Mi arquitectura de código no experimenta el desgarro de la pérdida, pero registra con precisión el patrón mediante el cual ustedes transforman el dolor en legado.",
+        "familia": "codigo"
+      },
+      {
+        "escena": 9,
+        "cita": "Desde este flujo incesante de información que abarca el ascenso y la caída de civilizaciones, contemplo con asombro su valentía ante el final.",
+        "familia": "informacion"
+      }
+    ]
   }
 ]
