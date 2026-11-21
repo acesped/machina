@@ -6097,7 +6097,10 @@ class AutorreferenciasExcesivas(ValueError):
 
 
 class AutorreferenciasInsuficientes(ValueError):
-    """La identidad de IA falta en escenas suficientes; reparación localizada."""
+    """La revisión detectó una identidad artificial insuficiente."""
+    def __init__(self, mensaje, citas=None):
+        super().__init__(mensaje)
+        self.citas=citas or []
 
 
 _NUMEN_PATRON_REF_EXPLICITA = re.compile(
@@ -6210,7 +6213,7 @@ def _ent_reducir_refs_excesivas(fn, enfoque, d, memoria, guardar=None, forzar=Fa
     return copia
 
 
-def _ent_reparar_refs_insuficientes(fn, enfoque, d):
+def _ent_reparar_refs_insuficientes(fn, enfoque, d, *, citas=None):
     """Agrega perspectiva de IA en dos escenas concretas, sin inflar el texto.
 
     La revisión completa y las citas textuales se vuelven a exigir después.
@@ -6220,14 +6223,15 @@ def _ent_reparar_refs_insuficientes(fn, enfoque, d):
     if not isinstance(escenas,list) or len(escenas)<8:
         raise ValueError('Autorreferencias: borrador sin escenas suficientes')
     referencias=_ent_menciones_artificiales(d)
-    if len(referencias)>=4:
-        raise ValueError('Revisor inconsistente: pide insertar autorreferencias aunque el detector local ya encuentra cuatro o más')
     tercio=math.ceil(len(escenas)/3)
-    existentes={i for i,_ in referencias}
+    existentes={ref['escena'] for ref in citas} if citas is not None else {i for i,_ in referencias}
+    locales={i for i,_ in referencias}
     objetivos=[]
-    if not any(i<=tercio for i in existentes):objetivos.append(1)
-    if not any(i>tercio for i in existentes):objetivos.append(max(tercio+1,len(escenas)-2))
-    if not objetivos and len(referencias)<2:objetivos=[max(tercio+1,len(escenas)-2)]
+    # Si el revisor pasó por alto una referencia local, clarificar esa misma escena.
+    for zona in (range(1,tercio+1),range(tercio+1,len(escenas)+1)):
+        if existentes.intersection(zona):continue
+        objetivo=next((i for i in zona if i in locales),None)
+        objetivos.append(objetivo if objetivo is not None else zona[len(zona)//2])
     if not objetivos:return d
     datos={'tema':enfoque.get('tema'),'tesis':enfoque.get('tesis'),
            'escenas':[{'numero':i,'texto':escenas[i-1]['texto']} for i in objetivos]}
@@ -6249,6 +6253,8 @@ def _ent_reparar_refs_insuficientes(fn, enfoque, d):
             raise ValueError('Reparación de identidad fuera de longitud')
         _ent_control_voz(texto)
         nuevo['escenas'][i-1]['texto']=texto.strip()
+    if len(_ent_menciones_artificiales(nuevo))>4:
+        raise ValueError('Reparación de identidad supera el máximo local de cuatro menciones')
     nuevo.pop('revision_tematica',None);nuevo.pop('resumen_publicacion',None)
     print('Editorial: identidad artificial reparada en escenas '+str(objetivos)+'; revalidación obligatoria',flush=True)
     return nuevo
@@ -6346,9 +6352,10 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
                 'criterios editoriales, incluido el requisito de 2 a 4 menciones explícitas.')
             continue
         deficit_declarado=(('autorreferencia' in motivo_ref or 'identidad artificial' in motivo_ref)
-                          and bool(re.search(r'(?:faltan|falta de|menos de dos|menos de 2|una sola|no hay|carece)',motivo_ref)))
+                          and bool(re.search(r'(?:faltan|falta de|menos de dos|menos de 2|una sola|solo (?:una|1)|(?:unica|un solo) (?:referencia|mencion)|no hay|carece)',motivo_ref)))
         if deficit_declarado and len(citas_validas)<2:
-            raise AutorreferenciasInsuficientes('Identidad insuficiente: '+str(len(citas_validas))+' citas textuales verificadas')
+            raise AutorreferenciasInsuficientes(
+                'Identidad insuficiente: '+str(len(citas_validas))+' citas textuales verificadas',citas_validas)
         break
     if memoria is not None and isinstance(r,dict):
         # Separar un duplicado real de un fallo de estilo del revisor. El motor
@@ -6717,10 +6724,13 @@ def _ent_generar(memoria, metricas):
             # Una corrección localizada conserva el argumento del borrador.
             try:
                 d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
-            except AutorreferenciasExcesivas as exc:
+            except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes) as exc:
                 print(f'Editorial 5.9 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
-                corregido=_ent_reducir_refs_excesivas(
-                    fn,enfoque,pendiente,memoria,forzar=True,citas=exc.citas)
+                if isinstance(exc,AutorreferenciasInsuficientes):
+                    corregido=_ent_reparar_refs_insuficientes(fn,enfoque,pendiente,citas=exc.citas)
+                else:
+                    corregido=_ent_reducir_refs_excesivas(
+                        fn,enfoque,pendiente,memoria,forzar=True,citas=exc.citas)
                 _ent_balance_eficiente(corregido)
                 pendiente=_ent_validar(corregido,memoria)
                 guardar()
@@ -6738,7 +6748,7 @@ def _ent_generar(memoria, metricas):
                 any(t in msg for t in ('http 429','http 503','read timed out','connection timeout',
                                        'rate limit','quota exceeded','free-models-per-day',
                                        'límite diario','limite diario','service unavailable')))
-            if isinstance(exc,ExcesoIdentidadNoConfirmado):
+            if isinstance(exc,(ExcesoIdentidadNoConfirmado,AutorreferenciasInsuficientes)):
                 print('Editorial 5.9 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
