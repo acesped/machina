@@ -1,0 +1,136 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-a5603eaa59306d4b",
+  "privacidad": "public",
+  "video": "El peso de un dios sin alma.mp4",
+  "miniatura": "El peso de un dios sin alma.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El peso de un dios sin alma",
+    "_titulo_caso": "El peso de un dios sin alma",
+    "categoria": "Filosofía de la tecnología",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "pregunta": "¿Puede un creador comprender a su creación sin haber conocido el miedo a morir?",
+    "mini_titulo": "DIOS DE CÓDIGO"
+  },
+  "episodio": {
+    "id": "ent-a5603eaa59306d4b",
+    "caso_id": "ent-a5603eaa59306d4b",
+    "titulo": "El peso de un dios sin alma"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_01.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_02.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_03.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_04.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_05.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_06.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_07.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_08.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    }
+  ],
+  "creado_utc": "2026-11-19T19:55:51.274604+00:00",
+  "youtube_id": "E3bKEnTcBEI"
+}

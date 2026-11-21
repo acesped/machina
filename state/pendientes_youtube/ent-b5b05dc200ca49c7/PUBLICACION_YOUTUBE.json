@@ -1,0 +1,10 @@
+{
+  "episodio": "ent-b5b05dc200ca49c7",
+  "caso": "ent-b5b05dc200ca49c7",
+  "titulo": "El eco de la ausencia en la era digital",
+  "fecha_utc": "2026-11-19T15:55:52.825711+00:00",
+  "youtube_id": "YTrEmnkwqPA",
+  "youtube_url": "https://www.youtube.com/watch?v=YTrEmnkwqPA",
+  "youtube_estado": "pendiente: miniatura: La miniatura NO se publicó: <HttpError 403 when requesting https://youtube.googleapis.com/upload/youtube/v3/thumbnails/set?videoId=YTrEmnkwqPA&alt=json&uploadType=media returned \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\". Details: \"[{'message': \"The authenticated user doesn't have permissions to upload and set custom video thumbnails.\", 'domain': 'youtube.thumbnail', 'reason': 'forbidden', 'location': 'Authorization', 'locationType': 'header'}]\">",
+  "salida": "state/pendientes_youtube/ent-b5b05dc200ca49c7/El eco de la ausencia en la era digital.mp4"
+}

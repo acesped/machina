@@ -1,0 +1,136 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-32d418d82575acef",
+  "privacidad": "public",
+  "video": "El peso del instante en la corriente del tiempo.mp4",
+  "miniatura": "El peso del instante en la corriente del tiempo.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El peso del instante en la corriente del tiempo",
+    "_titulo_caso": "El peso del instante en la corriente del tiempo",
+    "categoria": "Filosofía de la existencia",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "pregunta": "¿Es la imposibilidad del retorno temporal lo que engendra el valor intrínseco de los actos en el cosmos?",
+    "mini_titulo": "VALOR DEL INSTANTE"
+  },
+  "episodio": {
+    "id": "ent-32d418d82575acef",
+    "caso_id": "ent-32d418d82575acef",
+    "titulo": "El peso del instante en la corriente del tiempo"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_01.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_02.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_03.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_04.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_05.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 3, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_06.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 1, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_07.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 2, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    },
+    {
+      "archivo": "imagen_08.jpg",
+      "titulo": "NumenExCodice: androide cósmica, composición 4, paleta azul interestelar",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (imágenes generadas con IA)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco original integrado + variación procedural por episodio",
+      "atribucion": "Ilustración ficticia, no fotografía documental"
+    }
+  ],
+  "creado_utc": "2026-11-20T00:00:14.276814+00:00",
+  "youtube_id": "26En3inCE2s"
+}
