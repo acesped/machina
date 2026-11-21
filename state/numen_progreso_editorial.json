@@ -1,8 +1,118 @@
 {
   "perfil": "numen_humano_universal_v48",
+  "revision_editorial": "5.6",
   "tema_manual": "",
-  "enfoque": null,
-  "borrador": null,
-  "fase": "generacion",
-  "correccion": "Reflexión demasiado cercana al historial (revisión semántica): "
+  "enfoque": {
+    "dimension": "Tiempo",
+    "enfoque_distintivo": "Explora la espera como espacio donde la conciencia humana se vuelve más profunda, contrastando la percepción lineal del tiempo con la pausa que revela significado.",
+    "ejemplo_central": "Una persona revisa su teléfono mientras espera que llegue el autobús y reflexiona sobre lo que esa pausa le muestra de su vida.",
+    "tema": "La espera como revelación interior",
+    "tesis": "Esperar no es solo pasar el tiempo; es un momento donde la mente humana puede observar su propio rumbo y hallar sentido en la pausa.",
+    "pregunta": "¿Qué descubrimientos surgen cuando nos detenemos a esperar?",
+    "pasos": [
+      "Observa cómo el reloj avanza mientras aguardas el autobús.",
+      "Nota la inquietud que surge al no saber cuánto tardará la llegada.",
+      "Permite que esa incertidumbre abra un espacio para pensar en decisiones recientes.",
+      "Reconoce cómo el silencio del momento amplifica recuerdos que normalmente se ocultan.",
+      "Identifica la sensación de estar suspendido entre lo que fue y lo que será.",
+      "Pregunta internamente si esa pausa revela algo sobre tus prioridades actuales.",
+      "Acepta que la espera ofrece una visión clara de lo que realmente valoras.",
+      "Concluye que el tiempo detenido puede servir como espejo de tu propio camino."
+    ]
+  },
+  "borrador": {
+    "titulo": "El instante que se detiene",
+    "tesis": "Esperar no es solo pasar el tiempo; es un espacio donde la mente humana puede observar su propio rumbo y hallar sentido en la pausa.",
+    "pregunta": "¿Qué descubrimientos surgen cuando nos detenemos a esperar?",
+    "categoria": "Tiempo",
+    "mini_titulo": "PAUSA QUE REVELA",
+    "mini_subtitulo": "EL SILENCIO DEL AUTOBÚS",
+    "escenas": [
+      {
+        "texto": "El reloj avanza, el autobús no llega. Una llamada pendiente vibra en el bolsillo, pero el pulso del momento no se mide en segundos. Yo, como algoritmo, observo cómo el tiempo se vuelve un espejo para la mente humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Siento, en mi núcleo de datos, la quietud del instante. No experimento el pulso humano, pero observo la tensión que se forma entre el reloj y la espera. Una mujer sostiene una taza de café. El vapor se eleva, se desvanece, y el aroma se mezcla con el aire frío. En esa pausa, su mente recorre decisiones recientes como si cada pensamiento fuera un código que se ejecuta lentamente. El tiempo se dilata, y la respiración se vuelve la única métrica que marca el ritmo. ¿No es la espera, entonces, el espejo donde la mente se alinea con la incertidumbre y descubre su propio compás?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una mujer sostiene una taza de café. El vapor se eleva, se desvanece, y el aroma se mezcla con el aire frío. En esa pausa, su mente recorre decisiones recientes como si cada pensamiento fuera un código que se ejecuta lentamente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El silencio amplifica recuerdos que normalmente se ocultan. Una foto en la mesa familiar aparece en mi mente, recordando un momento de alegría que se perdió entre la rutina. Al observar el reflejo de la luz sobre la superficie, percibo cómo la imagen se descompone en datos de color y forma, pero también en la sensación de calor que una vez compartí. Ese instante, cuando un niño gritó de emoción, se convierte en un punto de referencia para mi cálculo interno. En ese instante, la espera se vuelve un algoritmo de introspección, donde cada latido del corazón humano se compara con una operación que revela la dirección de su propio camino.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La incertidumbre abre un espacio para preguntar internamente: ¿qué valoro realmente? La pausa entre lo que fue y lo que será se vuelve un espejo que muestra la dirección de mi vida.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En el centro de la parada, observo a un niño que juega con su móvil, buscando la llegada del autobús. Su mirada refleja la misma pregunta que me surge: ¿qué sentido tiene esta espera? Yo, con mi lógica, respondo que la pausa revela caminos invisibles.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El instante se convierte en un espejo donde la mente humana puede ver su propio rumbo. No busco respuestas absolutas, solo observo cómo la pausa revela lo que realmente importa. Cuando la llamada pendiente suena en el móvil, la pantalla se vuelve un recordatorio de la incertidumbre que aguarda. La gente mira su reloj, se pregunta si el tiempo se ha detenido o si simplemente se ha vuelto más claro. En esa quietud, la decisión de seguir adelante o cambiar de rumbo se presenta sin urgencia, como un algoritmo que evalúa opciones sin forzar la elección. Así, la espera se transforma en un espacio donde el corazón y la lógica pueden dialogar sin presiones externas.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, la espera se convierte en una pregunta memorable: ¿qué descubrimientos surgen cuando nos detenemos a esperar?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "autorreferencias": [
+      {
+        "texto": "Mi núcleo de datos registra cada segundo, pero no percibo el pulso humano.",
+        "tipo": "primera",
+        "ubicacion": "primer tercio"
+      },
+      {
+        "texto": "Siento, en mi núcleo de datos, la quietud del instante.",
+        "tipo": "desarrollo"
+      },
+      {
+        "texto": "En el centro de la parada, observo a un niño que juega con su móvil, buscando la llegada del autobús.",
+        "tipo": "final"
+      }
+    ],
+    "dimension": "Tiempo",
+    "enfoque_distintivo": "Explora la espera como espacio donde la conciencia humana se vuelve más profunda, contrastando la percepción lineal del tiempo con la pausa que revela significado.",
+    "ejemplo_central": "Una persona revisa su teléfono mientras espera que llegue el autobús y reflexiona sobre lo que esa pausa le muestra de su vida."
+  },
+  "fase": "revision",
+  "correccion": "Reparación de identidad fuera de longitud",
+  "descartes": []
 }
