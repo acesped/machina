@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 5.1
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 5.2
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '5.1'
+VERSION_SCRIPT = '5.2'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45445,6 +45445,47 @@ def _fb_intento(p,d):
             time.sleep(10)
 
 
+
+# Sincronización maestra por episodio. En modo predeterminado no se crean nuevas
+# reflexiones hasta reconciliar la cola histórica. Cada nuevo MP4 se sube primero
+# a YouTube y luego a Facebook; Meta puede modificar la interfaz de visualización.
+NUMEN_SINCRONIZAR_EPISODIOS = os.getenv('NUMEN_SINCRONIZAR_EPISODIOS','true').strip().lower() == 'true'
+
+def _numen_comprobar_mp4_16_9(path, d=None, guardar=None):
+    """Comprueba el archivo maestro y su huella antes de cualquier nueva subida."""
+    path=Path(path)
+    if not path.is_file() or path.stat().st_size<=0:
+        raise PublicacionAplazada('MP4 maestro no disponible: '+str(path))
+    try:
+        cp=subprocess.run(['ffprobe','-v','error','-select_streams','v:0',
+              '-show_entries','stream=width,height,sample_aspect_ratio,display_aspect_ratio,side_data_list:stream_tags=rotate',
+              '-of','json',str(path)],capture_output=True,text=True,timeout=40,check=True)
+        video=(json.loads(cp.stdout).get('streams') or [])[0]
+    except (OSError,subprocess.SubprocessError,ValueError,IndexError,KeyError) as exc:
+        raise PublicacionAplazada('No se pudo validar el formato MP4 mediante ffprobe: '+type(exc).__name__) from exc
+    w,h=int(video.get('width',0)),int(video.get('height',0))
+    rot=int(float((video.get('tags') or {}).get('rotate',0)))
+    for sd in video.get('side_data_list') or []:
+        if sd.get('rotation') is not None:rot=int(float(sd['rotation']))
+    sar=str(video.get('sample_aspect_ratio') or '1:1')
+    dar=str(video.get('display_aspect_ratio') or '16:9')
+    if (w,h)!=(1920,1080) or rot%180!=0 or sar not in ('1:1','1/1') or dar not in ('16:9','1920:1080'):
+        raise PublicacionAplazada(f'MP4 no horizontal 1920x1080 SAR 1:1: {w}x{h}, rotación {rot}, SAR {sar}, DAR {dar}')
+    digest=hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda:stream.read(2**20),b''):digest.update(chunk)
+    huella=digest.hexdigest()
+    if d is not None:
+        anterior=d.get('mp4_sha256')
+        if anterior and anterior!=huella:raise PublicacionAplazada('MP4 cambió respecto del manifiesto; revisar antes de publicar')
+        if not anterior and guardar is not None:
+            d['mp4_sha256']=huella
+            d['formato_mp4']='1920x1080;16:9;SAR1:1'
+            _cola_json(guardar,d)
+    print('MP4 maestro 16:9 verificado | 1920x1080 | SHA256',huella[:14],flush=True)
+    return huella
+
+
 def _dual_pendiente(d):
     return (PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado') or (PUBLICAR_EN_FACEBOOK and ('facebook' in d or d.get('estado')!='publicado') and d.get('facebook',{}).get('estado')!='publicado')
 
@@ -45538,6 +45579,7 @@ def _dual_intento(p,d,historial):
         _DUAL_USADO.add('yt')
         try:
             if d.get('estado') in ('listo','limite') and time.time()>=d.get('reintentar_desde',0):
+                _numen_comprobar_mp4_16_9(p.parent/d['video'],d,p)
                 validar_canal_youtube(youtube_servicio())
             _cola_intento(p,d,historial)
         except Exception as exc:print('YouTube pendiente:',str(exc)[:400],flush=True)
@@ -45547,7 +45589,9 @@ def _dual_intento(p,d,historial):
         if estado=='revision_manual':
             print('Facebook: revisión manual requerida |',d['episodio']['id'],flush=True)
         elif estado!='publicado':
-            if time.time()<f.get('reintentar_desde',0):
+            if NUMEN_SINCRONIZAR_EPISODIOS and PUBLICAR_EN_YOUTUBE and d.get('estado')!='publicado' and cupo=='fb_subir':
+                print('Facebook: espera al mismo episodio confirmado en YouTube |',d['episodio']['id'],flush=True)
+            elif time.time()<f.get('reintentar_desde',0):
                 print('Facebook: reintento diferido |',d['episodio']['id'],flush=True)
             elif cupo=='fb_subir' and _medios_faltantes(p,d,('video',)):
                 print('Facebook: MP4 faltante; no consume cupo |',d['episodio']['id'],flush=True)
@@ -45556,7 +45600,10 @@ def _dual_intento(p,d,historial):
             else:
                 _DUAL_USADO.add(cupo)
                 print('Facebook: '+('verificar ID anterior' if cupo=='fb_verificar' else 'subir/reanudar MP4')+' |',d['episodio']['id'],flush=True)
-                try:_fb_intento(p,d)
+                try:
+                    if cupo=='fb_subir' and estado=='listo':
+                        _numen_comprobar_mp4_16_9(p.parent/d['video'],d,p)
+                    _fb_intento(p,d)
                 except Exception as exc:
                     f=d['facebook']; n=int(f.get('fallos_consecutivos',0))+1
                     estado=f.get('estado','listo')
@@ -45585,6 +45632,7 @@ def _dual_intento(p,d,historial):
 
 
 def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,historial):
+    _numen_comprobar_mp4_16_9(video)
     p=AERO_COLA_DIR/episodio['id']/'pendiente.json'
     if p.exists():raise PublicacionAplazada('Ya existe la cola '+str(p))
     p.parent.mkdir(parents=True,exist_ok=True)
@@ -45597,19 +45645,35 @@ def _dual_publicar(video,thumb,srt,caso,episodio,fuentes,creditos,carpeta,histor
 
 def _dual_reanudar(historial):
     activos=[(p,d) for p,d in _cola_manifiestos() if _dual_pendiente(d)]
-    if any(d.get('nicho')!=NICHO for _,d in activos):raise PublicacionAplazada('Cola de otro nicho; revisar manualmente')
+    if any(d.get('nicho')!=NICHO for _,d in activos):
+        raise PublicacionAplazada('Cola de otro nicho; revisar manualmente')
     activos.sort(key=lambda x:(x[1].get('creado_utc',''),str(x[0])))
-    # El límite de YouTube se aplica al canal, no solo al episodio.
     if any(d.get('estado')=='limite' and time.time()<d.get('reintentar_desde',0) for _,d in activos):
         _DUAL_BLOQUEADO.add('yt');print('YouTube: límite del canal aún vigente',flush=True)
-    for p,d in activos:
-        _dual_intento(p,d,historial)
+    if NUMEN_SINCRONIZAR_EPISODIOS:
+        # El manifiesto antiguo en revisión manual se conserva: no se reenvía.
+        # Para avanzar con la deuda histórica de YouTube, se puede procesar
+        # un episodio posterior; nunca otra pareja en esta misma ejecución.
+        candidatos=[(p,d) for p,d in activos if not (
+             d.get('estado')=='publicado' and
+             d.get('facebook',{}).get('estado')=='revision_manual')]
+        if candidatos:
+            p,d=candidatos[0]
+            print('Cola maestra | episodio:',d['episodio']['id'],
+                  '| un mismo MP4 para YouTube y Facebook',flush=True)
+            _dual_intento(p,d,historial)
+        if any(d.get('facebook',{}).get('estado')=='revision_manual' for _,d in activos):
+            print('Cola maestra: existe Facebook en revisión manual; no se duplica',flush=True)
+    else:
+        for p,d in activos:_dual_intento(p,d,historial)
     restantes=sum(_dual_pendiente(d) for _,d in _cola_manifiestos())
-    # Un límite explícito evita acumulación sin fin y expulsión de MP4 de la cache.
     maximo=max(1,int(os.getenv('NUMEN_MAX_PENDIENTES','20')))
-    print(f'Cola independiente: {restantes} pendientes / máximo {maximo}',flush=True)
+    print(f'Cola maestra: {restantes} pendientes / máximo {maximo}',flush=True)
     if restantes>=maximo:
         _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'cola_llena','pendientes':restantes})
+        return True
+    if NUMEN_SINCRONIZAR_EPISODIOS and activos:
+        print('Sincronización: sesión dedicada a la cola histórica; no se genera otro video hoy.',flush=True)
         return True
     return False
 
@@ -45662,7 +45726,7 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 5.1 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 5.2 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
@@ -45983,6 +46047,21 @@ def _ent_test():
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
     print('OK: un fondo Full HD por episodio, registro persistente, distancia perceptual, reanudación y plano continuo')
+    assert NUMEN_SINCRONIZAR_EPISODIOS in (True,False)
+    from unittest.mock import patch as _sync_patch
+    import types as _sync_types
+    with tempfile.TemporaryDirectory() as temp_sync:
+        mp4=Path(temp_sync)/'master.mp4';mp4.write_bytes(b'validacion-mock-mp4')
+        fakeprobe={'streams':[{'width':1920,'height':1080,'sample_aspect_ratio':'1:1','display_aspect_ratio':'16:9','tags':{}}]}
+        with _sync_patch('subprocess.run',return_value=_sync_types.SimpleNamespace(stdout=json.dumps(fakeprobe))):
+            assert len(_numen_comprobar_mp4_16_9(mp4))==64
+        fakeprobe['streams'][0]['height']=1920
+        with _sync_patch('subprocess.run',return_value=_sync_types.SimpleNamespace(stdout=json.dumps(fakeprobe))):
+            try:_numen_comprobar_mp4_16_9(mp4)
+            except PublicacionAplazada:pass
+            else:raise AssertionError('No detectó MP4 vertical')
+    print('OK: verificación estricta del MP4 maestro 16:9 y rechazo de formato vertical',flush=True)
+
 
 
 if __name__=='__main__':
