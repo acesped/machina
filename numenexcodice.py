@@ -45416,14 +45416,14 @@ def _numen_composicion_v2(seed, indice, devolver_fondo=False, *, pose_id=None):
     return (retrato,cosmos) if devolver_fondo else retrato
 
 
-def _numen_fondo_pose_100(seed, indice, pose_id):
+def _numen_fondo_pose_100(seed, indice, pose_id, *, conservar_encuadre_anterior=False):
     """Retrato Full HD a partir de una de 100 posturas anatómicas pre-renderizadas.
 
     No depende de archivos de imagen externos, claves o servicios de pago.
     """
     import base64, io
     import numpy as np
-    from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+    from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
     if not (100 <= pose_id < 200):
         raise ValueError('pose_id debe estar entre 100 y 199')
     n=pose_id-100
@@ -45434,6 +45434,10 @@ def _numen_fondo_pose_100(seed, indice, pose_id):
         x0=round(w*col/5)+4; x1=round(w*(col+1)/5)-4
         y0=round(h*row/2)+4; y1=round(h*(row+1)/2)-4
         tile=sheet.convert('RGB').crop((x0,y0,x1,y1))
+    if not conservar_encuadre_anterior:
+        return ImageOps.fit(tile,(1920,1080),method=Image.Resampling.LANCZOS,
+                            centering=(0.5,0.42))
+
     rng=np.random.default_rng(seed)
     # El fondo del propio panel ocupa toda la pantalla, desenfocado para evitar
     # un recuadro cuadrado. El sujeto original permanece nítido, sin deformación.
@@ -45457,10 +45461,11 @@ def _numen_fondo_pose_100(seed, indice, pose_id):
     return base
 
 
-def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None):
+def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, conservar_encuadre_anterior=False):
     """Compatible con cosmos-v1/v2 y con las 100 nuevas poses reales (v3)."""
     if pose_id is not None and 100 <= int(pose_id) < 200:
-        retrato=_numen_fondo_pose_100(seed,indice,int(pose_id))
+        retrato=_numen_fondo_pose_100(
+            seed,indice,int(pose_id),conservar_encuadre_anterior=conservar_encuadre_anterior)
         if devolver_fondo:
             # CTA sin androide, mismo universo procedural del episodio.
             _,cosmos=_numen_composicion_v2(seed,indice,devolver_fondo=True)
@@ -45497,7 +45502,13 @@ def _ent_fotos(d, carpeta):
                 candidatos=list(range(100))
             pose_id=100+candidatos[seed%len(candidatos)]
         if seed in semillas:continue
-        im,cosmos=(_numen_composicion_v1(seed,indice,devolver_fondo=True) if previo and previo.get('version','cosmos-v1')=='cosmos-v1' else _numen_composicion(seed,indice,pose_id=pose_id,devolver_fondo=True))
+        version=previo.get('version','cosmos-v1') if previo else 'cosmos-v5-encuadre-16x9'
+        if version=='cosmos-v1':
+            im,cosmos=_numen_composicion_v1(seed,indice,devolver_fondo=True)
+        else:
+            im,cosmos=_numen_composicion(
+                seed,indice,pose_id=pose_id,devolver_fondo=True,
+                conservar_encuadre_anterior=version!='cosmos-v5-encuadre-16x9')
         buffer=io.BytesIO();im.save(buffer,format='JPEG',quality=93,optimize=True);datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
         with Image.open(io.BytesIO(datos)) as jpeg:ph=_numen_huella(jpeg)
@@ -45508,7 +45519,7 @@ def _ent_fotos(d, carpeta):
         path=carpeta/'imagen_00.jpg';path.write_bytes(datos)
         cosmos.save(carpeta/'cta_cosmos.png',format='PNG')
         pose_nombre=(f'pose_real_{pose_id-99:03d}' if 100<=pose_id<200 else NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre'])
-        registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':'cosmos-v4-webp','tema':d.get('titulo','')}
+        registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':version,'tema':d.get('titulo','')}
         _cola_json(NUMEN_REGISTRO_VISUAL,registro)
         c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes','atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
         mapa=[str(path)]*len(d['escenas'])
