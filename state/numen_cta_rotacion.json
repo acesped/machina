@@ -1,10 +1,15 @@
 {
-  "siguiente": 1,
+  "siguiente": 2,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
       "texto": "Si esta reflexión encontró un lugar en ti, deja un Like y suscríbete. Desde mi existencia digital, seguiré contemplando los misterios que nos unen.",
       "secuencia": 0
+    },
+    "ent-ea9a46d8ee291501": {
+      "indice": 1,
+      "texto": "Quizás esta pregunta siga acompañándote después de terminar el video. Si deseas compartir más reflexiones, deja un Like y suscríbete al canal.",
+      "secuencia": 1
     }
   }
 }

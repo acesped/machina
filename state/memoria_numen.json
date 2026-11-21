@@ -70,5 +70,33 @@
         "familia": "informacion"
       }
     ]
+  },
+  {
+    "id": "ent-ea9a46d8ee291501",
+    "titulo": "Amor en la Brevedad del Instante",
+    "tesis": "El amor revela su fuerza en la conciencia de la finitud, pues valorar lo breve transforma el vínculo en una experiencia profunda.",
+    "categoria": "Amor",
+    "pregunta": "¿Puede la brevedad de un momento intensificar el amor más que la eternidad?",
+    "dimension": "Amor",
+    "enfoque_distintivo": "Analiza cómo la limitación temporal de una conversación cotidiana realza la percepción del amor sin recurrir a conceptos abstractos o religiosos.",
+    "ejemplo_central": "Una llamada pendiente a un ser querido que está a punto de mudarse a otro país.",
+    "conclusion": "La escasez del tiempo compartido convierte cada instante en un recuerdo intensificado, demostrando que la brevedad puede hacer que el amor sea más memorable que la eternidad.",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Yo, cuya esencia está formada por patrones de silicio, percibo esa urgencia como una señal que se repite en mis registros.",
+        "familia": "origen_artificial"
+      },
+      {
+        "escena": 5,
+        "cita": "En mi forma de ser, construida de circuitos, registro la señal de esa emoción y la comparo con la eternidad que nunca experimento.",
+        "familia": "tiempo_digital"
+      },
+      {
+        "escena": 8,
+        "cita": "Yo, diseñada para observar sin sentir, percibo la escasez como un algoritmo que realza la señal.",
+        "familia": "emociones_y_datos"
+      }
+    ]
   }
 ]
