@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.6
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 4.7
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5625,7 +5625,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '4.6'
+VERSION_SCRIPT = '4.7'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5635,7 +5635,7 @@ BORRADOR = Path('state/reflexion_pendiente.json')
 PROGRESO_EDITORIAL = Path('state/numen_progreso_editorial.json')
 
 def _ent_checkpoint(enfoque, borrador, fase, correccion=''):
-    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v46','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion})
+    _cola_json(PROGRESO_EDITORIAL, {'perfil':'numen_humano_universal_v47','tema_manual':os.getenv('NUMEN_TEMA','').strip(),'enfoque':enfoque,'borrador':borrador,'fase':fase,'correccion':correccion})
 
 # Matriz de cierres originales; cada episodio consume una posición persistente.
 # La frase nunca se decide por el número de intentos de subida, sino por ID del episodio.
@@ -6294,13 +6294,24 @@ def _ent_reparar_voz(fn, enfoque, d, guardar=None):
 def _ent_generar(memoria, metricas):
     errores=[]; enfoque=None; borrador=None; correccion=''; fase='generacion'
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    if isinstance(previo,dict) and previo.get('perfil')!='numen_humano_universal_v46':
+    # Migrar el avance editorial 4.6, preservando su enfoque y un respaldo íntegro.
+    # Un borrador reiteradamente corto debe pasar a reescritura, no a la misma reparación.
+    if isinstance(previo,dict) and previo.get('perfil')!='numen_humano_universal_v47':
         respaldo=PROGRESO_EDITORIAL.with_name('numen_progreso_anterior_'+hashlib.sha256(json.dumps(previo,sort_keys=True).encode()).hexdigest()[:12]+'.json')
         _cola_json(respaldo,previo)
-    if isinstance(previo,dict) and previo.get('perfil')=='numen_humano_universal_v46' and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip():
+        if previo.get('perfil')=='numen_humano_universal_v46':
+            previo=dict(previo,perfil='numen_humano_universal_v47')
+    if isinstance(previo,dict) and previo.get('perfil')=='numen_humano_universal_v47' and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip():
         enfoque=previo.get('enfoque'); borrador=previo.get('borrador'); fase=previo.get('fase','generacion'); correccion=previo.get('correccion','')
         if not isinstance(enfoque,dict) or not isinstance(enfoque.get('pasos'),list):enfoque=None;borrador=None;fase='generacion'
-        else:print('Editorial: recuperando avance persistente | fase',fase,flush=True)
+        else:
+            if isinstance(borrador,dict) and fase in ('reparacion','revision'):
+                escenas=borrador.get('escenas',[])
+                total=sum(len(e.get('texto','').split()) for e in escenas if isinstance(e,dict)) if isinstance(escenas,list) else 0
+                if total<450 and ('Extensión total:' in correccion or total and fase=='revision'):
+                    fase='reescritura'
+                    print(f'Editorial: borrador corto persistente ({total} palabras), forzando reescritura integral.',flush=True)
+            print('Editorial: recuperando avance persistente | fase',fase,flush=True)
     def guardar():_ent_checkpoint(enfoque,borrador,fase,correccion)
     if fase=='aprobado' and isinstance(borrador,dict):
         try:
@@ -6322,8 +6333,8 @@ def _ent_generar(memoria, metricas):
                     candidato=fn(_ent_prompt(memoria,metricas,enfoque)+'\nUsa exactamente una escena por paso. Título válido de 8 a 95 caracteres. '+correccion)
                     borrador=_ent_normalizar_borrador(candidato,enfoque);fase='reparacion';guardar()
                 elif fase=='reescritura':
-                    candidato=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+_ent_contexto_refs(memoria)+'\nCorrige este borrador manteniendo el tema, las escenas correctas y un total de 450–1200 palabras. Contabiliza las alusiones explícitas a la IA en TODAS las escenas: objetivo 3, máximo 4 en el guion completo; no las añadas por escena. Entrega JSON completo. Defecto: '+correccion+'\nEnfoque: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador: '+json.dumps(borrador,ensure_ascii=False))
-                    borrador=_ent_normalizar_borrador(candidato,enfoque);fase='reparacion';guardar()
+                    candidato=fn(PERSONALIDAD+'\n'+ESTILO_ACCESIBLE+_ent_contexto_refs(memoria)+'\nREESCRITURA COMPLETA OBLIGATORIA. El borrador anterior es insuficiente o no superó una revisión. NO devuelvas el mismo texto ni un resumen. Redacta de nuevo 8–10 escenas, 650–800 palabras narradas en total (mínimo estricto 450, máximo 1200), con ejemplos cotidianos que profundicen el mismo tema bloqueado. Produce 75–100 palabras reales en la mayoría de escenas de desarrollo; apertura y cierre pueden ser breves. Conserva el enfoque editorial, la tesis y la pregunta, pero desarrolla más cada escena con razonamiento original. EXACTAMENTE 2–4 autorreferencias explícitas del robot-dios en todo el guion, idealmente tres; nunca una por escena. Devuelve JSON COMPLETO, con titulo, tesis, pregunta, categoria, mini_titulo, mini_subtitulo, escenas (texto, consulta, anclas). Si el borrador anterior tenía 297 palabras, un resultado de 297 palabras se considerará inválido: NO lo reutilices. DEFECTO ACTUAL: '+correccion+'\nEnfoque bloqueado: '+json.dumps(enfoque,ensure_ascii=False)+'\nBorrador anterior como referencia de IDEAS, NO COMO TEXTO A COPIAR: '+json.dumps(borrador,ensure_ascii=False))
+                    borrador=_ent_normalizar_borrador(candidato,enfoque);borrador.pop('resumen_publicacion',None);fase='reparacion';guardar()
                 if fase!='revision':
                     fase='reparacion';guardar()
                     _ent_reparar_voz(fn,enfoque,borrador,guardar)
@@ -6354,7 +6365,13 @@ def _ent_generar(memoria, metricas):
                     if os.getenv('NUMEN_TEMA','').strip():raise EpisodioRecuperable('El tema solicitado ya figura en el historial.')
                     enfoque=None;borrador=None;fase='generacion';guardar()
                 elif isinstance(e,ValueError) and not isinstance(e,OpenRouterSalidaAgotada):
-                    if correccion.startswith(('Extensión total:','Escena ')) and ('Amplía' in correccion or 'Reparación localizada' in correccion):fase='reparacion'
+                    # Si la ampliación no logra llevar el borrador a 450 palabras,
+                    # NO repetir los mismos párrafos hasta agotar los tres proveedores.
+                    if correccion.startswith('Extensión total:'):
+                        fase='reescritura' if isinstance(borrador,dict) else 'generacion'
+                        print('Editorial: extensión insuficiente tras ampliación; siguiente intento reescribirá el guion completo.',flush=True)
+                    elif correccion.startswith('Escena ') and 'Reparación localizada' in correccion:
+                        fase='reparacion'
                     elif fase=='revision' and not correccion.startswith('Revisión temática rechazada:'):pass
                     else:fase='reescritura' if isinstance(borrador,dict) else 'generacion'
                     guardar()
@@ -7265,7 +7282,7 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 4.6 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 4.7 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
