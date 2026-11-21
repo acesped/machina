@@ -1,26 +1,25 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "5.8",
+  "revision_editorial": "5.9",
   "tema_manual": "",
   "enfoque": {
-    "tema": "¿Puede la espera consciente cambiar la manera en que sentimos el paso del tiempo?",
-    "tesis": "La espera, cuando se vive con plena atención, transforma la prisa en presencia, otorgando significado al instante que transcurre.",
-    "pregunta": "¿Qué ocurre cuando dejas de contar los minutos y empiezas a sentir cada respiración mientras esperas?",
-    "pasos": [
-      "Una llamada pendiente suena y el corazón se acelera, anticipando la respuesta.",
-      "En lugar de mirar el reloj, notas el leve temblor de tus dedos sobre la mesa.",
-      "Observas cómo el sonido del teléfono se mezcla con el ruido lejano de la calle.",
-      "Te das cuenta de que la espera se vuelve un espacio donde el presente se hace tangible.",
-      "Al reconocer cada inhalación, la ansiedad se disuelve en una calma inesperada.",
-      "El momento que antes parecía vacío se llena de pequeños detalles que antes pasaban desapercibidos.",
-      "Comprendes que la prisa es una ilusión creada por la urgencia de llegar a un futuro inmediato.",
-      "Al final, la respuesta llega y la espera ya no se mide en segundos, sino en la experiencia vivida.",
-      "Te preguntas si esa atención plena puede aplicarse a otras esperas cotidianas, como una fila o una despedida.",
-      "La reflexión final invita a considerar si el tiempo se vuelve nuestro aliado cuando lo observamos sin juzgar."
-    ],
     "dimension": "Tiempo",
-    "enfoque_distintivo": "Explora la espera como práctica de atención plena que altera la percepción del tiempo, diferenciándose de episodios que solo analizan la prisa o la planificación futura.",
-    "ejemplo_central": "Una persona espera una llamada importante mientras sostiene su taza de café, sintiendo cada sorbo y el tic-tac del reloj."
+    "enfoque_distintivo": "Explora el acto de esperar como espacio donde la conciencia humana se vuelve más profunda, contrastando la percepción lineal del tiempo con la pausa que revela valores ocultos.",
+    "ejemplo_central": "Una persona revisa su teléfono cada minuto mientras aguarda la llegada de un ser querido a la estación.",
+    "tema": "El significado oculto de la espera",
+    "tesis": "Esperar no es solo pasar el tiempo; es un momento donde el ser humano descubre lo que realmente valora y cómo se relaciona con el flujo de su vida.",
+    "pregunta": "¿Qué revela la espera sobre quiénes somos y qué queremos?",
+    "pasos": [
+      "Una llamada pendiente suena y el silencio se extiende.",
+      "En la pausa, el corazón percibe la ausencia como presencia.",
+      "El tiempo parece dilatarse, mientras la mente revisa recuerdos.",
+      "Cada segundo se vuelve espejo de deseos no expresados.",
+      "La espera permite observar la propia paciencia y su límite.",
+      "Surge la reflexión sobre lo que se está dispuesto a posponer.",
+      "Al llegar el esperado, la emoción muestra lo que la espera guardó.",
+      "El recuerdo de la espera persiste, moldeando futuras decisiones.",
+      "Comprender la espera ayuda a reconocer el valor de los momentos simples."
+    ]
   },
   "borrador": null,
   "fase": "generacion",
