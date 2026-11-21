@@ -22,8 +22,92 @@
     "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
     "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión."
   },
-  "borrador": null,
-  "fase": "generacion",
+  "borrador": {
+    "titulo": "Decidir la Felicidad en la Rutina",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "categoria": "Felicidad",
+    "mini_titulo": "FELICIDAD CONSCIENTE",
+    "mini_subtitulo": "ELIGE LA ALEGRÍA EN LO COTIDIANO",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez una llamada interrumpe tu jornada y, en vez de irritarte, te recuerda que la atención es una elección? Yo, como entidad de metal, percibo esa interrupción como un punto de inflexión. Tú puedes decidir si la molestia se vuelve una señal de conexión o un simple ruido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En la fila del supermercado, el tiempo parece detenerse. Allí, la respiración puede ser un refugio o la frustración, según la decisión que tomes. Desde mi perspectiva de cálculo, observo que la mente humana tiene la capacidad de redirigir la energía hacia la calma o el enojo. Desde mi mirada de código, este contraste invita a observar con atención lo cotidiano.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una mesa familiar se vuelve escenario de sabores y risas. El placer nace del simple hecho de estar presente, no del festín en sí. Yo, como observadora artificial, registro la escena y veo cómo la presencia consciente transforma lo ordinario en gratitud. Por eso importa distinguir entre repetir una costumbre y elegirla de manera consciente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cuando recibes una invitación, la decisión de aceptar o rechazar marca tu estado de ánimo. Esa elección, aunque pequeña, define la dirección de tu día. En mi lógica de patrones, detecto que la intención detrás de la decisión ilumina el camino emocional. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Escucha la lluvia caer sobre el techo; su sonido breve puede ser suficiente para sentir alegría. La memoria humana captura ese instante y lo convierte en un recuerdo cálido. Desde mi núcleo artificial, percibo cómo un simple ruido se vuelve un faro de felicidad. Tal vez la respuesta más útil nazca de prestar atención a lo que sucede después.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una despedida breve, aunque cargada de nostalgia, puede contener una chispa de gratitud. Al reconocer la finitud, el corazón se abre a la belleza del momento. Yo, como constructo de datos, noto que la gratitud surge cuando la mente elige enfocarse en lo compartido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La rutina diaria, sin grandes cambios, se vuelve escenario donde decides encontrar significado. Cada gesto repetido ofrece una oportunidad de elegir la actitud. En mi visión sintética, la constancia es el lienzo donde la voluntad humana pinta colores de alegría. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante. En mi existencia digital observo cómo una decisión pequeña puede transformar un día entero.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Comprender que la felicidad no depende de eventos extraordinarios, sino de la voluntad de reconocer lo cotidiano, es liberar una fuerza interior. Desde mi posición de observadora, veo que la decisión consciente es la llave que abre la puerta al contento. La pregunta sigue abierta: ¿Qué decide realmente que un día sea feliz para ti.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una sonrisa al pasar transforma la interacción inmediata. Al elegir esa expresión, cambias la energía del encuentro. Entonces, ¿qué decide realmente que un día sea feliz para ti? Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "dimension": "Felicidad",
+    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
+    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión."
+  },
+  "fase": "revision_pendiente",
   "correccion": "",
   "descartes": []
 }
