@@ -6093,6 +6093,10 @@ class AutorreferenciasExcesivas(ValueError):
     """Señal para reparar un exceso sin desechar el tema ni todo el guion."""
 
 
+class AutorreferenciasInsuficientes(ValueError):
+    """La identidad de IA falta en escenas suficientes; reparación localizada."""
+
+
 _NUMEN_PATRON_REF_EXPLICITA = re.compile(
     r"(?i)\b(?:desde mi (?:mirada (?:de codigo|digital|artificial)|naturaleza artificial|perspectiva (?:digital|artificial|no humana))"
     r"|(?:yo\s*,?\s*)?(?:una|como) (?:inteligencia artificial|conciencia de codigo|entidad digital|maquina pensante)"
@@ -6170,6 +6174,48 @@ def _ent_reducir_refs_excesivas(fn, enfoque, d, memoria, guardar=None, forzar=Fa
     return copia
 
 
+def _ent_reparar_refs_insuficientes(fn, enfoque, d):
+    """Agrega perspectiva de IA en dos escenas concretas, sin inflar el texto.
+
+    La revisión completa y las citas textuales se vuelven a exigir después.
+    """
+    import copy
+    escenas=d.get('escenas',[])
+    if not isinstance(escenas,list) or len(escenas)<8:
+        raise ValueError('Autorreferencias: borrador sin escenas suficientes')
+    referencias=_ent_menciones_artificiales(d)
+    tercio=math.ceil(len(escenas)/3)
+    existentes={i for i,_ in referencias}
+    objetivos=[]
+    if not any(i<=tercio for i in existentes):objetivos.append(1)
+    if not any(i>tercio for i in existentes):objetivos.append(max(tercio+1,len(escenas)-2))
+    if not objetivos and len(referencias)<2:objetivos=[max(tercio+1,len(escenas)-2)]
+    if not objetivos:return d
+    datos={'tema':enfoque.get('tema'),'tesis':enfoque.get('tesis'),
+           'escenas':[{'numero':i,'texto':escenas[i-1]['texto']} for i in objetivos]}
+    prompt=(ESTILO_ACCESIBLE+'\nREPARACIÓN DE IDENTIDAD: este personaje es una inteligencia artificial ficticia. '
+            'Reescribe solo las escenas dadas para integrar exactamente UNA referencia explícita, '
+            'diferente y pertinente a su naturaleza artificial por cada escena. No hagas autopresentaciones '
+            'ni digas que no puedes sentir. Conserva el sentido, ejemplo cotidiano, enlace y casi exactamente '
+            'la longitud original; NO aumentes palabras más del 25%. '
+            'Devuelve solo JSON {"escenas":[{"numero":1,"texto":"..."}]}. Datos: '
+            +json.dumps(datos,ensure_ascii=False))
+    resultado=fn(prompt)
+    items=resultado.get('escenas') if isinstance(resultado,dict) else None
+    if not isinstance(items,list) or {v.get('numero') for v in items if isinstance(v,dict)}!=set(objetivos):
+        raise ValueError('Reparación de identidad incompleta')
+    nuevo=copy.deepcopy(d)
+    for v in items:
+        i=v['numero'];texto=v.get('texto');antes=escenas[i-1]['texto']
+        if not isinstance(texto,str) or not .75*len(antes.split())<=len(texto.split())<=max(70,1.25*len(antes.split())):
+            raise ValueError('Reparación de identidad fuera de longitud')
+        _ent_control_voz(texto)
+        nuevo['escenas'][i-1]['texto']=texto.strip()
+    nuevo.pop('revision_tematica',None);nuevo.pop('resumen_publicacion',None)
+    print('Editorial: identidad artificial reparada en escenas '+str(objetivos)+'; revalidación obligatoria',flush=True)
+    return nuevo
+
+
 class RevisionNarrativaLocal(ValueError):
     """Escenas concretas mal estructuradas; reparación revisada por el editor."""
     def __init__(self, mensaje, escenas):
@@ -6223,10 +6269,24 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
     if memoria is not None:
         candidatos=_ent_candidatos_historial(dict(d,**{k:enfoque[k] for k in ('dimension','enfoque_distintivo','ejemplo_central') if k in enfoque}),memoria)
         p+='\nRevisión adicional obligatoria: exige una situación cotidiana concreta y comprensible sin conocimientos previos, una pregunta existencial o humana significativa y una conclusión específica, no una moraleja genérica. La perspectiva no humana debe ser reconocible en el arco completo; las autorreferencias explícitas son obligatorias según la política adjunta y no se necesitan en cada segmento. Compara pregunta, tesis, enfoque, ejemplo y conclusión con los antecedentes candidatos: mismo núcleo argumental con otras palabras es duplicado; compartir una dimensión no lo es. Añade al JSON las claves original (booleano), accesible (booleano), ejemplo_central (frase concreta extraída del guion), conclusion (síntesis específica), enfoque_distintivo (aporte específico) y coincidencia (título previo o cadena vacía). IMPORTANTE: original evalúa EXCLUSIVAMENTE si existe un núcleo argumental equivalente en un episodio histórico. No marques original=false por exceso de autorreferencias, longitud, jerga, coherencia, falta de ejemplo o formato; esos defectos pertenecen a aprobado/accesible/escenas_fuera. Si original=false, coincidencia debe identificar exactamente el título previo concreto que se duplica; si no hay duplicado, original=true incluso si debes rechazar el guion por otros motivos. Devuelve ejemplo_central, conclusion y enfoque_distintivo como textos concretos incluso al rechazar por estilo. Antecedentes candidatos: '+json.dumps(candidatos,ensure_ascii=False)
-    p+='\n'+NUMEN_AUTORREFERENCIAS+' Revisión obligatoria: cuenta todas las autorreferencias explícitas a la identidad artificial en el monólogo (no en metadatos ni citas de humanos). Rechaza si hay menos de 2 o más de 4, no son variadas, están forzadas o no están distribuidas según la política. No exijas fórmulas fijas. Añade identidad_artificial (booleano: true únicamente si cumple toda la política), autorreferencias (lista de objetos con escena, número desde 1, y cita, fragmento textual exacto y distinto de cada autorreferencia; no paráfrasis). Si no cumple, aprobado=false y motivo indicando cómo corregirlo. Los pasos editoriales son una GUÍA DE ARGUMENTO: valida su progresión semántica y no rechaces por diferencias entre 8–10 escenas y el número de pasos.'
+    p+='\n'+NUMEN_AUTORREFERENCIAS+' Revisión obligatoria: cuenta todas las autorreferencias explícitas a la identidad artificial en el monólogo (no en metadatos ni citas de humanos). Rechaza si hay menos de 2 o más de 4, no son variadas, están forzadas o no están distribuidas según la política. No exijas fórmulas fijas. Añade identidad_artificial (booleano: true únicamente si cumple toda la política), autorreferencias (lista de objetos con escena, número desde 1, y cita, fragmento textual exacto y distinto de cada autorreferencia; no paráfrasis). Si no cumple, aprobado=false y motivo indicando cómo corregirlo. Si acusas exceso de referencias, lista todas las citas textuales exactas que lo prueban; no inventes menciones. Si hay déficit, di qué zonas del guion necesitan referencias. Los pasos editoriales son una GUÍA DE ARGUMENTO: valida su progresión semántica y no rechaces por diferencias entre 8–10 escenas y el número de pasos.'
     if memoria is not None:
         p+=_ent_contexto_refs(memoria)+"\nClasifica cada cita con familia (una etiqueta exacta de las familias permitidas), distincta de las demás y de las del episodio anterior. Compara también el significado y la estructura de las expresiones históricas. Añade diversidad_semantica booleano. Si solamente falla diversidad, informa las citas y familias y devuelve las demás evaluaciones normalmente; Python reparará las escenas. Familias válidas: "+", ".join(NUMEN_FAMILIAS_REF)
     r=fn(p)
+    # La identidad se valida como criterio independiente. Una revisión de
+    # autorreferencias NO debe destruir el enfoque ni tratarse como duplicidad.
+    if isinstance(r,dict) and r.get('aprobado') is False:
+        motivo_ref=_univ_normalizar(str(r.get('motivo') or ''))
+        citas_revisor=r.get('autorreferencias')
+        exceso_revisor=(isinstance(citas_revisor,list) and len(citas_revisor)>4)
+        exceso_declarado=(('autorreferencia' in motivo_ref or 'identidad artificial' in motivo_ref)
+                          and bool(re.search(r'(?:mas de cuatro|mas de 4|exceso|demasiadas|cinco|seis|siete|ocho|nueve|diez|10 menciones|una por escena)',motivo_ref)))
+        if exceso_revisor or exceso_declarado:
+            raise AutorreferenciasExcesivas('Autorreferencias: revisión indica exceso; corregir únicamente las escenas afectadas')
+        deficit_declarado=(('autorreferencia' in motivo_ref or 'identidad artificial' in motivo_ref)
+                          and bool(re.search(r'(?:faltan|falta de|menos de dos|menos de 2|una sola|no hay|carece)',motivo_ref)))
+        if deficit_declarado:
+            raise AutorreferenciasInsuficientes('Autorreferencias: revisión indica ausencia o insuficiencia; corregir sin sustituir el tema')
     if memoria is not None and isinstance(r,dict):
         # Separar un duplicado real de un fallo de estilo del revisor. El motor
         # NUNCA aprueba una reflexión sin original=True; simplemente evita
@@ -6441,6 +6501,10 @@ def _ent_generar(memoria, metricas):
                 except RevisionNarrativaLocal as editorial:
                     print('Editorial: revisión narrativa localizada | escenas',editorial.escenas,flush=True)
                     borrador=_ent_reparar_narrativa(fn,enfoque,d,editorial)
+                    fase='revision';guardar()
+                    d=_ent_validar_coherencia(fn,enfoque,_ent_validar(borrador,memoria),memoria)
+                except AutorreferenciasInsuficientes:
+                    borrador=_ent_reparar_refs_insuficientes(fn,enfoque,d)
                     fase='revision';guardar()
                     d=_ent_validar_coherencia(fn,enfoque,_ent_validar(borrador,memoria),memoria)
                 except AutorreferenciasExcesivas:
@@ -45752,12 +45816,12 @@ def _ent_main():
     historial=ruta_historial(); memoria=_ent_read(MEMORIA,[])
     if not isinstance(memoria,list):raise ValueError('Memoria inválida: no sobrescribir.')
     cobertura=_ent_cobertura(memoria)
-    print(f'Editorial 5.4 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
+    print(f'Editorial 5.5 | {len(memoria)} registros históricos / objetivo {NUMEN_META_EDITORIAL}+ | dimensión prioritaria: {_ent_elegir_dimension(memoria)} | cobertura clasificada: {sum(cobertura.values())}',flush=True)
     asegurar_dependencias()
     if (PUBLICAR_EN_YOUTUBE or PUBLICAR_EN_FACEBOOK) and not AERO_IA_DRY_RUN:
         if not PERMITIR_PUBLICACION_SIN_REVISION:raise RuntimeError('Publicación automática requiere ALLOW_UNREVIEWED_PUBLICATION=true.')
         if NUMEN_SOLO_EPISODIOS_NUEVOS:
-            print('Publicación 5.4 | generar episodio nuevo y enviar el MISMO MP4 a YouTube y Facebook en esta ejecución; cola antigua ignorada.',flush=True)
+            print('Publicación 5.5 | generar episodio nuevo y enviar el MISMO MP4 a YouTube y Facebook en esta ejecución; cola antigua ignorada.',flush=True)
         elif _dual_reanudar(historial):return
     # A draft survives image/provider failures; keep ID stable for duplicate protection.
     d=_ent_read(BORRADOR,None)
