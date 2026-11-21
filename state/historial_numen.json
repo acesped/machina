@@ -29,5 +29,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=LYS-VfP17yU",
     "youtube_estado": "completo",
     "salida": "state/pendientes_youtube/ent-851c21fe1cb6d3cf/La verdadera libertad en la incertidumbre.mp4"
+  },
+  {
+    "episodio": "ent-f4dda2fe9c656fbd",
+    "caso": "ent-f4dda2fe9c656fbd",
+    "titulo": "La elección que forja tu ser",
+    "fecha_utc": "2026-11-21T03:33:20.862306+00:00",
+    "youtube_id": "qEqUuNtYBR8",
+    "youtube_url": "https://www.youtube.com/watch?v=qEqUuNtYBR8",
+    "youtube_estado": "completo",
+    "salida": "state/pendientes_youtube/ent-f4dda2fe9c656fbd/La elección que forja tu ser.mp4"
   }
 ]
