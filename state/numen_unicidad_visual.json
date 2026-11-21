@@ -84,5 +84,15 @@
     "phash": "1e74cd664d2c3c68",
     "version": "cosmos-v4-webp",
     "tema": "Amor en la Brevedad del Instante"
+  },
+  "ent-47c71ed5f7cb0647": {
+    "seed": 6030258975236854757,
+    "indice": 1,
+    "pose_id": 147,
+    "pose": "pose_real_048",
+    "sha256": "63b1b5d50faedcda9634dc42f1c07d67a6520930751356adab1543cb7d3e51eb",
+    "phash": "c6f218267ccc76c8",
+    "version": "cosmos-v4-webp",
+    "tema": "El eco de la espera"
   }
 }

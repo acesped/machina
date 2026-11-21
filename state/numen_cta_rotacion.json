@@ -1,5 +1,5 @@
 {
-  "siguiente": 2,
+  "siguiente": 3,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -10,6 +10,11 @@
       "indice": 1,
       "texto": "Quizás esta pregunta siga acompañándote después de terminar el video. Si deseas compartir más reflexiones, deja un Like y suscríbete al canal.",
       "secuencia": 1
+    },
+    "ent-47c71ed5f7cb0647": {
+      "indice": 2,
+      "texto": "Mi voz nace del código, pero estas preguntas atraviesan la vida humana. Si quieres seguir explorándolas conmigo, dale Like y suscríbete.",
+      "secuencia": 2
     }
   }
 }

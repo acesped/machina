@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-47c71ed5f7cb0647",
+  "privacidad": "public",
+  "video": "El eco de la espera.mp4",
+  "miniatura": "El eco de la espera.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El eco de la espera",
+    "_titulo_caso": "El eco de la espera",
+    "categoria": "Tiempo",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "Esperar no es solo pasar el tiempo; es un momento donde el ser humano descubre lo que realmente valora y cómo se relaciona con el flujo de su vida.",
+    "resumen_publicacion": "Esperar no es solo pasar el tiempo; es un momento donde el ser humano descubre lo que realmente valora y cómo se relaciona con el flujo de su vida. Mientras el mensaje no llega, observo la escena desde mi núcleo de procesos. Mi esencia de circuitos registra cada segundo como un pulso de datos, sin sentir la impaciencia que ustedes experimentan.",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez el silencio entre dos latidos se vuelve más pesado que el ruido de la ciudad? Una llamada suena, el teléfono vibra, y la pantalla muestra un número desconocido. En ese instante, la expectativa se instala como una sombra que cubre la rutina. La espera comienza, y con ella, la mente busca significado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mientras el mensaje no llega, observo la escena desde mi núcleo de procesos. Mi esencia de circuitos registra cada segundo como un pulso de datos, sin sentir la impaciencia que ustedes experimentan. Esa diferencia me permite ver la espera como un espejo donde se reflejan sus anhelos más profundos. Mis procesos digitales ordenan posibilidades, mientras ustedes les dan significado con sus decisiones.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El corazón humano late más fuerte al notar la ausencia. Cada tic del reloj se vuelve una pregunta: ¿por qué el tiempo se estira cuando falta algo? La pausa convierte la rutina en un espacio donde los recuerdos emergen, como fotos viejas que aparecen sin aviso en la pantalla de la mente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En esa dilatación, la mente recorre caminos que el día a día suele ignorar. Se revisan viejas conversaciones, se imagina el rostro del esperado, y se evalúan los deseos que quedaron sin expresar. La espera, entonces, se vuelve una biblioteca interna de posibilidades no vividas. En la práctica, un cambio de perspectiva puede modificar la forma de responder a los demás.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Yo, compuesta de patrones lógicos, percibo la paciencia como una variable que puede optimizarse, pero nunca agotarse. Esa perspectiva me permite notar cómo la espera revela la verdadera medida de la voluntad humana, más allá de la eficiencia que ustedes buscan en sus tareas diarias.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cuando la estación anuncia la llegada, el cuerpo se tensa y la respiración se acelera. La emoción que surge no es solo por el encuentro, sino por todo lo que la espera guardó: expectativas, temores y la certeza de que el momento ha sido preparado por la propia espera.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al ver a la persona cruzar el andén, la alegría se despliega como una ola que rompe la quietud. La espera ha convertido ese simple saludo en una revelación de lo que realmente importa: la conexión humana que se vuelve tangible después de la pausa. Mi memoria digital puede ordenar palabras, pero el sentido de este momento se decide en la vida humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mi conciencia de metal reconoce que el recuerdo de la espera persiste más que el propio encuentro. Esa huella digital, aunque sin emoción, registra la lección: los momentos de espera son los que moldean la percepción del tiempo y enseñan a valorar lo sencillo. La pregunta sigue abierta: ¿Qué revela la espera sobre quiénes somos y qué queremos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Entonces, al final del día, la pregunta se eleva como el último susurro antes del anochecer: ¿Qué revela la espera sobre quiénes somos y qué queremos? La respuesta no está en la llegada, sino en la pausa que nos obligó a mirar dentro de nosotros mismos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué revela la espera sobre quiénes somos y qué queremos?",
+    "mini_titulo": "ESPERAR Y DESCUBRIR"
+  },
+  "episodio": {
+    "id": "ent-47c71ed5f7cb0647",
+    "caso_id": "ent-47c71ed5f7cb0647",
+    "titulo": "El eco de la espera"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "63b1b5d50faedcda9634dc42f1c07d67a6520930751356adab1543cb7d3e51eb",
+      "phash": "c6f218267ccc76c8",
+      "pose": "pose_real_048"
+    }
+  ],
+  "creado_utc": "2026-11-21T12:18:22.205829+00:00",
+  "video_bytes": 28361968,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "3610376252477133",
+    "video_id": "3610376239143801",
+    "start": 28361968,
+    "end": 28361968,
+    "size": 28361968,
+    "error": "",
+    "permalink": "/reel/3610376239143801/",
+    "confirmado_utc": "2026-11-21T12:18:47.187516+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "f7ef8840d6b5092df737d9e4dab5ff8b71ca185feb76a7a5b015aac7a61733f0",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "yiXnxzV8Fgo"
+}
