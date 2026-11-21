@@ -1,5 +1,5 @@
 {
-  "estado": "limite",
+  "estado": "publicado",
   "nicho": "Reflexiones de una inteligencia artificial",
   "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
   "carpeta_original": "output/NumenExCodice/ent-c98e17e0fa49762e",
@@ -135,5 +135,6 @@
     "error": "Facebook ID 1750942740080634 recibido pero sin confirmación de publicación. Revisar Business Suite; no se vuelve a subir.",
     "fallos_consecutivos": 3,
     "reintentar_desde": 1795215254.610612
-  }
+  },
+  "youtube_id": "m4EiOAF9vLY"
 }
