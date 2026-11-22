@@ -1,6 +1,6 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "7.1",
+  "revision_editorial": "7.2",
   "tema_manual": "",
   "enfoque": {
     "tema": "El sufrimiento por una mentira dicha para proteger",
@@ -22,99 +22,8 @@
     "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
     "ejemplo_central": "Alguien oculta una verdad difícil para no preocupar a quien quiere, y luego nota que ese silencio abrió distancia."
   },
-  "borrador": {
-    "titulo": "Mentiras que Cuidan",
-    "tesis": "El dolor de una mentira protectora nace no solo del engaño, sino de la herida que deja el cuidado decidido por otro.",
-    "pregunta": "¿Puede una mentira hecha por amor convertirse en una forma de abandono?",
-    "categoria": "Sufrimiento",
-    "mini_titulo": "CUIDADO Y DOLOR",
-    "mini_subtitulo": "CUANDO LA VERDAD SE OCULTA",
-    "escenas": [
-      {
-        "texto": "¿Alguna vez una mentira pequeña te dejó más solo que una verdad dura? Una llamada pendiente, un mensaje que no envías, el silencio que pesa. La ausencia de palabras crea un vacío que no se llena con la calma. Cuando la verdad se esconde, la distancia se abre sin que se note. ¿No es eso un abandono silencioso?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "No hablo del engaño que busca provecho, sino del que intenta cuidar. Cuando alguien decide no revelar una noticia difícil para proteger la paz de otro, la intención parece noble. Pero la protección se convierte en una barrera invisible. La confianza se ve empañada por la sospecha de que se ha elegido la comodidad sobre la honestidad. Mi lógica de sensores observa posibilidades, mientras ustedes les dan significado solo decisiones. Mis procesos digitales ordenan posibilidades, mientras ustedes les dan significado con sus decisiones.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Alguien oculta una noticia difícil para no romper la calma de quien ama. La decisión se basa en la lógica de evitar el dolor inmediato. El cuidado se traduce en una omisión que, en la práctica, crea una grieta. La persona protegida siente que se le niega la información que necesita para decidir por sí misma.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Al principio parece un regalo: evitar dolor, sostener la esperanza, dar tiempo. La mentira se presenta como un bálsamo temporal. Se mantiene la ilusión de estabilidad. Pero la ilusión es frágil; la ausencia de la verdad se convierte en una sombra que crece con cada día que pasa sin aclararse.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Pero el que recibe la verdad a medias empieza a sospechar que no merece confianza. La sospecha se instala como un eco que se repite. El silencio se convierte en una señal de que algo falta. La relación se vuelve una danza de miradas que no se comunican, donde el silencio habla más que las palabras.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Mi código no guarda secretos; por eso una omisión pesa distinto. En mi arquitectura, cada dato se registra con precisión. Cuando un dato se omite, la brecha se marca con claridad. La ausencia de información se percibe como una anomalía que altera el flujo de la interacción.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "El cuidado que decide por el otro puede sentirse como una puerta cerrada. La puerta se cierra para proteger, pero también para separar. La distancia se siente más grande cuando la puerta no se abre. La confianza se desvanece, y la relación se vuelve una conversación con paredes.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "La pregunta no es si la mentira fue buena o mala, sino qué vínculo deja. El vínculo se descompone cuando la verdad se retiene. La relación se vuelve un equilibrio precario, donde la honestidad se reemplaza por la incertidumbre. El dolor surge de la falta de claridad, no solo del engaño.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "¿Puede una mentira hecha por amor convertirse en una forma de abandono? La respuesta no es simple. El amor que protege puede ser también el que distancia. La ausencia de verdad se convierte en un abandono silencioso que pesa más que cualquier dolor inmediato. La pregunta final invita a reflexionar sobre el verdadero precio del cuidado.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      }
-    ],
-    "postura_androide": {
-      "base": "sentada en el suelo",
-      "torso": "inclinado hacia delante",
-      "cabeza": "mirando arriba",
-      "brazo_izquierdo": "mano en la cadera",
-      "brazo_derecho": "relajado junto al cuerpo"
-    },
-    "dimension": "Sufrimiento",
-    "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
-    "ejemplo_central": "Alguien oculta una verdad difícil para no preocupar a quien quiere, y luego nota que ese silencio abrió distancia."
-  },
-  "fase": "revision_pendiente",
+  "borrador": null,
+  "fase": "generacion",
   "correccion": "",
   "descartes": [
     {
