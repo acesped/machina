@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 7.1
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 7.2
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -1471,7 +1471,7 @@ def _consultar_gemini(prompt, *, reintentar_503=True, timeout_lectura=None):
     return _limpiar_json_ia(texto)
 
 
-_GROQ_TPM_REINTENTO_USADO = False
+_GROQ_ESPERA_TPM_RESTANTE = 70.0
 
 
 def _groq_demora_tpm(respuesta):
@@ -1490,7 +1490,7 @@ def _consultar_groq(prompt):
     import requests
     key=os.getenv('GROQ_API_KEY','').strip()
     if not key:raise RuntimeError('GROQ_API_KEY no configurada')
-    global _GROQ_TPM_REINTENTO_USADO, _GROQ_MODELO_REAL
+    global _GROQ_ESPERA_TPM_RESTANTE, _GROQ_MODELO_REAL
     url='https://api.groq.com/openai/v1/chat/completions'
     headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'}
     modelos=list(dict.fromkeys(m for m in (_GROQ_MODELO_REAL,GROQ_MODELO,GROQ_MODELO_ALTERNATIVO) if m and m not in _GROQ_MODELOS_AGOTADOS))
@@ -1508,6 +1508,10 @@ def _consultar_groq(prompt):
         demora=_groq_demora_tpm(res)
         for _retry_tpm in range(2):
             if demora is None:break
+            if demora>_GROQ_ESPERA_TPM_RESTANTE:
+                print('  Groq: presupuesto de espera por minuto agotado; se cede al respaldo.',flush=True)
+                break
+            _GROQ_ESPERA_TPM_RESTANTE-=demora
             print(f'  Groq: límite por minuto; esperar {demora:.1f}s según Retry-After; reintento acotado.',flush=True)
             time.sleep(demora)
             res=requests.post(url,headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
@@ -5647,7 +5651,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '7.1'
+VERSION_SCRIPT = '7.2'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6224,7 +6228,7 @@ def _ent_reducir_refs_excesivas(fn, enfoque, d, memoria, guardar=None, forzar=Fa
            'reescribir_escenas':[
                {'escena':i,'texto':escenas[i-1]['texto'],'conservar_solo':conservar.get(i)}
                for i in objetivo],
-           'otras_escenas':[{'escena':i+1,'texto':e['texto']} for i,e in enumerate(escenas) if i+1 not in objetivo]}
+           'numeros_permitidos':objetivo}
     p=(ESTILO_ACCESIBLE+'\nEditor de precisión: el borrador incluye demasiadas menciones explícitas a que habla una IA. '
        'Reescribe SOLO las escenas de reescribir_escenas, eliminando las autorreferencias redundantes y conservando su argumento, su emoción, los ejemplos humanos, su longitud aproximada y sus transiciones. '
        'Si conservar_solo contiene una cita, mantenla literalmente como única mención de esa escena. '
@@ -6232,13 +6236,19 @@ def _ent_reducir_refs_excesivas(fn, enfoque, d, memoria, guardar=None, forzar=Fa
        'No cambies título, tesis, pregunta, cierre ni escenas ajenas. '
        'Devuelve SOLO JSON {"escenas":[{"escena": numero, "texto": "párrafo completo"}]}. Datos: '
        +json.dumps(datos,ensure_ascii=False))
-    r=fn(p)
-    actualizaciones=r.get('escenas') if isinstance(r,dict) else None
-    if not isinstance(actualizaciones,list):raise ValueError('Reparación de referencias: respuesta inválida')
+    for intento in range(2):
+        r=fn(p)
+        actualizaciones=r.get('escenas') if isinstance(r,dict) else None
+        if (isinstance(actualizaciones,list) and len(actualizaciones)==len(objetivo)
+                and all(isinstance(v,dict) and type(v.get('escena')) is int
+                        and isinstance(v.get('texto'),str) for v in actualizaciones)
+                and {v['escena'] for v in actualizaciones}==set(objetivo)):
+            break
+        if intento:
+            raise ValueError('Reparación de referencias: escenas no autorizadas, duplicadas o incompletas')
+        p+=f'\nCorrige el formato: devuelve exactamente estas escenas, una vez cada una: {objetivo}.'
     mapa={}
     for v in actualizaciones:
-        if not isinstance(v,dict) or type(v.get('escena')) is not int or v['escena'] not in objetivo or not isinstance(v.get('texto'),str):
-            raise ValueError('Reparación de referencias: escena no autorizada')
         num=v['escena']; nuevo=v['texto'].strip(); previo=escenas[num-1]['texto']
         if not nuevo or len(nuevo.split())<max(8,int(len(previo.split())*.52)) or len(nuevo.split())>max(165,int(len(previo.split())*1.65)):
             raise ValueError('Reparación de referencias: longitud inválida')
@@ -6260,7 +6270,7 @@ def _ent_reducir_refs_excesivas(fn, enfoque, d, memoria, guardar=None, forzar=Fa
     return copia
 
 
-def _ent_reparar_refs_insuficientes(fn, enfoque, d, *, citas=None):
+def _ent_reparar_refs_insuficientes(fn, enfoque, d, *, citas=None, memoria=(), evitar=()):
     """Integra una sola mención cuando el revisor no confirma ninguna.
 
     La revisión completa y las citas textuales se vuelven a exigir después.
@@ -6276,7 +6286,7 @@ def _ent_reparar_refs_insuficientes(fn, enfoque, d, *, citas=None):
     objetivos = [objetivo]
     datos={'tema':enfoque.get('tema'),'tesis':enfoque.get('tesis'),
            'escenas':[{'numero':i,'texto':escenas[i-1]['texto']} for i in objetivos]}
-    prompt=(ESTILO_ACCESIBLE+'\nREPARACIÓN DE IDENTIDAD: este personaje es una inteligencia artificial ficticia. '
+    prompt=(ESTILO_ACCESIBLE+_ent_contexto_refs(memoria)+'\nEvita repetir las expresiones descartadas en esta ejecución: '+json.dumps(list(evitar),ensure_ascii=False)+'\nREPARACIÓN DE IDENTIDAD: este personaje es una inteligencia artificial ficticia. '
             'Reescribe solo las escenas dadas para integrar exactamente UNA referencia explícita, '
             'diferente y pertinente a su naturaleza artificial por cada escena. No hagas autopresentaciones '
             'ni digas que no puedes sentir. Conserva el sentido, ejemplo cotidiano, enlace y casi exactamente '
@@ -6294,8 +6304,11 @@ def _ent_reparar_refs_insuficientes(fn, enfoque, d, *, citas=None):
             raise ValueError('Reparación de identidad fuera de longitud')
         _ent_control_voz(texto)
         nuevo['escenas'][i-1]['texto']=texto.strip()
-    if len(_ent_menciones_artificiales(nuevo)) > NUMEN_MAX_AUTORREFERENCIAS:
-        raise ValueError('Reparación de identidad supera el máximo local de dos menciones')
+    menciones=_ent_menciones_artificiales(nuevo)
+    if not 1<=len(menciones)<=NUMEN_MAX_AUTORREFERENCIAS:
+        raise ValueError('Reparación de identidad requiere una o dos menciones explícitas detectables')
+    if any(_ent_ref_parecida(cita,anterior) for _,cita in menciones for anterior in evitar):
+        raise ValueError('La reparación repitió una autorreferencia descartada')
     nuevo.pop('revision_tematica',None);nuevo.pop('resumen_publicacion',None)
     print('Editorial: identidad artificial reparada en escenas '+str(objetivos)+'; revalidación obligatoria',flush=True)
     return nuevo
@@ -6785,7 +6798,7 @@ def _ent_consultar_openrouter(prompt):
 
 
 def _ent_generar(memoria, metricas):
-    """Motor editorial 7.1: conservar borradores viables y minimizar llamadas.
+    """Motor editorial 7.2: conservar borradores viables y minimizar llamadas.
 
     Nunca se publica un borrador sin validación completa y revisión externa.
     Fallo transitorio de red/cuota: conservar candidato prevalidado para la
@@ -6796,10 +6809,11 @@ def _ent_generar(memoria, metricas):
     from functools import partial
     from requests import exceptions as errores_http
     errores=[];enfoque=None;descartes=[];pendiente=None
+    referencias_descartadas=set()
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', VERSION_SCRIPT)
+    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', VERSION_SCRIPT)
     if isinstance(previo,dict) and previo.get('revision_editorial') not in versiones_compatibles:
-        print('Editorial 7.1: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+        print('Editorial 7.2: descartando estado previo incompatible, memoria histórica conservada',flush=True)
     if (isinstance(previo,dict) and previo.get('revision_editorial') in versiones_compatibles
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
@@ -6810,9 +6824,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 7.1 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 7.2 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 7.1 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 7.2 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
@@ -6835,7 +6849,7 @@ def _ent_generar(memoria, metricas):
             if pendiente is None:
                 print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
-                    +'\nMODO EFICIENTE 7.1: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    +'\nMODO EFICIENTE 7.2: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye una o dos autorreferencias naturales a la narradora IA en todo el guion. '
@@ -6848,7 +6862,7 @@ def _ent_generar(memoria, metricas):
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 7.1 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 7.2 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6870,9 +6884,9 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 7.1 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 7.2 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print(f'Editorial 7.1 | {motor} revisará el borrador pendiente',flush=True)
+                print(f'Editorial 7.2 | {motor} revisará el borrador pendiente',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6881,15 +6895,17 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida,RevisionNarrativaLocal) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 7.1 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 7.2 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     try:
                         if isinstance(exc,RevisionNarrativaLocal):
                             corregido=_ent_reparar_narrativa(fn,enfoque,pendiente,exc)
                         elif isinstance(exc,AutorreferenciasInsuficientes):
-                            corregido=_ent_identidad_local_eficiente(pendiente,memoria)
-                            if not _ent_menciones_artificiales(corregido):
-                                raise ValueError('La corrección no incorporó una mención explícita verificable.')
+                            corregido=_ent_reparar_refs_insuficientes(
+                                fn,enfoque,pendiente,memoria=memoria,evitar=sorted(referencias_descartadas))
                         elif isinstance(exc,AutorreferenciaRepetida):
+                            referencias_descartadas.update(
+                                cita for escena,cita in _ent_menciones_artificiales(pendiente)
+                                if escena in exc.escenas)
                             corregido=_ent_reparar_refs(fn,enfoque,pendiente,memoria,exc)
                         else:
                             corregido=_ent_reducir_refs_excesivas(
@@ -6902,14 +6918,14 @@ def _ent_generar(memoria, metricas):
                         raise CorreccionIdentidadInvalida(str(reparacion)) from reparacion
                     pendiente=corregido
                     guardar()
-                    print('Editorial 7.1 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 7.2 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
             registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
             if not isinstance(registro_visual,dict):
                 raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
             d['postura_androide']=_numen_elegir_postura(
                 d.get('postura_androide'),registro_visual,d['titulo'])
-            print('Editorial 7.1 | guion aprobado con validación local y revisión remota',flush=True)
+            print('Editorial 7.2 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -6923,7 +6939,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(CorreccionIdentidadInvalida,EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 7.1 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 7.2 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
             if not fallo_proveedor:
@@ -6937,13 +6953,13 @@ def _ent_generar(memoria, metricas):
                                       'dimension':enfoque.get('dimension','') if enfoque else '',
                                       'motivo':str(exc)[:180]})
                     enfoque=None
-                print('Editorial 7.1 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+                print('Editorial 7.2 | borrador rechazado; siguiente proveedor generará otro',flush=True)
             else:
-                print('Editorial 7.1 | fallo del proveedor; se conserva el progreso editorial',flush=True)
+                print('Editorial 7.2 | fallo del proveedor; se conserva el progreso editorial',flush=True)
             guardar()
             if fallo_proveedor and pendiente is not None:
                 destino = f'siguiente revisor: {siguiente}' if siguiente else 'revisión pendiente para otra ejecución'
-                print(f'Editorial 7.1 | {destino}',flush=True)
+                print(f'Editorial 7.2 | {destino}',flush=True)
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
 
