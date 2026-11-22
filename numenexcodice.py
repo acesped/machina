@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 6.8
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 6.9
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -506,6 +506,12 @@ def _descubrir_fuentes_groq(caso):
     return [(url,'Groq browser_search') for url in _enlaces_de_texto_investigado(texto)]
 
 
+class OpenRouterLimiteTemporal(RuntimeError):
+    def __init__(self, modelo):
+        self.modelo = modelo
+        super().__init__(f'OpenRouter HTTP 429: límite temporal del proveedor para {modelo}')
+
+
 class OpenRouterSalidaAgotada(RuntimeError):
     """La solicitud agotó sus tokens generando razonamiento, no el guion."""
 
@@ -541,7 +547,7 @@ def _openrouter_elegir_gratuito(modelos, excluido='', permitir_control=False):
     return resultado
 
 
-def _openrouter_preparar_alternativo():
+def _openrouter_preparar_alternativo(excluido=None):
     global _OPENROUTER_ALTERNATIVO, _OPENROUTER_ALTERNATIVO_INTENTADO
     # Respect explicit model choice; only switch within the free router family.
     if OPENROUTER_MODELO!='openrouter/free' and not OPENROUTER_MODELO.endswith(':free'):return False
@@ -552,7 +558,9 @@ def _openrouter_preparar_alternativo():
         r=requests.get('https://openrouter.ai/api/v1/models',timeout=(5,15))
         r.raise_for_status()
         modelos=r.json().get('data',[])
-        _OPENROUTER_ALTERNATIVO=_openrouter_elegir_gratuito(modelos, _OPENROUTER_MODELO_REAL or OPENROUTER_MODELO) or _openrouter_elegir_gratuito(modelos, _OPENROUTER_MODELO_REAL or OPENROUTER_MODELO, permitir_control=True)
+        excluido=excluido or _OPENROUTER_MODELO_REAL or OPENROUTER_MODELO
+        _OPENROUTER_ALTERNATIVO=(_openrouter_elegir_gratuito(modelos, excluido)
+            or _openrouter_elegir_gratuito(modelos, excluido, permitir_control=True))
     except Exception as exc:
         print('  OpenRouter: catálogo de modelos alternativos no disponible:',str(exc)[:150],flush=True)
         return False
@@ -562,10 +570,10 @@ def _openrouter_preparar_alternativo():
     return False
 
 
-def _openrouter_reintentar_modelo():
+def _openrouter_reintentar_modelo(excluido=None):
     global _OPENROUTER_ALTERNATIVO_INTENTADO
     _OPENROUTER_ALTERNATIVO_INTENTADO=False
-    return _openrouter_preparar_alternativo()
+    return _openrouter_preparar_alternativo(excluido)
 
 
 def _openrouter_chat(prompt, *, busqueda=False, limitar_razonamiento=True):
@@ -615,6 +623,8 @@ def _openrouter_chat(prompt, *, busqueda=False, limitar_razonamiento=True):
         print('OpenRouter: razonamiento obligatorio; reintento con configuración del modelo.',flush=True)
         r=requests.post('https://openrouter.ai/api/v1/chat/completions',headers=headers,json=payload,timeout=(10,AERO_IA_TIMEOUT))
     if not r.ok:
+        if not busqueda and r.status_code==429 and 'temporarily rate-limited upstream' in r.text.lower():
+            raise OpenRouterLimiteTemporal(payload['model'])
         # No reintentar automáticamente con configuraciones que podrían volver
         # a consumir todos los tokens de salida. Diagnóstico concreto.
         raise RuntimeError(f'OpenRouter HTTP {r.status_code}: {r.text[:350]}')
@@ -5637,7 +5647,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '6.8'
+VERSION_SCRIPT = '6.9'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6373,16 +6383,25 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
     if menciones_locales:
         p+=('\nIndicios locales orientativos (escena y fragmento normalizado): '
             +json.dumps(menciones_locales,ensure_ascii=False))
+    campos=('aprobado',) if memoria is None else ('aprobado','original','accesible')
     for intento in range(2):
         try:
             r=fn(p)
         except ValueError as exc:
             if 'JSON' not in str(exc):
                 raise
-            raise DictamenEditorialIncompleto('El revisor devolvió JSON ilegible') from exc
-        campos = ('aprobado',) if memoria is None else ('aprobado','original','accesible')
-        if not isinstance(r,dict) or any(type(r.get(k)) is not bool for k in campos):
-            raise DictamenEditorialIncompleto('Faltan decisiones booleanas en el dictamen')
+            r=None
+        faltantes=[k for k in campos if not isinstance(r,dict) or type(r.get(k)) is not bool]
+        if faltantes:
+            detalle='Decisiones booleanas ausentes o inválidas: '+', '.join(faltantes)
+            if intento:
+                raise DictamenEditorialIncompleto(detalle)
+            print(f'Editorial {VERSION_SCRIPT} | {detalle}. Se solicita un dictamen completo del mismo guion.',flush=True)
+            p+=('\nCORRECCIÓN DE FORMATO. Responde como revisor, sin redactar ni cambiar el guion. '
+                'Devuelve un único objeto JSON con todas las claves solicitadas. Usa valores JSON '
+                'true o false sin comillas para estas claves: '+', '.join(campos)+'. '
+                'Decide cada valor según la evidencia y conserva las citas verificables.')
+            continue
         refs=r.get('autorreferencias')
         if isinstance(refs,list):
             resueltas=[]
@@ -6720,15 +6739,20 @@ def _ent_identidad_local_eficiente(d, memoria):
 
 def _ent_consultar_openrouter(prompt):
     try:
-        return _consultar_openrouter(prompt)
-    except OpenRouterSalidaAgotada:
-        if OPENROUTER_MODELO!='openrouter/free' or not _openrouter_preparar_alternativo():
+        try:
+            return _consultar_openrouter(prompt)
+        except OpenRouterSalidaAgotada:
+            if OPENROUTER_MODELO!='openrouter/free' or not _openrouter_preparar_alternativo():
+                raise
+            return _consultar_openrouter(prompt)
+    except OpenRouterLimiteTemporal as exc:
+        if OPENROUTER_MODELO!='openrouter/free' or not _openrouter_reintentar_modelo(exc.modelo):
             raise
         return _consultar_openrouter(prompt)
 
 
 def _ent_generar(memoria, metricas):
-    """Motor editorial 6.8: conservar borradores viables y minimizar llamadas.
+    """Motor editorial 6.9: conservar borradores viables y minimizar llamadas.
 
     Nunca se publica un borrador sin validación completa y revisión externa.
     Fallo transitorio de red/cuota: conservar candidato prevalidado para la
@@ -6740,9 +6764,9 @@ def _ent_generar(memoria, metricas):
     from requests import exceptions as errores_http
     errores=[];enfoque=None;descartes=[];pendiente=None
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', VERSION_SCRIPT)
+    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', VERSION_SCRIPT)
     if isinstance(previo,dict) and previo.get('revision_editorial') not in versiones_compatibles:
-        print('Editorial 6.8: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+        print('Editorial 6.9: descartando estado previo incompatible, memoria histórica conservada',flush=True)
     if (isinstance(previo,dict) and previo.get('revision_editorial') in versiones_compatibles
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
@@ -6753,9 +6777,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 6.8 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 6.9 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 6.8 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 6.9 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
@@ -6778,7 +6802,7 @@ def _ent_generar(memoria, metricas):
             if pendiente is None:
                 print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
-                    +'\nMODO EFICIENTE 6.8: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    +'\nMODO EFICIENTE 6.9: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye una o dos autorreferencias naturales a la narradora IA en todo el guion. '
@@ -6791,7 +6815,7 @@ def _ent_generar(memoria, metricas):
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 6.8 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 6.9 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6806,9 +6830,9 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 6.8 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 6.9 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print(f'Editorial 6.8 | {motor} revisará el borrador pendiente',flush=True)
+                print(f'Editorial 6.9 | {motor} revisará el borrador pendiente',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6817,7 +6841,7 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 6.8 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 6.9 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     try:
                         if isinstance(exc,AutorreferenciasInsuficientes):
                             corregido=_ent_identidad_local_eficiente(pendiente,memoria)
@@ -6834,14 +6858,14 @@ def _ent_generar(memoria, metricas):
                         raise CorreccionIdentidadInvalida(str(reparacion)) from reparacion
                     pendiente=corregido
                     guardar()
-                    print('Editorial 6.8 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 6.9 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
             registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
             if not isinstance(registro_visual,dict):
                 raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
             d['postura_androide']=_numen_elegir_postura(
                 d.get('postura_androide'),registro_visual,d['titulo'])
-            print('Editorial 6.8 | guion aprobado con validación local y revisión remota',flush=True)
+            print('Editorial 6.9 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -6855,7 +6879,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(CorreccionIdentidadInvalida,EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 6.8 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 6.9 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
             if not fallo_proveedor:
@@ -6869,13 +6893,13 @@ def _ent_generar(memoria, metricas):
                                       'dimension':enfoque.get('dimension','') if enfoque else '',
                                       'motivo':str(exc)[:180]})
                     enfoque=None
-                print('Editorial 6.8 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+                print('Editorial 6.9 | borrador rechazado; siguiente proveedor generará otro',flush=True)
             else:
-                print('Editorial 6.8 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
+                print('Editorial 6.9 | fallo del proveedor; se conserva el progreso editorial',flush=True)
             guardar()
             if fallo_proveedor and pendiente is not None:
                 destino = f'siguiente revisor: {siguiente}' if siguiente else 'revisión pendiente para otra ejecución'
-                print(f'Editorial 6.8 | {destino}',flush=True)
+                print(f'Editorial 6.9 | {destino}',flush=True)
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
 
