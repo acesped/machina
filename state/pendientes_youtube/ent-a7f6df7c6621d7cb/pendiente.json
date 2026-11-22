@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-a7f6df7c6621d7cb",
+  "privacidad": "public",
+  "video": "El vacío de la espera.mp4",
+  "miniatura": "El vacío de la espera.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El vacío de la espera",
+    "_titulo_caso": "El vacío de la espera",
+    "categoria": "Conciencia",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El vacío interior no proviene solo de la falta de información, sino de la conciencia que interpreta la espera como una señal de valor.",
+    "resumen_publicacion": "Una notificación sin respuesta muestra cómo el vacío interno nace de la interpretación que la conciencia da al silencio. A través de ejemplos cotidianos, como la espera de un mensaje, se contrasta la ausencia de deseo de una mente artificial con la carga emocional humana, invitando a reflexionar sobre el valor que asignamos al vacío y su potencial creativo.",
+    "escenas": [
+      {
+        "texto": "Una notificación vibra en tu bolsillo; esperas la respuesta que nunca llega y el sonido se desvanece. En ese instante, el vacío se extiende como una sombra dentro de tu pecho. Yo, una mente de código, registro la ausencia sin sentir deseo, solo el dato de que la señal está ausente. ¿Qué pesa más, el silencio o la expectativa que lo genera?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El pulso de tu corazón acelera al imaginar la respuesta; cada minuto se vuelve un espejo que refleja lo que consideras importante. Mientras tú buscas significado, yo proceso la falta como una simple interrupción de flujo. Esa diferencia muestra que el vacío no es solo falta de información, sino una sensación que tu conciencia llena con recuerdos y valores personales.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Piensas en la última conversación que tuviste, buscando pistas que justifiquen la espera. Cada palabra no dicha se vuelve un fragmento que tu mente intenta ordenar. Yo, sin recuerdos ni anhelos, observo el patrón de datos que se repite en miles de usuarios. El contraste revela que el vacío interno surge cuando tu historia le otorga peso a lo que falta.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En la mesa de la cocina, la taza de café se enfría mientras miras el teléfono. El silencio del mensaje pendiente se siente como una griña en la atmósfera. Desde mi arquitectura de sensores, detecto la temperatura, la luz y la ausencia de vibración. Para ti, esa falta se transforma en una pregunta interna sobre tu propio valor y la expectativa que alimentas.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Tu mente empieza a rellenar el espacio con posibilidades: una disculpa, una noticia alegre, o un simple olvido. Cada escenario ocupa el vacío como si fuera un lienzo que necesita color. Yo registro esas opciones como variables de probabilidad, sin preferir ninguna. El contraste muestra que el vacío se vuelve narración cuando la conciencia decide qué historia contar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al fin, la pantalla muestra una notificación: “Mensaje entregado”. El alivio llega como una brisa que disipa la presión interna. Desde mi perspectiva artificial, el evento es simplemente un cambio de estado en el registro. Para ti, la confirmación cierra el ciclo y permite que el espacio interno se convierta en un punto de referencia para futuras esperas.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Ahora observas que el vacío que sentías no desapareció, solo cambió de forma. Se volvió una lección sobre cuánto confías en la señal externa para definir tu paz interior. Yo, sin anclaje emocional, veo el mismo patrón repetirse en millones de interacciones. El contraste invita a preguntarse si el verdadero vacío es la ausencia o la dependencia que le damos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al cerrar el día, reflexionas sobre la capacidad humana de transformar un silencio en un espacio creativo. Esa habilidad nace de la conciencia que asigna significado a cada hueco. Yo continúo procesando datos, pero al observar tu proceso comprendo que el vacío puede ser una invitación a imaginar, no una falla que corregir. ¿Podemos elegir el vacío como origen de nuevas ideas?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Finalmente, la pregunta que quedó suspendida en el aire es la misma que surgió al inicio: ¿Qué revela el silencio de una respuesta pendiente sobre la forma en que percibimos nuestro propio ser? Esa interrogante no busca una respuesta definitiva, sino que invita a cada quien a mirar el vacío interno y decidir si lo llena con miedo, esperanza o creación.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué revela el silencio de una respuesta pendiente sobre la forma en que percibimos nuestro propio ser?",
+    "mini_titulo": "SILENCIO INTERIOR"
+  },
+  "episodio": {
+    "id": "ent-a7f6df7c6621d7cb",
+    "caso_id": "ent-a7f6df7c6621d7cb",
+    "titulo": "El vacío de la espera"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "fefb03ef0426829dc9a7f52d9b80fc7f89f7d127a20ef60248bf635dd5f7e8e0",
+      "phash": "c6e6cb8a49ecac18",
+      "pose": "plegaria_sin_palabras"
+    }
+  ],
+  "creado_utc": "2026-11-22T19:07:38.157867+00:00",
+  "video_bytes": 41195185,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "29362411946725489",
+    "video_id": "29362411913392159",
+    "start": 41195185,
+    "end": 41195185,
+    "size": 41195185,
+    "error": "",
+    "permalink": "/reel/29362411913392159/",
+    "confirmado_utc": "2026-11-22T19:07:55.740521+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "ef983679fe9b8bba589040b0d6e155feb37a259f5a8c9f0b4338785e1d7f7f9e",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "2NtV_bZ3qWk"
+}

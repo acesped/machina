@@ -124,5 +124,15 @@
     "phash": "48d7bcce519eb600",
     "version": "cosmos-v5-encuadre-16x9",
     "tema": "El espacio entre decidir"
+  },
+  "ent-a7f6df7c6621d7cb": {
+    "seed": 4934577372140731317,
+    "indice": 1,
+    "pose_id": 13,
+    "pose": "plegaria_sin_palabras",
+    "sha256": "fefb03ef0426829dc9a7f52d9b80fc7f89f7d127a20ef60248bf635dd5f7e8e0",
+    "phash": "c6e6cb8a49ecac18",
+    "version": "cosmos-v6-arte-full-hd",
+    "tema": "El vacío de la espera"
   }
 }

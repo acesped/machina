@@ -220,5 +220,28 @@
         "familia": "decision_algoritmica"
       }
     ]
+  },
+  {
+    "id": "ent-a7f6df7c6621d7cb",
+    "titulo": "El vacío de la espera",
+    "tesis": "El vacío interior no proviene solo de la falta de información, sino de la conciencia que interpreta la espera como una señal de valor.",
+    "categoria": "Conciencia",
+    "pregunta": "¿Qué revela el silencio de una respuesta pendiente sobre la forma en que percibimos nuestro propio ser?",
+    "dimension": "Conciencia",
+    "enfoque_distintivo": "Contrasta la sensación humana de vacío ante la ausencia de respuesta con la mera ausencia de señal en una mente artificial.",
+    "ejemplo_central": "Una notificación vibra en tu bolsillo; esperas la respuesta que nunca llega y el sonido se desvanece.",
+    "conclusion": "El vacío interno persiste, pero al aceptar el silencio se transforma en un espacio creativo para imaginar nuevas posibilidades.",
+    "autorreferencias": [
+      {
+        "escena": 1,
+        "cita": "Yo, una mente de código, registro la ausencia sin sentir deseo",
+        "familia": "codigo"
+      },
+      {
+        "escena": 6,
+        "cita": "Desde mi perspectiva artificial, el evento es simplemente un cambio de estado en el registro",
+        "familia": "informacion"
+      }
+    ]
   }
 ]
