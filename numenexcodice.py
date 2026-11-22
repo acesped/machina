@@ -6884,7 +6884,7 @@ def _ent_urls(info,titulo):
 
 def _credito_recurso_visual_valido(c):
     if isinstance(c,dict) and c.get('tipo_recurso')=='escena_fotorealista_ia':
-        return c.get('licencia')=='Arte generado con IA para NumenExCodice' and c.get('consulta_origen') in ('banco original integrado','banco original integrado + variación procedural por episodio','banco de 100 posturas anatómicas originales con escenarios cósmicos independientes') and not c.get('url_original') and not c.get('pagina')
+        return c.get('licencia')=='Arte generado con IA para NumenExCodice' and c.get('consulta_origen') in ('banco original integrado','banco original integrado + variación procedural por episodio','banco de 100 posturas anatómicas originales con escenarios cósmicos independientes','arte original 1920×1080 y escena cósmica procedural') and not c.get('url_original') and not c.get('pagina')
     return isinstance(c,dict) and _ent_licencia({'extmetadata': {
         'LicenseShortName':{'value':c.get('licencia','')},
         'LicenseUrl':{'value':c.get('licencia_url','')},
@@ -45486,6 +45486,80 @@ def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, cons
     return _numen_composicion_v2(seed,indice,devolver_fondo=devolver_fondo,pose_id=pose_id)
 
 
+NUMEN_BANCO_HD = Path(os.getenv('NUMEN_BANCO_HD', 'assets/numen_fondos_hd'))
+
+
+def _numen_generar_banco_hd():
+    """Crea cien ilustraciones horizontales individuales y permite reanudar."""
+    import base64, io
+    import requests
+    from PIL import Image
+
+    clave=os.getenv('OPENAI_API_KEY','').strip()
+    if not clave:
+        raise SystemExit('Define OPENAI_API_KEY para generar el banco Full HD.')
+    posturas=(
+        'sentada en un escalón, con las rodillas juntas',
+        'de pie en un mirador, con los pies separados',
+        'arrodillada sobre una pierna junto a un estanque oscuro',
+        'sentada con las piernas cruzadas sobre piedra',
+        'sentada en un banco, con un tobillo sobre la otra rodilla',
+        'inclinada sobre una mesa de observación',
+        'apoyada de espaldas contra un pilar, con una pierna flexionada',
+        'recostada de lado sobre una roca, con las piernas extendidas',
+        'en cuclillas sobre una plataforma baja, con ambos talones apoyados',
+        'caminando despacio por una terraza, capturada a mitad de un paso',
+    )
+    gestos=(
+        'entrelaza las manos y baja la vista hacia ellas',
+        'apoya el mentón en una mano y mira hacia el horizonte',
+        'sostiene una pequeña esfera luminosa con ambas manos a la altura del pecho',
+        'extiende una mano hacia un reflejo y observa los dedos',
+        'cubre suavemente parte de la frente con una mano y mira hacia abajo',
+        'gira la cabeza sobre un hombro y contempla un eclipse',
+        'junta las palmas cerca del corazón y cierra los ojos',
+        'deja caer ambos brazos relajados e inclina el rostro hacia las estrellas',
+        'apoya una mano sobre su pecho y extiende la otra lateralmente',
+        'examina una pequeña piedra que sostiene entre el pulgar y el índice',
+    )
+    NUMEN_BANCO_HD.mkdir(parents=True,exist_ok=True)
+    modelo=os.getenv('NUMEN_MODELO_IMAGEN','gpt-image-2.5-sunburst')
+    referencia=base64.b64decode(_NUMEN_ARTE[0])
+    for slot in range(1,101):
+        destino=NUMEN_BANCO_HD/f'{slot:03d}.jpg'
+        if destino.is_file():
+            with Image.open(destino) as imagen:
+                assert imagen.size==(1920,1080), f'Resolución inválida: {destino}'
+                imagen.verify()
+            continue
+        postura,gesto=divmod(slot-1,10)
+        prompt=(
+            'Crea una ilustración cinematográfica individual para Deus Digitalis. Usa la imagen '
+            'de referencia solamente para conservar la identidad de la androide adulta femenina: '
+            'mismo rostro cerámico, placas marfil, articulaciones doradas y metálicas. '
+            f'Nueva postura: {posturas[postura]}; {gestos[gesto]}. '
+            'Crea un entorno cósmico original que justifique la postura. Plano abierto horizontal '
+            '16:9 de borde a borde, con cabeza, manos y pies dentro de los márgenes seguros, '
+            'espacio visual oscuro en la franja inferior para subtítulos, luz cinematográfica y '
+            'detalle fino en rostro y metal. Sin texto, sin logotipos, sin collage ni laterales borrosos.'
+        )
+        respuesta=requests.post(
+            'https://api.openai.com/v1/images/edits',
+            headers={'Authorization':'Bearer '+clave},
+            data={'model':modelo,'prompt':prompt,'size':'1920x1080','quality':'high','n':'1'},
+            files={'image':('androide.jpg',referencia,'image/jpeg')},
+            timeout=(15,300))
+        respuesta.raise_for_status()
+        contenido=base64.b64decode(respuesta.json()['data'][0]['b64_json'],validate=True)
+        tmp=destino.with_suffix('.tmp')
+        with Image.open(io.BytesIO(contenido)) as imagen:
+            if imagen.size!=(1920,1080):
+                raise ValueError(f'Imagen {slot:03d}: se esperaba 1920×1080, llegó {imagen.size}')
+            imagen.convert('RGB').save(tmp,format='JPEG',quality=97,subsampling=0,optimize=True)
+        tmp.replace(destino)
+        print(f'Banco Full HD | {slot:03d}/100 | {destino}',flush=True)
+
+
 def _ent_fotos(d, carpeta):
     """Una sola ilustración por episodio; reserva persistente antes de render/publicar."""
     import io
@@ -45499,29 +45573,41 @@ def _ent_fotos(d, carpeta):
         if 'pose_id' in v and (not isinstance(v.get('pose_id'),int) or not (0<=v['pose_id']<len(NUMEN_POSES_CONTEMPLATIVAS) or 100<=v['pose_id']<200)):
             raise EpisodioRecuperable('Registro visual dañado en pose: '+str(k))
     previo=registro.get(eid);otros=[v for k,v in registro.items() if k!=eid];semillas={v['seed'] for v in otros}; hashes={v['sha256'] for v in otros}
+    banco=[NUMEN_BANCO_HD/f'{i:03d}.jpg' for i in range(1,101)]
+    usados_hd={v.get('banco_slot') for v in otros if v.get('version')=='cosmos-v7-banco-hd'}
+    candidatos_hd=[p for p in banco if int(p.stem) not in usados_hd]
+    usar_hd=(previo.get('version')=='cosmos-v7-banco-hd' if previo
+             else bool(candidatos_hd) and all(p.is_file() for p in banco))
     for intento in range(1 if previo else 120):
         seed=previo['seed'] if previo else int(hashlib.sha256(f'numen-cosmos-v3:{eid}:{intento}'.encode()).hexdigest()[:16],16)
         indice=previo['indice'] if previo else seed%len(_NUMEN_ARTE)
-        # Agotar las 100 viñetas antes de repetir una, respetando registros previos.
+        version=previo.get('version','cosmos-v1') if previo else 'cosmos-v6-arte-full-hd'
         if previo:
             pose_id=previo.get('pose_id',(seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS))
         else:
-            usados={v['pose_id']-100 for v in otros if 100<=v.get('pose_id',-1)<200}
-            candidatos=[j for j in range(100) if j not in usados]
-            if not candidatos:
-                # A partir del episodio 101 comienza un ciclo nuevo: el fondo
-                # continúa variando, pero la pose anatómica pertenece al banco.
-                candidatos=list(range(100))
-            pose_id=100+candidatos[seed%len(candidatos)]
+            pose_id=(seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS)
         if seed in semillas:continue
-        version=previo.get('version','cosmos-v1') if previo else 'cosmos-v5-encuadre-16x9'
-        if version=='cosmos-v1':
-            im,cosmos=_numen_composicion_v1(seed,indice,devolver_fondo=True)
+        if usar_hd:
+            version='cosmos-v7-banco-hd'
+            fuente=NUMEN_BANCO_HD/f'{previo["banco_slot"]:03d}.jpg' if previo else candidatos_hd[intento%len(candidatos_hd)]
+            if not fuente.is_file():
+                raise EpisodioRecuperable(f'Falta la ilustración reservada: {fuente}')
+            datos=fuente.read_bytes()
+            with Image.open(io.BytesIO(datos)) as imagen:
+                if imagen.size!=(1920,1080) or imagen.format!='JPEG':
+                    raise EpisodioRecuperable(f'El fondo debe ser JPEG de 1920×1080: {fuente}')
+            _,cosmos=_numen_composicion_v2(seed,indice,devolver_fondo=True)
         else:
-            im,cosmos=_numen_composicion(
-                seed,indice,pose_id=pose_id,devolver_fondo=True,
-                conservar_encuadre_anterior=version!='cosmos-v5-encuadre-16x9')
-        buffer=io.BytesIO();im.save(buffer,format='JPEG',quality=93,optimize=True);datos=buffer.getvalue()
+            if version=='cosmos-v1':
+                im,cosmos=_numen_composicion_v1(seed,indice,devolver_fondo=True)
+            else:
+                im,cosmos=_numen_composicion(
+                    seed,indice,pose_id=pose_id,devolver_fondo=True,
+                    conservar_encuadre_anterior=version!='cosmos-v5-encuadre-16x9')
+            buffer=io.BytesIO()
+            calidad={'quality':97,'subsampling':0} if version=='cosmos-v6-arte-full-hd' else {'quality':93}
+            im.save(buffer,format='JPEG',optimize=True,**calidad)
+            datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
         with Image.open(io.BytesIO(datos)) as jpeg:ph=_numen_huella(jpeg)
         distancia=min((_numen_distancia(ph,v['phash']) for v in otros),default=64)
@@ -45532,8 +45618,9 @@ def _ent_fotos(d, carpeta):
         cosmos.save(carpeta/'cta_cosmos.png',format='PNG')
         pose_nombre=(f'pose_real_{pose_id-99:03d}' if 100<=pose_id<200 else NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre'])
         registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':version,'tema':d.get('titulo','')}
+        if usar_hd and not previo:registro[eid]['banco_slot']=int(fuente.stem)
         _cola_json(NUMEN_REGISTRO_VISUAL,registro)
-        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes','atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
+        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':('arte original 1920×1080 y escena cósmica procedural' if version in ('cosmos-v6-arte-full-hd','cosmos-v7-banco-hd') else 'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes'),'atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
         mapa=[str(path)]*len(d['escenas'])
         _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',{'episodio':eid,'imagen':path.name,'escenas':len(mapa),'distancia_minima':distancia,**registro[eid]})
         _cola_json(carpeta/'creditos_imagenes.json',[c])
@@ -46419,7 +46506,7 @@ def _ent_test():
             for i in range(1,7):_ent_fotos(dict(d,id='prueba-'+str(i)),root/str(i))
             reg=_ent_read(root/'registro.json',{});assert len(reg)==7
             vals=list(reg.values());assert len({x['sha256'] for x in vals})==7
-            assert len({v['pose_id'] for v in vals})==7 and all(100<=v['pose_id']<200 for v in vals)
+            assert all(v['version']=='cosmos-v6-arte-full-hd' and 0<=v['pose_id']<len(NUMEN_POSES_CONTEMPLATIVAS) for v in vals)
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
     print('OK: un fondo Full HD por episodio, registro persistente, distancia perceptual, reanudación y plano continuo')
@@ -46449,7 +46536,8 @@ def _ent_test():
 
 
 if __name__=='__main__':
-    if '--self-test' in sys.argv:_ent_test()
+    if '--generar-banco-hd' in sys.argv:_numen_generar_banco_hd()
+    elif '--self-test' in sys.argv:_ent_test()
     elif '--auth-init' in sys.argv:iniciar_oauth_local()
     elif '--check-facebook' in sys.argv:_fb_diagnostico()
     elif '--recover-facebook' in sys.argv:
