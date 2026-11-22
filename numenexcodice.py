@@ -6724,10 +6724,12 @@ def _ent_generar(memoria, metricas):
             # Una corrección localizada conserva el argumento del borrador.
             try:
                 d=_ent_validar_coherencia(fn,enfoque,copy.deepcopy(pendiente),memoria)
-            except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes) as exc:
+            except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida) as exc:
                 print(f'Editorial 5.9 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                 if isinstance(exc,AutorreferenciasInsuficientes):
                     corregido=_ent_reparar_refs_insuficientes(fn,enfoque,pendiente,citas=exc.citas)
+                elif isinstance(exc,AutorreferenciaRepetida):
+                    corregido=_ent_reparar_refs(fn,enfoque,pendiente,memoria,exc)
                 else:
                     corregido=_ent_reducir_refs_excesivas(
                         fn,enfoque,pendiente,memoria,forzar=True,citas=exc.citas)
@@ -6748,7 +6750,7 @@ def _ent_generar(memoria, metricas):
                 any(t in msg for t in ('http 429','http 503','read timed out','connection timeout',
                                        'rate limit','quota exceeded','free-models-per-day',
                                        'límite diario','limite diario','service unavailable')))
-            if isinstance(exc,(ExcesoIdentidadNoConfirmado,AutorreferenciasInsuficientes)):
+            if isinstance(exc,(ExcesoIdentidadNoConfirmado,AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
                 print('Editorial 5.9 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
