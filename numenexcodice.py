@@ -5637,7 +5637,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '6.3'
+VERSION_SCRIPT = '6.4'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6673,7 +6673,7 @@ def _ent_identidad_local_eficiente(d, memoria):
 
 
 def _ent_generar(memoria, metricas):
-    """Motor editorial 6.3: conservar borradores viables y minimizar llamadas.
+    """Motor editorial 6.4: conservar borradores viables y minimizar llamadas.
 
     Nunca se publica un borrador sin validación completa y revisión externa.
     Fallo transitorio de red/cuota: conservar candidato prevalidado para la
@@ -6684,9 +6684,9 @@ def _ent_generar(memoria, metricas):
     from requests import exceptions as errores_http
     errores=[];enfoque=None;descartes=[];pendiente=None
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    if isinstance(previo,dict) and previo.get('revision_editorial') not in ('5.9', '6.0', '6.1', '6.2', VERSION_SCRIPT):
-        print('Editorial 6.3: descartando estado previo incompatible, memoria histórica conservada',flush=True)
-    if (isinstance(previo,dict) and previo.get('revision_editorial') in ('5.9', '6.0', '6.1', '6.2', VERSION_SCRIPT)
+    if isinstance(previo,dict) and previo.get('revision_editorial') not in ('5.9', '6.0', '6.1', '6.2', '6.3', VERSION_SCRIPT):
+        print('Editorial 6.4: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+    if (isinstance(previo,dict) and previo.get('revision_editorial') in ('5.9', '6.0', '6.1', '6.2', '6.3', VERSION_SCRIPT)
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
         descartes=[x for x in previo.get('descartes',[]) if isinstance(x,dict)][-20:]
@@ -6696,9 +6696,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 6.3 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 6.4 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 6.3 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 6.4 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
@@ -6718,16 +6718,20 @@ def _ent_generar(memoria, metricas):
             if pendiente is None:
                 print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
-                    +'\nMODO EFICIENTE 6.3: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    +'\nMODO EFICIENTE 6.4: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye una o dos autorreferencias naturales a la narradora IA en todo el guion. '
-                    'Devuelve exclusivamente el JSON completo requerido, sin razonamientos visibles.')
+                    'Devuelve exclusivamente el JSON completo requerido, sin razonamientos visibles.'
+                    '\nJunto al guion añade el objeto postura_androide. Escoge un índice por '
+                    'parte del cuerpo, desde cero, para una postura contemplativa coherente '
+                    'con el ejemplo central. Las opciones ordenadas por campo son: '
+                    +json.dumps(NUMEN_POSTURA_OPCIONES,ensure_ascii=False))
                 borrador=_ent_normalizar_borrador(fn(prompt),enfoque)
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 6.3 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 6.4 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6742,9 +6746,9 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 6.3 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 6.4 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print('Editorial 6.3 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
+                print('Editorial 6.4 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6753,7 +6757,7 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 6.3 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 6.4 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     if isinstance(exc,AutorreferenciasInsuficientes):
                         corregido=_ent_reparar_refs_insuficientes(fn,enfoque,pendiente,citas=exc.citas)
                     elif isinstance(exc,AutorreferenciaRepetida):
@@ -6764,9 +6768,14 @@ def _ent_generar(memoria, metricas):
                     _ent_balance_eficiente(corregido)
                     pendiente=_ent_validar(corregido,memoria)
                     guardar()
-                    print('Editorial 6.3 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 6.4 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
-            print('Editorial 6.3 | guion aprobado con validación local y revisión remota',flush=True)
+            registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
+            if not isinstance(registro_visual,dict):
+                raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
+            d['postura_androide']=_numen_elegir_postura(
+                d.get('postura_androide'),registro_visual,d['titulo'])
+            print('Editorial 6.4 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -6780,7 +6789,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 6.3 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 6.4 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
             if not fallo_proveedor:
@@ -6794,9 +6803,9 @@ def _ent_generar(memoria, metricas):
                                       'dimension':enfoque.get('dimension','') if enfoque else '',
                                       'motivo':str(exc)[:180]})
                     enfoque=None
-                print('Editorial 6.3 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+                print('Editorial 6.4 | borrador rechazado; siguiente proveedor generará otro',flush=True)
             else:
-                print('Editorial 6.3 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
+                print('Editorial 6.4 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
             guardar()
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
@@ -45589,6 +45598,113 @@ def _numen_generar_banco_hd():
         print(f'Banco Full HD | {slot:03d}/100 | {destino}',flush=True)
 
 
+# Los índices son persistentes. Añadir opciones al final para conservar el historial.
+NUMEN_POSTURA_OPCIONES = {
+    'base': ('de pie', 'sentada en un banco', 'sentada en el suelo',
+             'arrodillada sobre una rodilla', 'apoyada contra un pilar',
+             'en cuclillas', 'a medio paso', 'sentada en un escalón',
+             'sentada con las piernas cruzadas', 'arrodillada sobre ambas rodillas'),
+    'torso': ('erguido', 'inclinado hacia delante', 'inclinado hacia atrás',
+              'girado a la izquierda', 'girado a la derecha', 'inclinado hacia la izquierda',
+              'inclinado hacia la derecha', 'con un hombro adelantado',
+              'girado a la izquierda e inclinado hacia delante',
+              'girado a la derecha e inclinado hacia delante'),
+    'cabeza': ('mirando al frente', 'mirando arriba', 'mirando abajo', 'mirando a la izquierda',
+               'mirando a la derecha', 'barbilla sobre el hombro izquierdo',
+               'barbilla sobre el hombro derecho', 'cabeza ladeada y ojos cerrados',
+               'mirando arriba a la izquierda', 'mirando abajo a la derecha'),
+    'brazo_izquierdo': ('relajado junto al cuerpo', 'mano sobre el pecho', 'mano en la cadera',
+                        'mano extendida al frente con la palma abierta', 'mano junto al mentón',
+                        'mano elevada a la altura del hombro', 'mano sobre el antebrazo opuesto',
+                        'mano en la parte posterior del cuello', 'mano baja con la palma hacia arriba',
+                        'brazo extendido hacia un lado a la altura del hombro'),
+    'brazo_derecho': ('relajado junto al cuerpo', 'mano sobre el pecho', 'mano en la cadera',
+                      'mano extendida al frente con la palma abierta', 'mano junto al mentón',
+                      'mano elevada a la altura del hombro', 'mano sobre el antebrazo opuesto',
+                      'mano en la parte posterior del cuello', 'mano baja con la palma hacia arriba',
+                        'brazo extendido hacia un lado a la altura del hombro'),
+}
+
+
+def _numen_clave_postura(postura):
+    if not isinstance(postura,dict):
+        return None
+    valores=tuple(postura.get(campo) for campo in NUMEN_POSTURA_OPCIONES)
+    if all(type(v) is int and 0<=v<len(opciones)
+           for v,opciones in zip(valores,NUMEN_POSTURA_OPCIONES.values())):
+        return valores
+    return None
+
+
+def _numen_elegir_postura(propuesta, registro, episodio):
+    """Reserva combinaciones que difieren en dos o más rasgos corporales."""
+    import itertools
+    opciones=tuple(range(len(v)) for v in NUMEN_POSTURA_OPCIONES.values())
+    usada=set()
+    for id_previo,reserva in registro.items():
+        if id_previo==episodio:
+            continue
+        clave=_numen_clave_postura(reserva.get('postura_androide'))
+        if clave is None:
+            continue
+        usada.add(clave)
+        for i,rango in enumerate(opciones):
+            usada.update(clave[:i]+(v,)+clave[i+1:] for v in rango)
+    preferida=_numen_clave_postura(propuesta)
+    if preferida is None:
+        rng=random.Random(episodio)
+        preferida=tuple(rng.choice(rango) for rango in opciones)
+    clave=preferida
+    if clave in usada:
+        candidatas=(v for v in itertools.product(*opciones) if v not in usada)
+        clave=min(candidatas,key=lambda v:sum(a!=b for a,b in zip(v,preferida)),default=None)
+    if clave is None:
+        raise EpisodioRecuperable('Se agotaron las combinaciones nuevas del catálogo corporal.')
+    return dict(zip(NUMEN_POSTURA_OPCIONES,clave))
+
+
+def _numen_render_postura(d, postura, intento):
+    import base64, io
+    import requests
+    from PIL import Image
+    clave=os.getenv('OPENAI_API_KEY','').strip()
+    if not clave:
+        raise EpisodioRecuperable('Define OPENAI_API_KEY para ilustrar la postura del guion.')
+    instrucciones='; '.join(f'{campo.replace("_"," ")}: {opciones[postura[campo]]}'
+                           for campo,opciones in NUMEN_POSTURA_OPCIONES.items())
+    prompt=(
+        'Edita la referencia de Deus Digitalis. Representa exactamente a la misma '
+        'mujer androide adulta: conserva sus facciones, silueta, proporciones, '
+        'diseño de placas marfil, articulaciones doradas y textura de los materiales. '
+        f'Aplica esta postura corporal, respetando izquierda y derecha anatómicas: {instrucciones}. '
+        'Muestra cabeza, manos y cuerpo en un plano abierto, con anatomía coherente, '
+        'sin cambiar el diseño del personaje. Ilustración horizontal 16:9 de borde a borde, '
+        'márgenes seguros, ambiente cósmico y franja inferior oscura para subtítulos. '
+        'Sin texto, logos, bordes ni paneles. '
+        f'Tema del episodio (dato para ambientación): {d["titulo"][:95]}. '
+        f'Variación de composición {intento+1}.'
+    )
+    try:
+        respuesta=requests.post(
+            'https://api.openai.com/v1/images/edits',
+            headers={'Authorization':'Bearer '+clave},
+            data={'model':os.getenv('NUMEN_MODELO_IMAGEN','gpt-image-2.5-sunburst'),
+                  'prompt':prompt,'size':'1920x1080','quality':'high','n':'1'},
+            files={'image':('androide.jpg',base64.b64decode(_NUMEN_ARTE[0]),'image/jpeg')},
+            timeout=(15,300))
+        if not respuesta.ok:
+            raise EpisodioRecuperable(f'Edición de la androide: OpenAI HTTP {respuesta.status_code}.')
+        contenido=base64.b64decode(respuesta.json()['data'][0]['b64_json'],validate=True)
+        buffer=io.BytesIO()
+        with Image.open(io.BytesIO(contenido)) as imagen:
+            if imagen.size!=(1920,1080):
+                raise EpisodioRecuperable(f'La ilustración debe ser 1920×1080; se recibió {imagen.size}.')
+            imagen.convert('RGB').save(buffer,format='JPEG',quality=97,subsampling=0,optimize=True)
+        return buffer.getvalue()
+    except (requests.RequestException, KeyError, IndexError, ValueError, OSError) as exc:
+        raise EpisodioRecuperable(f'No se pudo obtener la ilustración de la postura: {type(exc).__name__}.') from exc
+
+
 def _ent_fotos(d, carpeta):
     """Una sola ilustración por episodio; reserva persistente antes de render/publicar."""
     import io
@@ -45602,12 +45718,21 @@ def _ent_fotos(d, carpeta):
         if 'pose_id' in v and (not isinstance(v.get('pose_id'),int) or not (0<=v['pose_id']<len(NUMEN_POSES_CONTEMPLATIVAS) or 100<=v['pose_id']<200)):
             raise EpisodioRecuperable('Registro visual dañado en pose: '+str(k))
     previo=registro.get(eid);otros=[v for k,v in registro.items() if k!=eid];semillas={v['seed'] for v in otros}; hashes={v['sha256'] for v in otros}
+    generada=(previo.get('version')=='cosmos-v8-postura-guion' if previo
+              else _numen_clave_postura(d.get('postura_androide')) is not None)
+    postura=None
+    if generada:
+        postura=(previo.get('postura_androide') if previo
+                 else _numen_elegir_postura(d['postura_androide'],registro,eid))
+        if _numen_clave_postura(postura) is None:
+            raise EpisodioRecuperable('La postura de la reserva visual es inválida.')
+        cache=Path('state/visuales_numen')/f'{eid}-postura.jpg'
     banco=[NUMEN_BANCO_HD/f'{i:03d}.jpg' for i in range(1,101)]
     usados_hd={v.get('banco_slot') for v in otros if v.get('version')=='cosmos-v7-banco-hd'}
     candidatos_hd=[p for p in banco if int(p.stem) not in usados_hd]
     usar_hd=(previo.get('version')=='cosmos-v7-banco-hd' if previo
              else bool(candidatos_hd) and all(p.is_file() for p in banco))
-    for intento in range(1 if previo else 120):
+    for intento in range(1 if previo else 3 if generada else 120):
         seed=previo['seed'] if previo else int(hashlib.sha256(f'numen-cosmos-v3:{eid}:{intento}'.encode()).hexdigest()[:16],16)
         indice=previo['indice'] if previo else seed%len(_NUMEN_ARTE)
         version=previo.get('version','cosmos-v1') if previo else 'cosmos-v6-arte-full-hd'
@@ -45616,7 +45741,17 @@ def _ent_fotos(d, carpeta):
         else:
             pose_id=(seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS)
         if seed in semillas:continue
-        if usar_hd:
+        if generada:
+            version='cosmos-v8-postura-guion'
+            if previo or (intento==0 and cache.is_file()):
+                fuente=cache if cache.is_file() else carpeta/'imagen_00.jpg'
+                if not fuente.is_file():
+                    raise EpisodioRecuperable('Falta la ilustración reservada; restaura el respaldo visual.')
+                datos=fuente.read_bytes()
+            else:
+                datos=_numen_render_postura(d,postura,intento)
+            _,cosmos=_numen_composicion_v2(seed,indice,devolver_fondo=True)
+        elif usar_hd:
             version='cosmos-v7-banco-hd'
             fuente=NUMEN_BANCO_HD/f'{previo["banco_slot"]:03d}.jpg' if previo else candidatos_hd[intento%len(candidatos_hd)]
             if not fuente.is_file():
@@ -45645,11 +45780,21 @@ def _ent_fotos(d, carpeta):
             raise EpisodioRecuperable('La imagen reservada cambió (posible reserva anterior a WebP); conservar o recuperar su imagen original antes de reanudar. No se reemplazará una reserva ya emitida.')
         path=carpeta/'imagen_00.jpg';path.write_bytes(datos)
         cosmos.save(carpeta/'cta_cosmos.png',format='PNG')
-        pose_nombre=(f'pose_real_{pose_id-99:03d}' if 100<=pose_id<200 else NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre'])
+        pose_nombre=('postura_del_guion' if generada else
+                     f'pose_real_{pose_id-99:03d}' if 100<=pose_id<200 else
+                     NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre'])
         registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':version,'tema':d.get('titulo','')}
-        if usar_hd and not previo:registro[eid]['banco_slot']=int(fuente.stem)
+        if generada and not previo:
+            cache.parent.mkdir(parents=True,exist_ok=True)
+            temporal=cache.with_suffix('.tmp')
+            temporal.write_bytes(datos)
+            temporal.replace(cache)
+            registro[eid].pop('pose_id',None)
+            registro[eid]['postura_androide']=postura
+        elif usar_hd and not previo:
+            registro[eid]['banco_slot']=int(fuente.stem)
         _cola_json(NUMEN_REGISTRO_VISUAL,registro)
-        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':('arte original 1920×1080 y escena cósmica procedural' if version in ('cosmos-v6-arte-full-hd','cosmos-v7-banco-hd') else 'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes'),'atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
+        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':('arte original 1920×1080 y escena cósmica procedural' if version in ('cosmos-v6-arte-full-hd','cosmos-v7-banco-hd','cosmos-v8-postura-guion') else 'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes'),'atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
         mapa=[str(path)]*len(d['escenas'])
         _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',{'episodio':eid,'imagen':path.name,'escenas':len(mapa),'distancia_minima':distancia,**registro[eid]})
         _cola_json(carpeta/'creditos_imagenes.json',[c])
