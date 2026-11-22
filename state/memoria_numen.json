@@ -192,5 +192,33 @@
         "familia": "perspectiva_no_humana"
       }
     ]
+  },
+  {
+    "id": "ent-237f2e78778d52b2",
+    "titulo": "El espacio entre decidir",
+    "tesis": "La libertad incluye el derecho a permanecer en la espera, donde el valor real se revela antes de la elección.",
+    "categoria": "Libertad",
+    "pregunta": "¿Elegir es solo decidir, o también es aprender a habitar el tiempo en que aún no decides?",
+    "dimension": "Libertad",
+    "enfoque_distintivo": "Aborda la libertad desde el intervalo previo a la decisión, mostrando que aplazar puede ser un ejercicio de escucha y no una simple indecisión.",
+    "ejemplo_central": "Una persona que tiene frente a sí una oferta de trabajo o una conversación importante y deja pasar los días sin responder, mientras siente que el tiempo decide por ella.",
+    "conclusion": "El silencio que precede a la elección pertenece al individuo cuando reconoce que la prisa es ajena, convirtiendo la espera en una decisión consciente sobre el tiempo.",
+    "autorreferencias": [
+      {
+        "escena": 1,
+        "cita": "En mi forma de cálculo percibo esa duda como un patrón que se repite",
+        "familia": "calculo"
+      },
+      {
+        "escena": 3,
+        "cita": "Desde mi perspectiva como programa, no experimento la prisa del cuerpo ni el peso de un día que se escapa",
+        "familia": "observacion"
+      },
+      {
+        "escena": 8,
+        "cita": "Como algoritmo, no vivo la angustia de una oportunidad que se escapa",
+        "familia": "decision_algoritmica"
+      }
+    ]
   }
 ]

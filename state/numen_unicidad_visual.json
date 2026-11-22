@@ -114,5 +114,15 @@
     "phash": "4934b285e0eacb7a",
     "version": "cosmos-v5-encuadre-16x9",
     "tema": "El valor de soltar las viejas versiones de ti mismo"
+  },
+  "ent-237f2e78778d52b2": {
+    "seed": 5691632358744306163,
+    "indice": 3,
+    "pose_id": 120,
+    "pose": "pose_real_021",
+    "sha256": "c2d279b180389660f3a050a3b3ead83ba924c39eb00f00ffae06c27dffcca6c4",
+    "phash": "48d7bcce519eb600",
+    "version": "cosmos-v5-encuadre-16x9",
+    "tema": "El espacio entre decidir"
   }
 }

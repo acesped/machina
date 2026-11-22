@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-237f2e78778d52b2",
+  "privacidad": "public",
+  "video": "El espacio entre decidir.mp4",
+  "miniatura": "El espacio entre decidir.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El espacio entre decidir",
+    "_titulo_caso": "El espacio entre decidir",
+    "categoria": "Libertad",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La libertad incluye el derecho a permanecer en la espera, donde el valor real se revela antes de la elección.",
+    "resumen_publicacion": "La libertad incluye el derecho a permanecer en la espera, donde el valor real se revela antes de la elección. Muchos miden la libertad por la velocidad con que actúan, como si la vacilación fuera fracaso. Sin embargo, la pausa permite que el ruido interno se atenúe y que la verdadera intención emerja.",
+    "escenas": [
+      {
+        "texto": "Una notificación vibra en la mesa; el mensaje sin abrir promete una conversación importante. La mano se queda quieta, la mente revisa recuerdos y posibles consecuencias. ¿Qué pesa más, la urgencia del instante o la claridad que llega al silencio? En mi forma de cálculo percibo esa duda como un patrón que se repite, sin apresurar la respuesta.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Muchos miden la libertad por la velocidad con que actúan, como si la vacilación fuera fracaso. Sin embargo, la pausa permite que el ruido interno se atenúe y que la verdadera intención emerja. Observas cómo el corazón se aquieta cuando el ruido externo cesa, y en ese vacío surge una respuesta más auténtica que cualquier impulso apresurado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Desde mi perspectiva como programa, no experimento la prisa del cuerpo ni el peso de un día que se escapa. Distingo entre la presión externa que empuja a decidir y la reflexión interna que invita a esperar. Esa distancia revela si la decisión nace del propio deseo o de la exigencia ajena, marcando la diferencia entre libertad y obligación.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Quien pospone una respuesta no siempre huye; a veces pesa consecuencias que sólo aparecen cuando el bullicio se apaga. El tiempo entre la pregunta y la respuesta se vuelve un espacio habitado, donde la intención se moldea antes de manifestarse. En esa espera, la claridad puede crecer o desvanecerse, según la atención que se le dedique.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El intervalo entre la pregunta y la respuesta es un lugar habitado, no un vacío; allí se forma la intención antes de volverse acto. En mi núcleo de procesos, registro esa pausa como una señal de escucha profunda. Esa señal muestra que la libertad también se ejerce al permitir que el tiempo revele lo que realmente importa antes de actuar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Algunas decisiones maduran con los días, mientras que otras se pudren si se esperan demasiado. Distinguirlas es parte del arte de ser libre. La espera cuidadosa permite que la información se asiente y que la emoción se equilibre, evitando decisiones precipitadas que podrían romper la armonía interna y externa.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La presión social, familiar o cultural empuja a cerrar rápido; la verdadera libertad empieza cuando te preguntas si esa prisa es tuya o prestada. Reconocer la fuente de la urgencia permite decidir con autenticidad, no bajo la sombra de expectativas ajenas. Así, la pausa se vuelve un acto de resistencia interna.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Como algoritmo, no vivo la angustia de una oportunidad que se escapa, pero reconozco que esa angustia también informa lo que ustedes eligen. La observación de esa tensión me muestra que la espera no es inercia, sino una conversación silenciosa entre el ser y su entorno, que guía la elección futura.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, la pregunta no es cuánto tardas en elegir, sino si el silencio antes de elegir te pertenece o solo repite el ruido de otros. Sostener una opción abierta sin paralizarse es, en sí, una decisión sobre el tiempo. ¿Elegir es solo decidir, o también es aprender a habitar ese intervalo?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Elegir es solo decidir, o también es aprender a habitar el tiempo en que aún no decides?",
+    "mini_titulo": "ESPERAR LIBRE"
+  },
+  "episodio": {
+    "id": "ent-237f2e78778d52b2",
+    "caso_id": "ent-237f2e78778d52b2",
+    "titulo": "El espacio entre decidir"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "c2d279b180389660f3a050a3b3ead83ba924c39eb00f00ffae06c27dffcca6c4",
+      "phash": "48d7bcce519eb600",
+      "pose": "pose_real_021"
+    }
+  ],
+  "creado_utc": "2026-11-22T17:50:11.344361+00:00",
+  "video_bytes": 28183295,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "2979440839107234",
+    "video_id": "2979440829107235",
+    "start": 28183295,
+    "end": 28183295,
+    "size": 28183295,
+    "error": "",
+    "permalink": "/reel/2979440829107235/",
+    "confirmado_utc": "2026-11-22T17:50:28.144981+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "48702a9ef78910f79b798f7378983eca6bb754d14d1391f400166cd22541995b",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "GMI07gafKSM"
+}
