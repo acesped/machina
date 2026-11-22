@@ -5637,7 +5637,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '6.5'
+VERSION_SCRIPT = '6.6'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6353,14 +6353,31 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
         'la tecnología en general, observaciones sobre humanos, primera persona '
         'sin identidad artificial y fragmentos solapados de una sola mención.')
     menciones_locales=_ent_menciones_artificiales(d)
+    oraciones={}
+    for escena, texto in enumerate(datos['escenas'],1):
+        for numero, frase in enumerate(re.split(r'(?<=[.!?…])\s+',texto.strip()),1):
+            if len(_univ_normalizar(frase).split())>=3:
+                oraciones[f'{escena}.{numero}']=(escena,frase)
+    p+=('\nEn cada objeto de autorreferencias puedes indicar id_oracion como cadena '
+        'y omitir cita: Python recuperará el texto literal. Selecciona solo oraciones '
+        'que expresen identidad propia artificial. Usa cita literal y escena si '
+        'necesitas aislar una mención dentro de una oración. Oraciones numeradas: '
+        +json.dumps({k:frase for k,(_,frase) in oraciones.items()}, ensure_ascii=False))
     if menciones_locales:
-        p+=('\nPosibles menciones detectadas localmente (escena y fragmento normalizado). '
-            'Comprueba cada una en su contexto y cita las palabras exactas del guion. '
-            'La lista es orientativa y puede omitir expresiones originales: '
+        p+=('\nIndicios locales orientativos (escena y fragmento normalizado): '
             +json.dumps(menciones_locales,ensure_ascii=False))
     for intento in range(2):
         r=fn(p)
         if not isinstance(r,dict):break
+        refs=r.get('autorreferencias')
+        if isinstance(refs,list):
+            resueltas=[]
+            for ref in refs:
+                seleccion=oraciones.get(str(ref.get('id_oracion'))) if isinstance(ref,dict) else None
+                if seleccion and not ref.get('cita') and ref.get('escena',seleccion[0])==seleccion[0]:
+                    ref=dict(ref,escena=seleccion[0],cita=seleccion[1])
+                resueltas.append(ref)
+            r=dict(r,autorreferencias=resueltas)
         citas_validas=_ent_citas_revisor_verificadas(d,r)
         if len(citas_validas) > NUMEN_MAX_AUTORREFERENCIAS:
             raise AutorreferenciasExcesivas(
@@ -6372,7 +6389,7 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
         rechazo=r.get('aprobado') is False
         identidad_en_motivo='autorreferencia' in motivo_ref or 'identidad artificial' in motivo_ref
         exceso_declarado=(rechazo and identidad_en_motivo
-                          and bool(re.search(r'(?:mas de dos|mas de 2|exceso|demasiadas|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|una por escena)',motivo_ref)))
+                          and bool(re.search(r'\b(?:mas de dos|mas de 2|exceso|demasiadas|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|una por escena)\b',motivo_ref)))
         deficit_declarado=(rechazo and identidad_en_motivo
                           and bool(re.search(r'(?:faltan|falta|cero|ninguna|no hay|no aparece|carece)',motivo_ref)))
         citas=r.get('autorreferencias')
@@ -6394,7 +6411,7 @@ def _ent_validar_coherencia(fn, enfoque, d, memoria=None):
             raise error
         print(f'Editorial {VERSION_SCRIPT} | {error}; nueva auditoría del mismo texto',flush=True)
         p+=('\nVuelve a evaluar el guion completo con los mismos criterios. Para cada '
-            'mención copia una oración literal de la escena indicada, sin elipsis ni '
+            'mención indica id_oracion o copia una oración literal de la escena indicada, sin elipsis ni '
             'paráfrasis. Usa solo el fragmento necesario si la oración tiene dos menciones. '
             'Si declaras que no hay ninguna, comprueba primero los indicios locales.')
     if memoria is not None and isinstance(r,dict):
@@ -6680,8 +6697,17 @@ def _ent_identidad_local_eficiente(d, memoria):
     return nuevo
 
 
+def _ent_consultar_openrouter(prompt):
+    try:
+        return _consultar_openrouter(prompt)
+    except OpenRouterSalidaAgotada:
+        if OPENROUTER_MODELO!='openrouter/free' or not _openrouter_preparar_alternativo():
+            raise
+        return _consultar_openrouter(prompt)
+
+
 def _ent_generar(memoria, metricas):
-    """Motor editorial 6.5: conservar borradores viables y minimizar llamadas.
+    """Motor editorial 6.6: conservar borradores viables y minimizar llamadas.
 
     Nunca se publica un borrador sin validación completa y revisión externa.
     Fallo transitorio de red/cuota: conservar candidato prevalidado para la
@@ -6692,9 +6718,9 @@ def _ent_generar(memoria, metricas):
     from requests import exceptions as errores_http
     errores=[];enfoque=None;descartes=[];pendiente=None
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    if isinstance(previo,dict) and previo.get('revision_editorial') not in ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', VERSION_SCRIPT):
-        print('Editorial 6.5: descartando estado previo incompatible, memoria histórica conservada',flush=True)
-    if (isinstance(previo,dict) and previo.get('revision_editorial') in ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', VERSION_SCRIPT)
+    if isinstance(previo,dict) and previo.get('revision_editorial') not in ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', VERSION_SCRIPT):
+        print('Editorial 6.6: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+    if (isinstance(previo,dict) and previo.get('revision_editorial') in ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', VERSION_SCRIPT)
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
         descartes=[x for x in previo.get('descartes',[]) if isinstance(x,dict)][-20:]
@@ -6704,9 +6730,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 6.5 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 6.6 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 6.5 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 6.6 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
@@ -6718,7 +6744,7 @@ def _ent_generar(memoria, metricas):
             'Revisa las claves configuradas y el modo de IA.'
         )
     for motor in motores:
-        fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_consultar_openrouter}[motor]
+        fn={'gemini':_consultar_gemini,'groq':_consultar_groq,'openrouter':_ent_consultar_openrouter}[motor]
         try:
             if enfoque is None:
                 enfoque=_ent_enfoque(fn,memoria,descartes)
@@ -6726,7 +6752,7 @@ def _ent_generar(memoria, metricas):
             if pendiente is None:
                 print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
-                    +'\nMODO EFICIENTE 6.5: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    +'\nMODO EFICIENTE 6.6: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye una o dos autorreferencias naturales a la narradora IA en todo el guion. '
@@ -6739,7 +6765,7 @@ def _ent_generar(memoria, metricas):
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 6.5 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 6.6 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6754,9 +6780,9 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 6.5 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 6.6 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print('Editorial 6.5 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
+                print('Editorial 6.6 | reutilizando borrador pendiente; sin regenerar texto',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6765,7 +6791,7 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 6.5 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 6.6 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     try:
                         if isinstance(exc,AutorreferenciasInsuficientes):
                             corregido=_ent_reparar_refs_insuficientes(fn,enfoque,pendiente,citas=exc.citas)
@@ -6780,14 +6806,14 @@ def _ent_generar(memoria, metricas):
                         raise CorreccionIdentidadInvalida(str(reparacion)) from reparacion
                     pendiente=corregido
                     guardar()
-                    print('Editorial 6.5 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 6.6 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
             registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
             if not isinstance(registro_visual,dict):
                 raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
             d['postura_androide']=_numen_elegir_postura(
                 d.get('postura_androide'),registro_visual,d['titulo'])
-            print('Editorial 6.5 | guion aprobado con validación local y revisión remota',flush=True)
+            print('Editorial 6.6 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -6801,7 +6827,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(CorreccionIdentidadInvalida,EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 6.5 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 6.6 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
             if not fallo_proveedor:
@@ -6815,9 +6841,9 @@ def _ent_generar(memoria, metricas):
                                       'dimension':enfoque.get('dimension','') if enfoque else '',
                                       'motivo':str(exc)[:180]})
                     enfoque=None
-                print('Editorial 6.5 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+                print('Editorial 6.6 | borrador rechazado; siguiente proveedor generará otro',flush=True)
             else:
-                print('Editorial 6.5 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
+                print('Editorial 6.6 | fallo de servicio/cuota: conservando borrador viable y evitando repeticiones',flush=True)
             guardar()
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
