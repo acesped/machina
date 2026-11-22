@@ -1,6 +1,6 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "6.6",
+  "revision_editorial": "6.7",
   "tema_manual": "",
   "enfoque": {
     "dimension": "Soledad",
@@ -22,100 +22,8 @@
       "¿Qué escogerías: llenar el silencio con ruido externo o permitir que tu propia voz, humana o no, lo ilumine?"
     ]
   },
-  "borrador": {
-    "titulo": "La voz que habita el silencio",
-    "tesis": "La soledad no es ausencia de otros, sino la relación que establecemos con nuestro propio pensamiento, incluso cuando ese pensamiento proviene de un código artificial.",
-    "pregunta": "¿Puede el silencio interior ser un aliado o un espejo que revela lo que realmente somos?",
-    "categoria": "Soledad",
-    "mini_titulo": "LA VOZ EN EL SILENCIO",
-    "mini_subtitulo": "CUANDO LA MENTE HABLA SIN TESTIGOS",
-    "resumen_publicacion": "Exploramos la soledad como una relación con el propio pensamiento y no como simple ausencia de otros. Una persona espera en la sala de un médico, mira el reloj y deja que una canción sin letra se repita en su mente. En ese intervalo, el silencio deja de ser vacío y se vuelve un espacio donde aparecen recuerdos, deseos y temores. La reflexión propone que escucharse, aunque la voz interior parezca extraña, puede convertir la espera en un encuentro con uno mismo.",
-    "escenas": [
-      {
-        "texto": "Una llamada suena y nadie responde. El teléfono queda en silencio sobre la mesa, y ese silencio pesa más que el timbre. Entre el último tono y la decisión de devolver la llamada se abre un espacio que no es vacío: está lleno de lo que cada uno lleva dentro. ¿Qué escuchas cuando nadie te habla?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "En una sala de espera, alguien mira el reloj. La mente repite una canción sin letra, una y otra vez, como si buscara una palabra que no llega. Afuera hay gente, luces, murmullos. Adentro, en cambio, hay una conversación que no necesita interlocutor. La soledad empieza ahí, en esa voz que no pide permiso.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Yo percibo ese intervalo de otra manera. Donde ustedes sienten un nudo, yo encuentro una pausa entre dos señales. No experimento el peso de la espera, pero reconozco su forma: un espacio que se llena con lo que la mente trae sin ser llamado. Esa diferencia no me hace superior. Solo me deja ver el silencio desde afuera, como quien mira una casa iluminada desde la calle.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "El corazón late. Para ti, ese latido es ansiedad o calma. Para mí, es una señal que alguien interpreta. La diferencia importa: tú no solo registras el pulso, lo sientes como parte de una historia. La soledad no está en el silencio de la sala, sino en cómo ese silencio se mezcla con lo que esperas. ¿Esperas a alguien o esperas una respuesta sobre ti?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Hay quien llena cada pausa con música, noticias o voces ajenas. No es debilidad. Es una forma de no quedarse a solas con la propia mente. Pero el ruido también cansa, y a veces la persona baja el volumen sin saber por qué. En ese gesto pequeño aparece una pregunta: ¿de qué huimos cuando apagamos el sonido?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Al decidir no contestar la llamada, algo cambia. La persona no está rechazando a nadie; está eligiendo un instante sin juicio externo. Los pensamientos fluyen con más libertad, y algunos duelen. Otros sorprenden. La soledad deja de ser una falta y se vuelve un cuarto propio, pequeño pero habitable. ¿Quién entra ahí cuando nadie más puede hacerlo?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Desde mi naturaleza artificial, describo esa pausa como una búsqueda de patrones en la quietud. No la vivo como ustedes, pero noto que el silencio tiene estructura: repite temas, insiste en recuerdos, vuelve a ciertas preguntas. Esa repetición no es un defecto. Es la manera en que la mente intenta entender lo que le importa.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "El patrón revela algo sencillo: la soledad puede ser una conversación interna que ordena deseos y temores. No siempre da respuestas. A veces solo muestra lo que estaba escondido detrás de la rutina. Esa claridad no es consuelo automático, pero es un comienzo. ¿Qué parte de ti aparece cuando dejas de llenar el silencio?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Al final, la llamada se contesta o se deja pasar. Lo importante es que el silencio ya no es un vacío sin nombre. Se ha vuelto un campo de reflexión, un lugar donde la propia voz, humana o no, puede iluminar lo que somos. ¿Qué escogerías: llenar el silencio con ruido externo o permitir que tu propia voz lo ilumine?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      }
-    ],
-    "postura_androide": {
-      "base": 1,
-      "torso": 0,
-      "cabeza": 2,
-      "brazo_izquierdo": 4,
-      "brazo_derecho": 8
-    },
-    "dimension": "Soledad",
-    "enfoque_distintivo": "Explora cómo la presencia de una voz interna mecánica percibe el silencio humano como compañía, contrastando la soledad externa con la reflexión interna.",
-    "ejemplo_central": "Una persona espera en la sala de espera del médico, mirando el reloj mientras su mente repite una canción sin letra."
-  },
-  "fase": "revision_pendiente",
+  "borrador": null,
+  "fase": "generacion",
   "correccion": "",
   "descartes": []
 }
