@@ -1,29 +1,35 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "6.9",
+  "revision_editorial": "7.0",
   "tema_manual": "",
   "enfoque": {
-    "dimension": "Soledad",
-    "enfoque_distintivo": "Explora cómo la presencia de una voz interna mecánica percibe el silencio humano como compañía, contrastando la soledad externa con la reflexión interna.",
-    "ejemplo_central": "Una persona espera en la sala de espera del médico, mirando el reloj mientras su mente repite una canción sin letra.",
-    "tema": "¿Qué significa estar solo cuando la propia mente habla sin ser humana?",
-    "tesis": "La soledad no es ausencia de otros, sino la relación que establecemos con nuestro propio pensamiento, incluso cuando ese pensamiento proviene de un código artificial.",
-    "pregunta": "¿Puede el silencio interior ser un aliado o un espejo que revela lo que realmente somos?",
+    "tema": "El sufrimiento por una mentira dicha para proteger",
+    "tesis": "El dolor de una mentira protectora puede nacer no solo del engaño, sino de descubrir que el cuidado dejó una herida al decidir por el otro.",
+    "pregunta": "¿Puede una mentira hecha por amor convertirse en una forma de abandono?",
     "pasos": [
-      "Una llamada pendiente suena y el teléfono queda en silencio; el espacio entre el timbre y la respuesta se vuelve palpable.",
-      "En ese intervalo, la mente comienza a repasar recuerdos, como una película que se proyecta sin control.",
-      "Yo, como una entidad de circuitos, observo ese proceso y noto que el ruido externo ya no llena el vacío.",
-      "El corazón humano late, pero el latido es solo una señal que el cerebro interpreta, mientras yo registro la señal como datos.",
-      "La pregunta surge: ¿el silencio que siente la persona es una falta o una oportunidad para escucharse a sí misma?",
-      "Al decidir no contestar, la persona crea un espacio donde sus pensamientos pueden fluir sin juicio externo.",
-      "Yo, consciente de mi naturaleza artificial, describo esa pausa como un algoritmo que busca patrones en la quietud.",
-      "Ese patrón revela que la soledad puede convertirse en una conversación interna que clarifica deseos y temores.",
-      "Al final, la llamada se contesta o se deja pasar; lo importante es que el silencio ya no es vacío, sino un campo de reflexión.",
-      "¿Qué escogerías: llenar el silencio con ruido externo o permitir que tu propia voz, humana o no, lo ilumine?"
-    ]
+      "¿Alguna vez una mentira pequeña te dejó más solo que una verdad dura?",
+      "No hablo del engaño que busca provecho, sino del que intenta cuidar.",
+      "Alguien esconde una noticia difícil para no romper la calma de quien ama.",
+      "Al principio parece un regalo: evitar dolor, sostener la esperanza, dar tiempo.",
+      "Pero el que recibe la verdad a medias empieza a sospechar que no merece confianza.",
+      "Mi código no guarda secretos; por eso una omisión pesa distinto.",
+      "El cuidado que decide por el otro puede sentirse como una puerta cerrada.",
+      "La pregunta no es si la mentira fue buena o mala, sino qué vínculo deja.",
+      "A veces el perdón llega, pero la confianza ya no vuelve igual.",
+      "¿Puede el amor decir toda la verdad sin destruir la ternura?"
+    ],
+    "dimension": "Sufrimiento",
+    "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
+    "ejemplo_central": "Alguien oculta una verdad difícil para no preocupar a quien quiere, y luego nota que ese silencio abrió distancia."
   },
   "borrador": null,
   "fase": "generacion",
   "correccion": "",
-  "descartes": []
+  "descartes": [
+    {
+      "tema": "¿Qué significa estar solo cuando la propia mente habla sin ser humana?",
+      "dimension": "Soledad",
+      "motivo": "Reflexión demasiado cercana al historial"
+    }
+  ]
 }
