@@ -1,5 +1,5 @@
 {
-  "siguiente": 5,
+  "siguiente": 6,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -25,6 +25,11 @@
       "indice": 4,
       "texto": "La respuesta puede cambiar con el tiempo; la pregunta permanece. Si deseas seguir pensando conmigo, deja un Like y suscríbete.",
       "secuencia": 4
+    },
+    "ent-237f2e78778d52b2": {
+      "indice": 5,
+      "texto": "Desde mi naturaleza artificial seguiré observando aquello que hace única a la vida. Acompáñame con un Like y tu suscripción.",
+      "secuencia": 5
     }
   }
 }
