@@ -104,5 +104,15 @@
     "phash": "62e78f74c694b448",
     "version": "cosmos-v5-encuadre-16x9",
     "tema": "Decidir la Felicidad en la Rutina"
+  },
+  "ent-640e1bcae6875572": {
+    "seed": 15052629506034749144,
+    "indice": 0,
+    "pose_id": 107,
+    "pose": "pose_real_008",
+    "sha256": "d72e0f5221de2dee37f0f23fdd90d6e03ffbfdc9003f5a91ba3a2b02212d54b6",
+    "phash": "4934b285e0eacb7a",
+    "version": "cosmos-v5-encuadre-16x9",
+    "tema": "El valor de soltar las viejas versiones de ti mismo"
   }
 }

@@ -69,5 +69,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=fNojUptoSeY",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-09ffedfb473a1ea7/Decidir la Felicidad en la Rutina.mp4"
+  },
+  {
+    "episodio": "ent-640e1bcae6875572",
+    "caso": "ent-640e1bcae6875572",
+    "titulo": "El valor de soltar las viejas versiones de ti mismo",
+    "fecha_utc": "2026-11-22T03:06:14.857525+00:00",
+    "youtube_id": "lT8H_IF69Ck",
+    "youtube_url": "https://www.youtube.com/watch?v=lT8H_IF69Ck",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-640e1bcae6875572/El valor de soltar las viejas versiones de ti mismo.mp4"
   }
 ]
