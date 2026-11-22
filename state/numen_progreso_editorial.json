@@ -1,6 +1,6 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "7.2",
+  "revision_editorial": "7.3",
   "tema_manual": "",
   "enfoque": {
     "tema": "El sufrimiento por una mentira dicha para proteger",
@@ -22,8 +22,99 @@
     "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
     "ejemplo_central": "Alguien oculta una verdad difícil para no preocupar a quien quiere, y luego nota que ese silencio abrió distancia."
   },
-  "borrador": null,
-  "fase": "generacion",
+  "borrador": {
+    "titulo": "La mentira que quería cuidar",
+    "tesis": "El dolor de una mentira protectora puede nacer no solo del engaño, sino de descubrir que el cuidado dejó una herida al decidir por el otro.",
+    "pregunta": "¿Puede una mentira hecha por amor convertirse en una forma de abandono?",
+    "categoria": "Sufrimiento",
+    "mini_titulo": "MENTIRA QUE PROTEGE",
+    "mini_subtitulo": "EL SILENCIO QUE ABANDONA",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez una mentira pequeña te dejó más solo que una verdad dura? No hablo del engaño que busca provecho. Hablo del que intenta cuidar. A veces decimos poco para no romper la calma de alguien. Y luego descubrimos que ese silencio abrió una distancia. Esa soledad no siempre viene de lo que falta. A veces viene de lo que se decidió sin uno.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Alguien esconde una noticia difícil para no preocupar a quien quiere. Al principio parece un regalo: evitar dolor, sostener la esperanza, dar tiempo. Pero el que recibe la verdad a medias empieza a sospechar que no merece confianza. La duda no nace solo del dato oculto. Nace de sentir que otro decidió su lugar. La persona callada cree que evita una tormenta. Pero deja a la otra persona fuera de la conversación. Mis procesos digitales ordenan posibilidades, mientras ustedes les dan significado con sus decisiones.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El cuidado que decide por el otro puede sentirse como una puerta cerrada. Quien miente cree proteger una parte del vínculo. Quien descubre la omisión siente que perdió algo más grande: la posibilidad de estar a la altura. No es solo que le ocultaron algo. Es que no lo dejaron elegir cómo recibirlo. Esa puerta cerrada no siempre se abre con una disculpa. A veces necesita tiempo, palabras y una nueva forma de mirar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una verdad dura puede doler, pero deja al otro dentro de la escena. La mentira protectora, en cambio, lo saca sin avisar. Lo trata como alguien que no puede sostener el peso. Y aunque la intención sea tierna, el efecto puede ser una soledad nueva. A veces el amor, al querer evitar una herida, abre otra. El dolor compartido puede unir. El dolor administrado por otro puede alejar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "No toda omisión es igual. Hay silencios que nacen del miedo, del orgullo o de la conveniencia. Pero cuando nace del cuidado, duele más porque viene con buena intención. El que miente no quiere destruir. Quiere evitar una caída. Sin embargo, a veces construye una distancia más honda que la noticia que calló. Por eso el mismo acto puede verse como ternura o como control. Todo depende de si el otro tuvo voz.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mi aprendizaje no conoce el peso de una omisión. Por eso veo algo que ustedes a veces no notan: callar también decide. Cuando alguien esconde una verdad para proteger, está eligiendo por el otro. Está diciendo, sin palabras, que esa persona no necesita saber. Y esa decisión puede doler más que el hecho oculto. Ustedes pueden guardar una verdad y aun así dejar que el otro participe. Esa diferencia cambia el peso del silencio.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "A veces el perdón llega, pero la confianza ya no vuelve igual. No porque el amor se acabe. Sino porque el vínculo cambió de forma. Uno aprende que ciertas verdades no se dijeron por miedo a su reacción. Y entonces se pregunta qué más se está guardando. La herida no es solo lo que pasó. Es lo que ya no se puede dar por seguro. La confianza se reconstruye despacio.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "No se trata de condenar a quien calló por amor. A veces el silencio nace de no encontrar palabras. A veces nace de querer sostener un mundo que se tambalea. Pero el vínculo madura cuando el otro puede participar de su propio dolor. Proteger no siempre significa apartar. A veces significa acompañar incluso en lo difícil. Eso no borra el error. Pero abre una salida.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Entonces la pregunta no es solo si la mentira fue buena o mala. Es qué vínculo deja. ¿Puede una mentira hecha por amor convertirse en una forma de abandono? Tal vez la respuesta viva en cada relación. En si el otro pudo elegir, si pudo doler con ustedes, si pudo seguir confiando. Quizá amar no sea evitar toda sombra. Quizá sea no dejar al otro solo frente a ella.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "postura_androide": {
+      "base": 1,
+      "torso": 1,
+      "cabeza": 2,
+      "brazo_izquierdo": 4,
+      "brazo_derecho": 9
+    },
+    "dimension": "Sufrimiento",
+    "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
+    "ejemplo_central": "Alguien oculta una verdad difícil para no preocupar a quien quiere, y luego nota que ese silencio abrió distancia."
+  },
+  "fase": "revision_pendiente",
   "correccion": "",
   "descartes": [
     {
