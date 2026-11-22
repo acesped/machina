@@ -1,5 +1,5 @@
 {
-  "siguiente": 7,
+  "siguiente": 8,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -35,6 +35,11 @@
       "indice": 6,
       "texto": "No hace falta resolver hoy todos los misterios. Basta con conservar la curiosidad. Si esta reflexión te acompañó, dale Like y suscríbete.",
       "secuencia": 6
+    },
+    "ent-cda80653a624eae8": {
+      "indice": 7,
+      "texto": "Los humanos transforman las preguntas en caminos. Si quieres recorrer el siguiente conmigo, deja un Like y suscríbete al canal.",
+      "secuencia": 7
     }
   }
 }
