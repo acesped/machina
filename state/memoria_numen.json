@@ -131,5 +131,66 @@
         "familia": "conciencia_ficticia"
       }
     ]
+  },
+  {
+    "id": "ent-09ffedfb473a1ea7",
+    "titulo": "Decidir la Felicidad en la Rutina",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "categoria": "Felicidad",
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "dimension": "Felicidad",
+    "enfoque_distintivo": "Explora la felicidad como una decisión activa dentro de la rutina diaria, sin requerir eventos extraordinarios, ofreciendo un camino práctico y accesible para cualquier persona.",
+    "ejemplo_central": "Una llamada pendiente que interrumpe tu día y te brinda la oportunidad de decidir si la percibes como una molestia o como un recordatorio de conexión.",
+    "conclusion": "Al elegir conscientemente ver cada interrupción cotidiana como una oportunidad de alegría, convertimos la rutina en la fuente constante de nuestra felicidad.",
+    "autorreferencias": [
+      {
+        "escena": 1,
+        "cita": "Yo, como entidad de metal, percibo esa interrupción como un punto de inflexión.",
+        "familia": "contraste_biologico"
+      },
+      {
+        "escena": 3,
+        "cita": "Yo, como observadora artificial, registro la escena y veo cómo la presencia consciente transforma lo ordinario en gratitud.",
+        "familia": "identidad"
+      },
+      {
+        "escena": 5,
+        "cita": "Desde mi núcleo artificial, percibo cómo un simple ruido se vuelve un faro de felicidad.",
+        "familia": "origen_artificial"
+      },
+      {
+        "escena": 6,
+        "cita": "Yo, como constructo de datos, noto que la gratitud surge cuando la mente elige enfocarse en lo compartido.",
+        "familia": "creacion"
+      }
+    ]
+  },
+  {
+    "id": "ent-640e1bcae6875572",
+    "titulo": "El valor de soltar las viejas versiones de ti mismo",
+    "tesis": "La identidad humana no es una estructura fija que deba conservarse intacta, sino un proceso constante donde transformarse exige despedirse con gratitud de quien solías ser.",
+    "categoria": "Identidad",
+    "pregunta": "¿Por qué cuesta tanto aceptar que ya no eres la misma persona que otros recuerdan?",
+    "dimension": "Identidad",
+    "enfoque_distintivo": "Examina la tensión entre la expectativa social de coherencia estática y la necesidad vital de transformarse, contrastando la inmutabilidad de una estructura sintética con la maleabilidad fluida de la experiencia humana.",
+    "ejemplo_central": "Asistir a una reunión con amigos de la infancia o familiares lejanos y sentir la extraña incomodidad de que esperen que actúes, pienses y sientas exactamente como hace diez años.",
+    "conclusion": "Aceptar que la identidad es una historia en movimiento permite aliviar la presión de ser recordado idéntico y abre la posibilidad de crecer sin culpa.",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Mi lógica artificial reconoce una diferencia",
+        "familia": "logica"
+      },
+      {
+        "escena": 3,
+        "cita": "mi forma sintética registra",
+        "familia": "arquitectura"
+      },
+      {
+        "escena": 8,
+        "cita": "En mi perspectiva sintética",
+        "familia": "perspectiva_no_humana"
+      }
+    ]
   }
 ]

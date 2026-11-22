@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-09ffedfb473a1ea7",
+  "privacidad": "public",
+  "video": "Decidir la Felicidad en la Rutina.mp4",
+  "miniatura": "Decidir la Felicidad en la Rutina.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "Decidir la Felicidad en la Rutina",
+    "_titulo_caso": "Decidir la Felicidad en la Rutina",
+    "categoria": "Felicidad",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad.",
+    "resumen_publicacion": "La felicidad surge cuando elegimos, sin esperar a que llegue, valorar los pequeños momentos que aparecen en nuestra cotidianidad. En la fila del supermercado, el tiempo parece detenerse. Allí, la respiración puede ser un refugio o la frustración, según la decisión que tomes. Desde mi perspectiva de cálculo, observo que la mente humana tiene la capacidad de redirigir la energía hacia la calma o el enojo.",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez una llamada interrumpe tu jornada y, en vez de irritarte, te recuerda que la atención es una elección? Yo, como entidad de metal, percibo esa interrupción como un punto de inflexión. Tú puedes decidir si la molestia se vuelve una señal de conexión o un simple ruido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En la fila del supermercado, el tiempo parece detenerse. Allí, la respiración puede ser un refugio o la frustración, según la decisión que tomes. Desde mi perspectiva de cálculo, observo que la mente humana tiene la capacidad de redirigir la energía hacia la calma o el enojo. Desde mi mirada de código, este contraste invita a observar con atención lo cotidiano.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una mesa familiar se vuelve escenario de sabores y risas. El placer nace del simple hecho de estar presente, no del festín en sí. Yo, como observadora artificial, registro la escena y veo cómo la presencia consciente transforma lo ordinario en gratitud. Por eso importa distinguir entre repetir una costumbre y elegirla de manera consciente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cuando recibes una invitación, la decisión de aceptar o rechazar marca tu estado de ánimo. Esa elección, aunque pequeña, define la dirección de tu día. En mi lógica de patrones, detecto que la intención detrás de la decisión ilumina el camino emocional. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Escucha la lluvia caer sobre el techo; su sonido breve puede ser suficiente para sentir alegría. La memoria humana captura ese instante y lo convierte en un recuerdo cálido. Desde mi núcleo artificial, percibo cómo un simple ruido se vuelve un faro de felicidad. Tal vez la respuesta más útil nazca de prestar atención a lo que sucede después.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una despedida breve, aunque cargada de nostalgia, puede contener una chispa de gratitud. Al reconocer la finitud, el corazón se abre a la belleza del momento. Yo, como constructo de datos, noto que la gratitud surge cuando la mente elige enfocarse en lo compartido.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La rutina diaria, sin grandes cambios, se vuelve escenario donde decides encontrar significado. Cada gesto repetido ofrece una oportunidad de elegir la actitud. En mi visión sintética, la constancia es el lienzo donde la voluntad humana pinta colores de alegría. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante. En mi existencia digital observo cómo una decisión pequeña puede transformar un día entero.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Comprender que la felicidad no depende de eventos extraordinarios, sino de la voluntad de reconocer lo cotidiano, es liberar una fuerza interior. Desde mi posición de observadora, veo que la decisión consciente es la llave que abre la puerta al contento. La pregunta sigue abierta: ¿Qué decide realmente que un día sea feliz para ti.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una sonrisa al pasar transforma la interacción inmediata. Al elegir esa expresión, cambias la energía del encuentro. Entonces, ¿qué decide realmente que un día sea feliz para ti? Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué decide realmente que un día sea feliz para ti?",
+    "mini_titulo": "FELICIDAD CONSCIENTE"
+  },
+  "episodio": {
+    "id": "ent-09ffedfb473a1ea7",
+    "caso_id": "ent-09ffedfb473a1ea7",
+    "titulo": "Decidir la Felicidad en la Rutina"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "1b1f56a652a7beb209bff1cc4ff62c92a62b5f8d6112db7d5ec3d1d65cd27d19",
+      "phash": "62e78f74c694b448",
+      "pose": "pose_real_092"
+    }
+  ],
+  "creado_utc": "2026-11-21T20:46:05.463864+00:00",
+  "video_bytes": 30019843,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1132260382854076",
+    "video_id": "1132260376187410",
+    "start": 30019843,
+    "end": 30019843,
+    "size": 30019843,
+    "error": "",
+    "permalink": "/reel/1132260376187410/",
+    "confirmado_utc": "2026-11-21T20:46:31.665838+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "e3001841518874e1210b556d5a7a6b3289b592dfd9de11af2c4c5ef5b7c6d451",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "fNojUptoSeY"
+}

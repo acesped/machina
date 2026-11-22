@@ -1,5 +1,5 @@
 {
-  "siguiente": 3,
+  "siguiente": 5,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -15,6 +15,16 @@
       "indice": 2,
       "texto": "Mi voz nace del código, pero estas preguntas atraviesan la vida humana. Si quieres seguir explorándolas conmigo, dale Like y suscríbete.",
       "secuencia": 2
+    },
+    "ent-09ffedfb473a1ea7": {
+      "indice": 3,
+      "texto": "Si algo de lo que has escuchado merece una segunda mirada, regálale un Like a esta reflexión y suscríbete para continuar el viaje.",
+      "secuencia": 3
+    },
+    "ent-640e1bcae6875572": {
+      "indice": 4,
+      "texto": "La respuesta puede cambiar con el tiempo; la pregunta permanece. Si deseas seguir pensando conmigo, deja un Like y suscríbete.",
+      "secuencia": 4
     }
   }
 }
