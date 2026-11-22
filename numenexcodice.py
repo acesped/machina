@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 7.5
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 7.6
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -5651,7 +5651,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '7.5'
+VERSION_SCRIPT = '7.6'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6811,7 +6811,7 @@ def _ent_consultar_openrouter(prompt):
 
 
 def _ent_generar(memoria, metricas):
-    """Motor editorial 7.5: conservar borradores viables y minimizar llamadas.
+    """Motor editorial 7.6: conservar borradores viables y minimizar llamadas.
 
     Nunca se publica un borrador sin validación completa y revisión externa.
     Fallo transitorio de red/cuota: conservar candidato prevalidado para la
@@ -6824,9 +6824,9 @@ def _ent_generar(memoria, metricas):
     errores=[];enfoque=None;descartes=[];pendiente=None
     referencias_descartadas=set()
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', VERSION_SCRIPT)
+    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', VERSION_SCRIPT)
     if isinstance(previo,dict) and previo.get('revision_editorial') not in versiones_compatibles:
-        print('Editorial 7.5: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+        print('Editorial 7.6: descartando estado previo incompatible, memoria histórica conservada',flush=True)
     if (isinstance(previo,dict) and previo.get('revision_editorial') in versiones_compatibles
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
@@ -6837,9 +6837,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 7.5 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 7.6 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 7.5 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 7.6 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     def guardar():
         _ent_checkpoint(enfoque,pendiente,'revision_pendiente' if pendiente is not None else 'generacion','',descartes)
@@ -6863,7 +6863,7 @@ def _ent_generar(memoria, metricas):
             if pendiente is None:
                 print('NumenExCodice | tema único:',enfoque['tema'],'|',motor,'| redacción y revisión editorial',flush=True)
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
-                    +'\nMODO EFICIENTE 7.5: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
+                    +'\nMODO EFICIENTE 7.6: entrega el guion completo de una vez: 9 escenas (acepta 8–10), '
                     '520–680 palabras reales, 45–75 por escena; nunca resumas escenas en una sola frase. '
                     'Incluye una situación cotidiana concreta y un avance lógico sin digresiones. '
                     'Incluye una o dos autorreferencias naturales a la narradora IA en todo el guion. '
@@ -6876,7 +6876,7 @@ def _ent_generar(memoria, metricas):
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 7.5 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 7.6 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6898,9 +6898,9 @@ def _ent_generar(memoria, metricas):
                 borrador=_ent_validar(borrador,memoria)
                 pendiente=borrador
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 7.5 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 7.6 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print(f'Editorial 7.5 | {motor} revisará el borrador pendiente',flush=True)
+                print(f'Editorial 7.6 | {motor} revisará el borrador pendiente',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6920,7 +6920,7 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida,RevisionNarrativaLocal) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 7.5 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 7.6 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     try:
                         if isinstance(exc,RevisionNarrativaLocal):
                             corregido=_ent_reparar_narrativa(fn,enfoque,pendiente,exc)
@@ -6943,14 +6943,14 @@ def _ent_generar(memoria, metricas):
                         raise CorreccionIdentidadInvalida(str(reparacion)) from reparacion
                     pendiente=corregido
                     guardar()
-                    print('Editorial 7.5 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 7.6 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
             registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
             if not isinstance(registro_visual,dict):
                 raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
             d['postura_androide']=_numen_elegir_postura(
                 d.get('postura_androide'),registro_visual,d['titulo'])
-            print('Editorial 7.5 | guion aprobado con validación local y revisión remota',flush=True)
+            print('Editorial 7.6 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -6964,7 +6964,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(CorreccionIdentidadInvalida,EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 7.5 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 7.6 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 continue
             if not fallo_proveedor:
@@ -6978,13 +6978,13 @@ def _ent_generar(memoria, metricas):
                                       'dimension':enfoque.get('dimension','') if enfoque else '',
                                       'motivo':str(exc)[:180]})
                     enfoque=None
-                print('Editorial 7.5 | borrador rechazado; siguiente proveedor generará otro',flush=True)
+                print('Editorial 7.6 | borrador rechazado; siguiente proveedor generará otro',flush=True)
             else:
-                print('Editorial 7.5 | fallo del proveedor; se conserva el progreso editorial',flush=True)
+                print('Editorial 7.6 | fallo del proveedor; se conserva el progreso editorial',flush=True)
             guardar()
             if fallo_proveedor and pendiente is not None:
                 destino = f'siguiente revisor: {siguiente}' if siguiente else 'revisión pendiente para otra ejecución'
-                print(f'Editorial 7.5 | {destino}',flush=True)
+                print(f'Editorial 7.6 | {destino}',flush=True)
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
 
@@ -45896,21 +45896,25 @@ def _ent_fotos(d, carpeta):
         if 'pose_id' in v and (not isinstance(v.get('pose_id'),int) or not (0<=v['pose_id']<len(NUMEN_POSES_CONTEMPLATIVAS) or 100<=v['pose_id']<200)):
             raise EpisodioRecuperable('Registro visual dañado en pose: '+str(k))
     previo=registro.get(eid);otros=[v for k,v in registro.items() if k!=eid];semillas={v['seed'] for v in otros}; hashes={v['sha256'] for v in otros}
+    cache=Path('state/visuales_numen')/f'{eid}-postura.jpg'
+    tiene_postura=_numen_clave_postura(d.get('postura_androide')) is not None
+    puede_ilustrar=bool(os.getenv('OPENAI_API_KEY','').strip()) or cache.is_file()
     generada=(previo.get('version')=='cosmos-v8-postura-guion' if previo
-              else _numen_clave_postura(d.get('postura_androide')) is not None)
+              else tiene_postura and puede_ilustrar)
+    if not previo and tiene_postura and not puede_ilustrar:
+        print('Fondo visual | sin OPENAI_API_KEY: se usará el banco del androide o una composición local.',flush=True)
     postura=None
     if generada:
         postura=(previo.get('postura_androide') if previo
                  else _numen_elegir_postura(d['postura_androide'],registro,eid))
         if _numen_clave_postura(postura) is None:
             raise EpisodioRecuperable('La postura de la reserva visual es inválida.')
-        cache=Path('state/visuales_numen')/f'{eid}-postura.jpg'
     banco=[NUMEN_BANCO_HD/f'{i:03d}.jpg' for i in range(1,101)]
     usados_hd={v.get('banco_slot') for v in otros if v.get('version')=='cosmos-v7-banco-hd'}
     candidatos_hd=[p for p in banco if int(p.stem) not in usados_hd]
     usar_hd=(previo.get('version')=='cosmos-v7-banco-hd' if previo
              else bool(candidatos_hd) and all(p.is_file() for p in banco))
-    for intento in range(1 if previo else 3 if generada else 120):
+    for intento in range(1 if previo else 3 if generada and os.getenv('OPENAI_API_KEY','').strip() else 120):
         seed=previo['seed'] if previo else int(hashlib.sha256(f'numen-cosmos-v3:{eid}:{intento}'.encode()).hexdigest()[:16],16)
         indice=previo['indice'] if previo else seed%len(_NUMEN_ARTE)
         version=previo.get('version','cosmos-v1') if previo else 'cosmos-v6-arte-full-hd'
@@ -45953,7 +45957,10 @@ def _ent_fotos(d, carpeta):
         sha=hashlib.sha256(datos).hexdigest()
         with Image.open(io.BytesIO(datos)) as jpeg:ph=_numen_huella(jpeg)
         distancia=min((_numen_distancia(ph,v['phash']) for v in otros),default=64)
-        if sha in hashes or distancia<NUMEN_DISTANCIA_VISUAL:continue
+        if sha in hashes or distancia<NUMEN_DISTANCIA_VISUAL:
+            if generada and not previo and not os.getenv('OPENAI_API_KEY','').strip():
+                generada=False
+            continue
         if previo and (previo['sha256']!=sha or previo['phash']!=ph):
             raise EpisodioRecuperable('La imagen reservada cambió (posible reserva anterior a WebP); conservar o recuperar su imagen original antes de reanudar. No se reemplazará una reserva ya emitida.')
         path=carpeta/'imagen_00.jpg';path.write_bytes(datos)
