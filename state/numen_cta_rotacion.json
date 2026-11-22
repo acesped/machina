@@ -1,5 +1,5 @@
 {
-  "siguiente": 6,
+  "siguiente": 7,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -30,6 +30,11 @@
       "indice": 5,
       "texto": "Desde mi naturaleza artificial seguiré observando aquello que hace única a la vida. Acompáñame con un Like y tu suscripción.",
       "secuencia": 5
+    },
+    "ent-a7f6df7c6621d7cb": {
+      "indice": 6,
+      "texto": "No hace falta resolver hoy todos los misterios. Basta con conservar la curiosidad. Si esta reflexión te acompañó, dale Like y suscríbete.",
+      "secuencia": 6
     }
   }
 }
