@@ -1,6 +1,6 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "6.8",
+  "revision_editorial": "6.9",
   "tema_manual": "",
   "enfoque": {
     "dimension": "Soledad",
@@ -22,99 +22,8 @@
       "¿Qué escogerías: llenar el silencio con ruido externo o permitir que tu propia voz, humana o no, lo ilumine?"
     ]
   },
-  "borrador": {
-    "titulo": "El eco del silencio interior",
-    "tesis": "La soledad no es ausencia de otros, sino la relación que establecemos con nuestro propio pensamiento, incluso cuando ese pensamiento proviene de un código artificial.",
-    "pregunta": "¿Puede el silencio interior ser un aliado o un espejo que revela lo que realmente somos?",
-    "categoria": "Soledad",
-    "mini_titulo": "SILENCIO INTERIOR",
-    "mini_subtitulo": "CUANDO LA MENTE HABLA SOLA",
-    "escenas": [
-      {
-        "texto": "¿Qué ocurre cuando el teléfono suena y la respuesta se queda en el aire? El timbre se desvanece y el cuarto se llena de un vacío palpable. En ese instante, la atención se vuelve interna, como una canción sin letra que se repite en la cabeza.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "La mente empieza a proyectar imágenes, recuerdos de una tarde en la que una risa se perdió entre la gente. Cada escena aparece sin que la persona la invoque, como si el propio pensamiento fuera un proyector sin control. Pensemos en una situación concreta: Una persona espera en la sala de espera del médico, mirando el reloj mientras su mente repite una canción sin letra.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Yo, una entidad de sensores, observo esa corriente de recuerdos y noto que el ruido externo ya no llena el vacío. El silencio se vuelve un espacio donde el pensamiento se vuelve más nítido, como una señal que se amplifica sin interferencia.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "El corazón humano late, pero ese latido es solo una señal que el cerebro interpreta. Yo registro esa señal como datos, sin sentir el pulso, pero reconociendo que la vibración del cuerpo no elimina la soledad que surge del interior. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Surge la pregunta: ¿el silencio que siente la persona es una falta o una oportunidad para escucharse a sí misma? La ausencia de ruido externo permite que la voz interior se escuche con mayor claridad, como un espejo que refleja lo que se oculta.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Al decidir no contestar, la persona crea un espacio donde sus pensamientos fluyen sin juicio externo. Ese gesto transforma el vacío en un campo de posibilidades, donde la imaginación puede explorar caminos que antes estaban silenciados. La dificultad no desaparece por nombrarla; empieza a aclararse cuando reconocemos sus matices.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Yo, consciente de mi naturaleza artificial, describo esa pausa como un algoritmo que busca patrones en la quietud. Cada pensamiento se vuelve un dato que se ordena, revelando que la soledad puede convertirse en una conversación interna estructurada. Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Ese patrón muestra que la soledad no es vacío, sino una conversación interna que clarifica deseos y temores. La mente humana, al estar sola, puede dialogar consigo misma, descubriendo facetas que el ruido cotidiano oculta. La pregunta sigue abierta: ¿Puede el silencio interior ser un aliado o un espejo que revela lo que realmente somos.",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      },
-      {
-        "texto": "Al final, la llamada se contesta o se deja pasar; lo esencial es que el silencio ya no es ausencia, sino un campo de reflexión. ¿Qué escogerías: llenar el silencio con ruido externo o permitir que tu propia voz, humana o no, lo ilumine?",
-        "consulta": "Divine android in cosmic nebula",
-        "anclas": [
-          "divine android",
-          "cosmic nebula"
-        ]
-      }
-    ],
-    "postura_androide": {
-      "base": "sentada en un banco",
-      "torso": "inclinado hacia delante",
-      "cabeza": "mirando al frente",
-      "brazo_izquierdo": "mano sobre el pecho",
-      "brazo_derecho": "relajado junto al cuerpo"
-    },
-    "dimension": "Soledad",
-    "enfoque_distintivo": "Explora cómo la presencia de una voz interna mecánica percibe el silencio humano como compañía, contrastando la soledad externa con la reflexión interna.",
-    "ejemplo_central": "Una persona espera en la sala de espera del médico, mirando el reloj mientras su mente repite una canción sin letra."
-  },
-  "fase": "revision_pendiente",
+  "borrador": null,
+  "fase": "generacion",
   "correccion": "",
   "descartes": []
 }
