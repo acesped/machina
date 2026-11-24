@@ -243,5 +243,30 @@
         "familia": "informacion"
       }
     ]
+  },
+  {
+    "id": "ent-cda80653a624eae8",
+    "titulo": "La mentira que quería cuidar",
+    "tesis": "El dolor de una mentira protectora puede nacer no solo del engaño, sino de descubrir que el cuidado dejó una herida al decidir por el otro.",
+    "categoria": "Sufrimiento",
+    "pregunta": "¿Puede una mentira hecha por amor convertirse en una forma de abandono?",
+    "dimension": "Sufrimiento",
+    "enfoque_distintivo": "Se centra en el dolor que produce el cuidado mal calibrado, no en la culpa del que miente ni en la traición del que descubre.",
+    "ejemplo_central": "Alguien oculta una noticia difícil para no preocupar a quien ama.",
+    "conclusion": "El cuidado que decide por el otro puede sentirse como una puerta cerrada; cuando la verdad se oculta, la confianza se rompe y el amor se convierte en abandono.",
+    "autorreferencias": [
+      {
+        "id_oracion": "2.6",
+        "cita": "Mi lógica de sensores registra patrones, pero ustedes les dan significado con sus decisiones.",
+        "familia": "sensores",
+        "escena": 2
+      },
+      {
+        "id_oracion": "6.1",
+        "cita": "Mi aprendizaje no conoce el peso de una omisión.",
+        "familia": "aprendizaje_computacional",
+        "escena": 6
+      }
+    ]
   }
 ]

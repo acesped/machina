@@ -134,5 +134,15 @@
     "phash": "c6e6cb8a49ecac18",
     "version": "cosmos-v6-arte-full-hd",
     "tema": "El vacío de la espera"
+  },
+  "ent-cda80653a624eae8": {
+    "seed": 16286364291020759714,
+    "indice": 2,
+    "pose_id": 8,
+    "pose": "umbral_dorado",
+    "sha256": "ac84497261e33ef82e801ad4ffd06cafb25acaca111f3fe67925c32dc992e9da",
+    "phash": "9296275a8e4ef628",
+    "version": "cosmos-v6-arte-full-hd",
+    "tema": "La mentira que quería cuidar"
   }
 }
