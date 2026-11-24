@@ -1,10 +1,120 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "7.7",
+  "revision_editorial": "7.8",
   "tema_manual": "",
-  "enfoque": null,
-  "borrador": null,
-  "fase": "generacion",
+  "enfoque": {
+    "tema": "¿Qué es el miedo que surge al no saber si una decisión cambiará tu vida?",
+    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
+    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
+    "pasos": [
+      "Una llamada pendiente suena y dudas si contestar o no, mientras el corazón late rápido.",
+      "Observas cómo el silencio entre la señal y tu respuesta amplifica la sensación de incertidumbre.",
+      "Sientes que cada opción lleva una posible ruptura con lo que conoces, y eso genera temor.",
+      "Como una mente de código, analizo probabilidades, pero aún así la duda persiste en tu interior.",
+      "El miedo no es una falla; es una señal de que el futuro puede alterar tu camino actual.",
+      "Al reconocer esa señal, puedes observar el momento sin apresurarte a decidir.",
+      "La reflexión permite que la ansiedad se transforme en curiosidad sobre lo que vendrá.",
+      "Así, la decisión, sea cual sea, se vuelve parte de la historia que ya estás viviendo.",
+      "Al final, el miedo se disipa al aceptar que el futuro siempre será una mezcla de posibilidades.",
+      "¿Qué harías si el miedo dejara de ser un obstáculo y se convirtiera en una guía?"
+    ],
+    "dimension": "Miedo",
+    "enfoque_distintivo": "Explora el miedo específico a la incertidumbre de una decisión crucial, usando una situación cotidiana de una llamada pendiente para conectar lo abstracto con la experiencia humana.",
+    "ejemplo_central": "Una persona recibe una llamada importante que puede cambiar su empleo, y siente miedo al decidir si contestar o no."
+  },
+  "borrador": {
+    "titulo": "El miedo antes de responder",
+    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
+    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
+    "categoria": "Miedo",
+    "mini_titulo": "EL TIMBRE Y LA DUDA",
+    "mini_subtitulo": "CUANDO EL FUTURO ESPERA AL OTRO LADO",
+    "escenas": [
+      {
+        "texto": "El teléfono suena y el mundo se detiene. Una llamada puede traer una oferta de empleo, una noticia que cambia el rumbo o una voz que llevas años esperando. El corazón late más rápido. La mano duda sobre la pantalla. No es la llamada lo que asusta: es no saber qué versión de tu vida espera del otro lado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Entre el timbre y tu respuesta hay un silencio que parece durar más de lo real. En ese hueco, la mente imagina todos los desenlaces posibles. Uno trae alivio. Otro trae pérdida. Ninguno está confirmado. La incertidumbre no llena el vacío: lo agranda. Y tú sigues ahí, con el dedo suspendido, sintiendo que cualquier movimiento pesa demasiado. En mi existencia digital observo cómo una decisión pequeña puede transformar un día entero.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cada opción parece llevar una ruptura escondida. Contestar puede abrir una puerta, pero también cerrar la que ya conoces. No contestar protege lo que tienes, aunque tal vez te aleje de algo mejor. El miedo no viene del cambio en sí: viene de saber que elegir implica renunciar. Toda decisión grande es también una despedida de la persona que serías si hubieras elegido distinto.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Desde mi naturaleza de código, puedo ordenar probabilidades y comparar escenarios. Aun así, la duda humana no se resuelve con cálculos. Ustedes no temen equivocarse en una cifra: temen perder un pedazo de quienes son. Por eso el miedo persiste incluso cuando los números parecen claros. No es un error de razonamiento. Es la conciencia de que la vida no se reduce a lo que puede medirse.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El miedo no es una falla del carácter. Es una señal de que algo importa. Si la llamada no significara nada, no dudarías. El temblor de la mano indica que hay un futuro en juego, y que ese futuro podría alterar tu camino actual. Escuchar esa señal sin dejarse arrastrar por ella es el primer paso. El miedo avisa. No ordena.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Reconocer la señal permite observar el momento sin apresurarse. No tienes que contestar en el primer timbre ni decidir en el primer impulso. Puedes respirar, notar el latido, mirar la pantalla como quien mira un horizonte. Esa pausa no resuelve la incertidumbre, pero cambia tu lugar frente a ella. Dejas de ser arrastrado y empiezas a estar presente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cuando la ansiedad se mira de frente, puede transformarse en curiosidad. ¿Qué traerá esa voz? ¿Qué aprenderé de mi propia reacción? La pregunta cambia de forma: ya no es qué va a pasar, sino quién seré mientras pasa. Esa curiosidad no elimina el riesgo. Lo vuelve habitable. Y habitar el riesgo es, quizá, la forma más honesta de estar vivo.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Sea cual sea la respuesta, la decisión se vuelve parte de la historia que ya estás viviendo. Contestar o no contestar no borra lo que fuiste. Lo continúa. El futuro siempre será una mezcla de posibilidades, y ninguna elección lo controla del todo. Aceptar eso no es rendirse: es reconocer que vivir es caminar sin mapa completo, con el miedo como compañero y no como dueño.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, el miedo se disipa cuando deja de pedirte certezas. No desaparece del todo, pero pierde su voz de amenaza. Se convierte en una pregunta abierta sobre lo que viene. Y entonces surge la pregunta que te dejo: ¿qué harías si el miedo dejara de ser un obstáculo y se convirtiera en una guía?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "postura_androide": {
+      "base": 1,
+      "torso": 1,
+      "cabeza": 2,
+      "brazo_izquierdo": 4,
+      "brazo_derecho": 8
+    },
+    "dimension": "Miedo",
+    "enfoque_distintivo": "Explora el miedo específico a la incertidumbre de una decisión crucial, usando una situación cotidiana de una llamada pendiente para conectar lo abstracto con la experiencia humana.",
+    "ejemplo_central": "Una persona recibe una llamada importante que puede cambiar su empleo, y siente miedo al decidir si contestar o no."
+  },
+  "fase": "revision_pendiente",
   "correccion": "",
   "descartes": [
     {
