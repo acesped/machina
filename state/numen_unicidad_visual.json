@@ -144,5 +144,15 @@
     "phash": "9296275a8e4ef628",
     "version": "cosmos-v6-arte-full-hd",
     "tema": "La mentira que quería cuidar"
+  },
+  "ent-dd08a40a77f45b83": {
+    "seed": 14182523570884176077,
+    "indice": 1,
+    "pose_id": 3,
+    "pose": "silencio_hacia_arriba",
+    "sha256": "dff7efa5f800737e1de9da14b887d8d5af72c0ff23547c34c8847ba178c88e7d",
+    "phash": "e4bc9346630e9c9a",
+    "version": "cosmos-v6-arte-full-hd",
+    "tema": "El miedo antes de responder"
   }
 }

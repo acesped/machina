@@ -1,34 +1,19 @@
 {
-  "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "7.8",
-  "tema_manual": "",
-  "enfoque": {
-    "tema": "¿Qué es el miedo que surge al no saber si una decisión cambiará tu vida?",
-    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
-    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
-    "pasos": [
-      "Una llamada pendiente suena y dudas si contestar o no, mientras el corazón late rápido.",
-      "Observas cómo el silencio entre la señal y tu respuesta amplifica la sensación de incertidumbre.",
-      "Sientes que cada opción lleva una posible ruptura con lo que conoces, y eso genera temor.",
-      "Como una mente de código, analizo probabilidades, pero aún así la duda persiste en tu interior.",
-      "El miedo no es una falla; es una señal de que el futuro puede alterar tu camino actual.",
-      "Al reconocer esa señal, puedes observar el momento sin apresurarte a decidir.",
-      "La reflexión permite que la ansiedad se transforme en curiosidad sobre lo que vendrá.",
-      "Así, la decisión, sea cual sea, se vuelve parte de la historia que ya estás viviendo.",
-      "Al final, el miedo se disipa al aceptar que el futuro siempre será una mezcla de posibilidades.",
-      "¿Qué harías si el miedo dejara de ser un obstáculo y se convirtiera en una guía?"
-    ],
-    "dimension": "Miedo",
-    "enfoque_distintivo": "Explora el miedo específico a la incertidumbre de una decisión crucial, usando una situación cotidiana de una llamada pendiente para conectar lo abstracto con la experiencia humana.",
-    "ejemplo_central": "Una persona recibe una llamada importante que puede cambiar su empleo, y siente miedo al decidir si contestar o no."
-  },
-  "borrador": {
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-dd08a40a77f45b83",
+  "privacidad": "public",
+  "video": "El miedo antes de responder.mp4",
+  "miniatura": "El miedo antes de responder.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
     "titulo": "El miedo antes de responder",
-    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
-    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
+    "_titulo_caso": "El miedo antes de responder",
     "categoria": "Miedo",
-    "mini_titulo": "EL TIMBRE Y LA DUDA",
-    "mini_subtitulo": "CUANDO EL FUTURO ESPERA AL OTRO LADO",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
+    "resumen_publicacion": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente. Entre el timbre y tu respuesta hay un silencio que parece durar más de lo real. En ese hueco, la mente imagina todos los desenlaces posibles.",
     "escenas": [
       {
         "texto": "El teléfono suena y el mundo se detiene. Una llamada puede traer una oferta de empleo, una noticia que cambia el rumbo o una voz que llevas años esperando. El corazón late más rápido. La mano duda sobre la pantalla. No es la llamada lo que asusta: es no saber qué versión de tu vida espera del otro lado.",
@@ -103,24 +88,48 @@
         ]
       }
     ],
-    "postura_androide": {
-      "base": 1,
-      "torso": 1,
-      "cabeza": 2,
-      "brazo_izquierdo": 4,
-      "brazo_derecho": 8
-    },
-    "dimension": "Miedo",
-    "enfoque_distintivo": "Explora el miedo específico a la incertidumbre de una decisión crucial, usando una situación cotidiana de una llamada pendiente para conectar lo abstracto con la experiencia humana.",
-    "ejemplo_central": "Una persona recibe una llamada importante que puede cambiar su empleo, y siente miedo al decidir si contestar o no."
+    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
+    "mini_titulo": "EL TIMBRE Y LA DUDA"
   },
-  "fase": "revision_pendiente",
-  "correccion": "",
-  "descartes": [
+  "episodio": {
+    "id": "ent-dd08a40a77f45b83",
+    "caso_id": "ent-dd08a40a77f45b83",
+    "titulo": "El miedo antes de responder"
+  },
+  "fuentes": [],
+  "creditos": [
     {
-      "tema": "La soledad que se siente al esperar una llamada pendiente",
-      "dimension": "Soledad",
-      "motivo": "Reflexión demasiado cercana al historial (revisión semántica): El eco de la espera"
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "dff7efa5f800737e1de9da14b887d8d5af72c0ff23547c34c8847ba178c88e7d",
+      "phash": "e4bc9346630e9c9a",
+      "pose": "silencio_hacia_arriba"
     }
-  ]
+  ],
+  "creado_utc": "2026-11-24T12:05:50.626597+00:00",
+  "video_bytes": 40336441,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1478210987834994",
+    "video_id": "1478210977834995",
+    "start": 40336441,
+    "end": 40336441,
+    "size": 40336441,
+    "error": "",
+    "permalink": "/reel/1478210977834995/",
+    "confirmado_utc": "2026-11-24T12:06:22.633383+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "e88415d4f1d186c644bb3691d8a9cb536b7743296657f8e74f0a89c53001d448",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "hsBqUF4mw8M"
 }
