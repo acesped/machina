@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 9.3
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 9.4
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -73,7 +73,7 @@ AERO_CACHE_DOCUMENTAL = os.getenv('AERO_CACHE_DOCUMENTAL','true').lower() == 'tr
 AERO_CACHE_DIR = Path(os.getenv('AERO_CACHE_DIR','state/aero_documentos'))
 AERO_CACHE_DIAS = max(1,int(os.getenv('AERO_CACHE_DIAS','45')))
 AERO_CACHE_VERSION = 5  # relevancia financiera específica y extracción mejorada
-VERSION_SCRIPT = "9.3"
+VERSION_SCRIPT = "9.4"
 AERO_GUIONES_DIR = Path(os.getenv("AERO_GUIONES_DIR", "state/aero_guiones"))
 AERO_GUIONES_DIAS = max(1, min(30, int(os.getenv("AERO_GUIONES_DIAS", "14"))))
 AERO_MAX_DOCUMENTOS = max(1,min(8,int(os.getenv('AERO_MAX_DOCUMENTOS','4'))))
@@ -5663,7 +5663,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '9.3'
+VERSION_SCRIPT = '9.4'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -123073,7 +123073,11 @@ def _ent_test():
     print('OK: 8–10 escenas flexibles sobre itinerario de 8 pasos, revisión semántica conservada',flush=True)
     assert enfoque['tema'] in _ent_prompt([],[],enfoque)
     assert ESTILO_ACCESIBLE in _ent_prompt([],[],enfoque)
-    assert 'ejemplos cotidianos' in ESTILO_ACCESIBLE
+    assert 'situaciones humanas concretas y originales' in ESTILO_ACCESIBLE
+    assert 'sin depender de un catálogo fijo de ejemplos' in ESTILO_ACCESIBLE
+    assert 'una llamada pendiente' not in ESTILO_ACCESIBLE
+    assert 'Varía la apertura' in ESTILO_ACCESIBLE
+    assert 'el cierre puede ofrecer' in ESTILO_ACCESIBLE
     def revisar_accesibilidad(p):
         assert 'sin formación filosófica' in p
         return {'aprobado':False,'escenas_fuera':[2],'motivo':'Jerga académica'}
