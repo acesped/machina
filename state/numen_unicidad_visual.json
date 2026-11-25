@@ -184,5 +184,15 @@
     "phash": "63799626266c9cd8",
     "version": "cosmos-v10-local-82",
     "tema": "El peso de una llamada"
+  },
+  "ent-18991b3d7220df52": {
+    "seed": 17079417039499649122,
+    "indice": 2,
+    "pose_id": 193,
+    "pose": "pose_real_094",
+    "sha256": "421c8b6ac48675ebf2cdf1fd5ccccbad5986315f2f439aae895c0fea4fc858b9",
+    "phash": "88ca5ee7341e950e",
+    "version": "cosmos-v11-local-87",
+    "tema": "La mirada que teje la solidaridad"
   }
 }

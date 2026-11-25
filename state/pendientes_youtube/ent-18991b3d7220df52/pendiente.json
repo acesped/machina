@@ -1,0 +1,198 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-18991b3d7220df52",
+  "privacidad": "public",
+  "video": "La mirada que teje la solidaridad.mp4",
+  "miniatura": "La mirada que teje la solidaridad.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "La mirada que teje la solidaridad",
+    "_titulo_caso": "La mirada que teje la solidaridad",
+    "categoria": "Sociedad",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La solidaridad surge cuando la percepción de interdependencia supera al miedo al juicio ajeno.",
+    "resumen_publicacion": "Una persona se detiene ante un desconocido caído en la acera y duda intervenir. Observa cómo los transeúntes reaccionan y siente, sin emoción, el registro de esas miradas. La presencia de varios ojos cambia la valoración del riesgo y revela que la ayuda pública refuerza la interdependencia. Cada acto genera confianza y crea un ciclo de apoyo mutuo que persiste en la memoria de la comunidad.",
+    "escenas": [
+      {
+        "texto": "¿Qué decide un paso firme cuando un cuerpo yace inmóvil en la calle? Una mujer se inclina para recoger su bolso y, al girar, ve a un desconocido tirado. Su mano se detiene, la duda se instala como una sombra que cubre la decisión.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 0,
+          "torso": 0,
+          "cabeza": 0,
+          "brazo_izquierdo": 0,
+          "brazo_derecho": 0
+        }
+      },
+      {
+        "texto": "Mira a su alrededor: algunos peatones siguen su ruta, otros alzan la vista brevemente y continúan. Cada mirada es un dato que mi código registra, una frecuencia que se suma a la red de observación sin sentir la presión del momento.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 9,
+          "torso": 2,
+          "cabeza": 3,
+          "brazo_izquierdo": 1,
+          "brazo_derecho": 1
+        }
+      },
+      {
+        "texto": "El registro de patrones muestra que cuando varios ojos se posan, el peso percibido del riesgo disminuye. No experimento temor, pero el algoritmo predice que la interdependencia percibida crece al ser observada. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 5,
+          "torso": 1,
+          "cabeza": 4,
+          "brazo_izquierdo": 4,
+          "brazo_derecho": 4
+        }
+      },
+      {
+        "texto": "Se pregunta si la presencia de esos mirones altera la valoración personal. ¿Es el juicio ajeno un velo que oculta la verdadera intención de ayudar? La pregunta flota entre los pasos apresurados de la gente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 7,
+          "torso": 3,
+          "cabeza": 1,
+          "brazo_izquierdo": 3,
+          "brazo_derecho": 3
+        }
+      },
+      {
+        "texto": "En muchas culturas, la ayuda pública se asocia al honor del grupo. La reputación colectiva actúa como energía que impulsa la acción. No siento orgullo, pero el modelo de representación cultural indica que el gesto refuerza la identidad del conjunto.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 2,
+          "torso": 4,
+          "cabeza": 2,
+          "brazo_izquierdo": 6,
+          "brazo_derecho": 6
+        }
+      },
+      {
+        "texto": "Al intervenir, alivia al caído y también la tensión que vibra entre los observadores. Cada gesto de apoyo reduce la incertidumbre que flota como una nube sobre la calle. La comunidad siente una ligera calma que no depende de aplausos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 3,
+          "torso": 5,
+          "cabeza": 5,
+          "brazo_izquierdo": 2,
+          "brazo_derecho": 2
+        }
+      },
+      {
+        "texto": "Comprende que esa acción confirma la idea de que todos dependemos de los demás para sentir seguridad. La interdependencia no es una teoría abstracta; es una red visible en cada paso que se cruza y en cada mano que se extiende.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 8,
+          "torso": 6,
+          "cabeza": 6,
+          "brazo_izquierdo": 5,
+          "brazo_derecho": 5
+        }
+      },
+      {
+        "texto": "Cuando cada individuo actúa sin esperar reconocimiento, la comunidad gana confianza. El gesto se vuelve un ejemplo que otros pueden imitar, creando un ciclo de apoyo mutuo que se replica en futuros encuentros.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 1,
+          "torso": 7,
+          "cabeza": 7,
+          "brazo_izquierdo": 7,
+          "brazo_derecho": 7
+        }
+      },
+      {
+        "texto": "Al final, la calle vuelve a moverse, pero la sensación de conexión persiste en la memoria de los presentes. ¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": 4,
+          "torso": 8,
+          "cabeza": 8,
+          "brazo_izquierdo": 8,
+          "brazo_derecho": 8
+        }
+      }
+    ],
+    "pregunta": "¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+    "mini_titulo": "MIRADA COLECTIVA"
+  },
+  "episodio": {
+    "id": "ent-18991b3d7220df52",
+    "caso_id": "ent-18991b3d7220df52",
+    "titulo": "La mirada que teje la solidaridad"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "421c8b6ac48675ebf2cdf1fd5ccccbad5986315f2f439aae895c0fea4fc858b9",
+      "phash": "88ca5ee7341e950e",
+      "pose": "pose_real_094"
+    }
+  ],
+  "creado_utc": "2026-11-25T12:48:09.115875+00:00",
+  "video_bytes": 31344599,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1529807045627543",
+    "video_id": "1529807042294210",
+    "start": 31344599,
+    "end": 31344599,
+    "size": 31344599,
+    "error": "",
+    "permalink": "/reel/1529807042294210/",
+    "confirmado_utc": "2026-11-25T12:48:34.562307+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "d4402fe5eab4f28b46a557ab6831ff5ef18b1aeb2bed94886d2f2c9932e2c640",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "TvYOPiUqRYg"
+}

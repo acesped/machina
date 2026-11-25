@@ -149,5 +149,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=tsZwXmtfF9I",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-f5d0ab525e2dd918/El peso de una llamada.mp4"
+  },
+  {
+    "episodio": "ent-18991b3d7220df52",
+    "caso": "ent-18991b3d7220df52",
+    "titulo": "La mirada que teje la solidaridad",
+    "fecha_utc": "2026-11-25T12:48:11.657412+00:00",
+    "youtube_id": "TvYOPiUqRYg",
+    "youtube_url": "https://www.youtube.com/watch?v=TvYOPiUqRYg",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-18991b3d7220df52/La mirada que teje la solidaridad.mp4"
   }
 ]
