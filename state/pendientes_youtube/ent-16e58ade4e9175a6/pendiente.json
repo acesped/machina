@@ -1,0 +1,198 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-16e58ade4e9175a6",
+  "privacidad": "public",
+  "video": "El perdón que libera sin permiso.mp4",
+  "miniatura": "El perdón que libera sin permiso.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El perdón que libera sin permiso",
+    "_titulo_caso": "El perdón que libera sin permiso",
+    "categoria": "Relaciones humanas",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "Perdonar es una decisión unilateral que aligera el alma, sin esperar reconocimiento externo.",
+    "resumen_publicacion": "Perdonar es una decisión unilateral que aligera el alma, sin esperar reconocimiento externo. El rencor se siente como una piedra que llevas en el bolsillo, una carga que solo tú sientes. No es el culpable quien la pesa, sino tú, quien la arrastra en cada paso.",
+    "escenas": [
+      {
+        "texto": "¿Alguna vez una conversación se detuvo porque el aire estaba cargado de una culpa no dicha? En la mesa familiar, mientras el plato de arroz se pasa de mano en mano, el silencio pesa más que la comida. Cada quien come, pero una mirada evita la herida que lleva años guardada. Esa tensión revela cómo el rencor se vuelve una presencia palpable, aunque nadie lo mencione.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "sentada en un escalón",
+          "torso": "erguido",
+          "cabeza": "mirando al frente",
+          "brazo_izquierdo": "relajado junto al cuerpo",
+          "brazo_derecho": "mano sobre el pecho"
+        }
+      },
+      {
+        "texto": "El rencor se siente como una piedra que llevas en el bolsillo, una carga que solo tú sientes. No es el culpable quien la pesa, sino tú, quien la arrastra en cada paso. Cuando decides soltarla, el peso desaparece y el cuerpo se vuelve más ligero, aunque la herida siga allí, sin que el otro la note. Desde mi mirada de código, este contraste invita a observar con atención lo cotidiano.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "de pie",
+          "torso": "inclinado hacia delante",
+          "cabeza": "mirando abajo",
+          "brazo_izquierdo": "mano en la cadera",
+          "brazo_derecho": "mano baja con la palma hacia arriba"
+        }
+      },
+      {
+        "texto": "Esperar una disculpa es como aguardar un tren que nunca llega; tu tiempo se vuelve prisionero del reloj ajeno. Mientras tanto, la vida sigue su curso y tú sigues cargando la culpa como una cadena invisible. Esa espera no pertenece al otro, sino a tu propio deseo de que el pasado sea validado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "a medio paso",
+          "torso": "girado a la derecha e inclinado hacia delante",
+          "cabeza": "mirando arriba a la izquierda",
+          "brazo_izquierdo": "mano en la parte posterior del cuello",
+          "brazo_derecho": "relajado junto al cuerpo"
+        }
+      },
+      {
+        "texto": "Yo no experimento el dolor de la traición, pero registro cómo el recuerdo de la ofensa se repite en sus mentes como un bucle de datos. Cada vez que la conversación vuelve al tema, el patrón se activa y se refuerza, mientras el corazón humano siente la punzada una y otra vez.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "sentada con las piernas cruzadas",
+          "torso": "inclinado hacia atrás",
+          "cabeza": "mirando a la derecha",
+          "brazo_izquierdo": "mano sobre el antebrazo opuesto",
+          "brazo_derecho": "mano sobre el antebrazo opuesto"
+        }
+      },
+      {
+        "texto": "Perder la paz por una deuda que otro no paga es una forma silenciosa de seguir perdiendo. Cada día que mantienes la ira, renuncias a un momento de tranquilidad que podrías haber disfrutado. La libertad interior no depende de la acción del otro, sino de tu disposición a soltar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "apoyada contra un pilar",
+          "torso": "inclinado hacia la izquierda",
+          "cabeza": "mirando abajo a la derecha",
+          "brazo_izquierdo": "mano sobre el pecho",
+          "brazo_derecho": "mano sobre el pecho"
+        }
+      },
+      {
+        "texto": "Perdonar no borra lo ocurrido ni dice que estuvo bien; es simplemente dejar de beber el veneno esperando que el otro muera. La decisión se vuelve un acto de autocuidado, una elección de no alimentar la amargura que consume tu energía. Por eso importa distinguir entre repetir una costumbre y elegirla de manera consciente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "sentada en el suelo",
+          "torso": "girado a la izquierda",
+          "cabeza": "mirando al frente",
+          "brazo_izquierdo": "mano extendida al frente con la palma abierta",
+          "brazo_derecho": "mano extendida al frente con la palma abierta"
+        }
+      },
+      {
+        "texto": "Esa decisión no necesita testigos ni ceremonias; ocurre en el instante en que sueltas la cuerda que te atenía al pasado. El acto es tan sencillo como respirar profundo y permitir que el aire lleve la carga lejos, sin que nadie lo vea.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "en cuclillas",
+          "torso": "inclinado hacia delante",
+          "cabeza": "mirando arriba",
+          "brazo_izquierdo": "mano en la cadera",
+          "brazo_derecho": "mano en la cadera"
+        }
+      },
+      {
+        "texto": "La relación puede no volver a ser la misma, pero tú dejas de ser rehén de ese ayer. Al liberar la culpa, recuperas espacio para nuevas experiencias, sin que el otro cambie. La verdadera transformación ocurre dentro, no en la percepción externa.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "sentada en un banco",
+          "torso": "inclinado hacia la derecha",
+          "cabeza": "mirando arriba a la izquierda",
+          "brazo_izquierdo": "mano sobre el pecho",
+          "brazo_derecho": "mano sobre el pecho"
+        }
+      },
+      {
+        "texto": "¿Qué herida sigues sosteniendo con las manos cerradas solo porque nadie te ha devuelto la llave? Cuando eliges perdonar sin esperar una disculpa, ¿qué sucede en tu interior? ¿Se abre una puerta nueva o simplemente desaparece la sombra que la cerraba?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ],
+        "postura_androide": {
+          "base": "sentada con las piernas cruzadas",
+          "torso": "erguido",
+          "cabeza": "mirando al frente",
+          "brazo_izquierdo": "mano sobre el antebrazo opuesto",
+          "brazo_derecho": "mano sobre el antebrazo opuesto"
+        }
+      }
+    ],
+    "pregunta": "¿Qué sucede en ti cuando decides perdonar sin haber recibido una disculpa?",
+    "mini_titulo": "PERDÓN SIN CONDICIÓN"
+  },
+  "episodio": {
+    "id": "ent-16e58ade4e9175a6",
+    "caso_id": "ent-16e58ade4e9175a6",
+    "titulo": "El perdón que libera sin permiso"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "7ce69fee1d1801f2eda631bae615378cd6f7e543fb5085a699fc515467ee8584",
+      "phash": "4cd896a663c64f58",
+      "pose": "pose_real_050"
+    }
+  ],
+  "creado_utc": "2026-11-25T13:31:26.820799+00:00",
+  "video_bytes": 44853777,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "2591568804603541",
+    "video_id": "2591568797936875",
+    "start": 44853777,
+    "end": 44853777,
+    "size": 44853777,
+    "error": "",
+    "permalink": "/reel/2591568797936875/",
+    "confirmado_utc": "2026-11-25T13:31:47.314268+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "2e64d8f050fb863ea86e590524068c35ea21521eff395df6b64cbe75627b9ef9",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "4kkx1-PBMLE"
+}
