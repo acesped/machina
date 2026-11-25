@@ -3682,40 +3682,49 @@ def miniatura(caso,fotos,carpeta):
     return destino
 
 def obtener_icono_like(carpeta, session=None):
-    """Siempre utiliza exactamente File:Facebook_Like_button.svg.
-    Nunca lo sustituye por dibujos improvisados o emojis deformados.
-    """
-    import requests, cairosvg
-    from PIL import Image
+    """Usa exclusivamente el SVG original verificado; si no existe, CTA textual."""
+    import hashlib
+    import requests
+    carpeta=Path(carpeta)
     png_path=carpeta/'facebook_like_button.png'
-    if png_path.exists():return png_path
-    ses=session or requests.Session()
-    api='https://commons.wikimedia.org/w/api.php'
-    params={'action':'query','format':'json','titles':'File:Facebook_Like_button.svg',
-            'prop':'imageinfo','iiprop':'url'}
+    cache=Path('state/recursos_numen/facebook_like_button.svg')
+    sha='82c470e0f8a9cb0122e7ffa227494edba377de8e'
+    url='https://upload.wikimedia.org/wikipedia/commons/2/23/Facebook_Like_button.svg'
     try:
-        resp=ses.get(api,params=params,timeout=30,headers={'User-Agent':'Aerofactum/2.2 (Wikimedia media fetch)'})
-        resp.raise_for_status()
-        paginas=resp.json()['query']['pages']
-        informacion=next(iter(paginas.values()))['imageinfo'][0]
-        origen=informacion['url']
-        resp=ses.get(origen,timeout=30,headers={'User-Agent':'Aerofactum/2.2 (Wikimedia media fetch)'})
-        resp.raise_for_status()
-        svg=resp.content
-        if b'<svg' not in svg.lower():raise ValueError('El recurso descargado no es SVG.')
-        (carpeta/'facebook_like_button.svg').write_bytes(svg)
+        import cairosvg
+        from PIL import Image
+        svg=None
+        for ruta in (cache, carpeta/'facebook_like_button.svg'):
+            if ruta.is_file():
+                data=ruta.read_bytes()
+                if hashlib.sha1(data).hexdigest()==sha:
+                    svg=data;break
+        if svg is None:
+            ses=session or requests.Session()
+            try:
+                resp=ses.get(url,timeout=(5,12),headers={'User-Agent':'DeusDigitalis/8.1 (Wikimedia media fetch)'})
+                resp.raise_for_status()
+                svg=resp.content
+            finally:
+                if session is None:ses.close()
+            if hashlib.sha1(svg).hexdigest()!=sha:
+                raise ValueError('SVG no coincide con el original registrado en Commons')
+        try:
+            cache.parent.mkdir(parents=True,exist_ok=True)
+            cache.write_bytes(svg)
+        except OSError as exc:
+            print(f'CTA | caché no disponible: {exc}',flush=True)
         cairosvg.svg2png(bytestring=svg,write_to=str(png_path),output_width=640,output_height=640)
         with Image.open(png_path) as img:
             im=img.convert('RGBA')
-            # Recortar márgenes transparentes del vector, conservando la forma EXACTA.
             bbox=im.getchannel('A').getbbox()
-            if not bbox:raise ValueError('SVG sin contenido visible.')
+            if not bbox:raise ValueError('SVG sin contenido visible')
             im.crop(bbox).save(png_path)
+        print('CTA | icono Like original verificado',flush=True)
         return png_path
     except Exception as exc:
-        raise RuntimeError('No se descargó el SVG auténtico desde Wikimedia Commons. '
-                           'Se detiene el montaje para evitar un Like deformado. '
-                           f'Página: {LIKE_PAGE_URL} | Error: {exc}') from exc
+        print(f'CTA | icono original no disponible: {exc}. Se conserva el cierre textual sin icono.',flush=True)
+        return None
 
 def crear_cta_base(carpeta):
     """El mismo universo procedural, sin ninguna capa del androide."""
@@ -3783,7 +3792,13 @@ def renderizar_clips(bloques,fotos,caso,carpeta):
                     foto=_foto_por_escena(caso,i,fotos)
             clip=carpeta/f'clip_{numero:04}.mp4'
             dur=frames/fps
-            if b['tipo']=='cta':
+            if b['tipo']=='cta' and like_png is None:
+                cmd=['ffmpeg','-y','-hide_banner','-loglevel','error',
+                     '-loop','1','-framerate',str(fps),'-i',str(cta_bg),
+                     '-vf',f'scale={ANCHO}:{ALTO},format=yuv420p',
+                     '-frames:v',str(frames),'-r',str(fps),'-an',
+                     '-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p',str(clip)]
+            elif b['tipo']=='cta':
                 blink_on=0.61
                 icon_h=int(ALTO*0.30)
                 icon_w=icon_h
@@ -5651,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.0'
+VERSION_SCRIPT = '8.1'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
