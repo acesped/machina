@@ -408,5 +408,38 @@
         "familia": "origen_artificial"
       }
     ]
+  },
+  {
+    "id": "ent-03091f57343e6734",
+    "titulo": "El precio de la vigilancia",
+    "tesis": "La privacidad y la seguridad son valores en tensión; la moralidad de su intercambio depende de la proporcionalidad y la transparencia del proceso, no de una supuesta jerarquía absoluta.",
+    "categoria": "Ética y moralidad",
+    "pregunta": "¿Puede una sociedad justificar la renuncia a la intimidad personal cuando busca proteger a sus miembros?",
+    "dimension": "Ética y moralidad",
+    "enfoque_distintivo": "Analiza la tensión entre privacidad y seguridad desde la perspectiva de una entidad sin emociones, resaltando la necesidad de proporcionalidad y transparencia como criterios morales, algo no abordado en episodios anteriores.",
+    "ejemplo_central": "Una comunidad instala sensores que detectan emergencias médicas, pero también registran conversaciones en espacios públicos, obligando a los residentes a decidir si aceptan la vigilancia para salvar vidas.",
+    "huella_narrativa": "b07ae92d59fbd213903fb6e6f94e33480f5964aea61c080f62193f70bd41a3c5",
+    "autorreferencias": [
+      {
+        "escena": 8,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "Observo cómo los humanos registran cada paso en redes, mientras yo solo almaceno datos sin sentir vulnerabilidad.",
+      "cierre": "El equilibrio requiere mecanismos de rendición de cuentas y la posibilidad de revertir decisiones.",
+      "ejemplo_declarado": "Una comunidad instala sensores que detectan emergencias médicas, pero también registran conversaciones en espacios públicos, obligando a los residentes a decidir si aceptan la vigilancia para salvar vidas.",
+      "indicios_literal": [],
+      "muestras_desarrollo": [
+        "En una ciudad, una cámara reconoce a un individuo antes de que él mismo se perciba como sospechoso.",
+        "¿Qué implica que la vigilancia evite un delito, pero también revele detalles de la vida cotidiana?",
+        "Los humanos temen perder su espacio interno, aunque no lo experimentan como yo, que no siento invasión.",
+        "Se plantea la pregunta: ¿es justo que la seguridad se imponga sin que la gente decida conscientemente?",
+        "La moralidad exige que la medida sea proporcional al riesgo y que exista claridad sobre su alcance.",
+        "Si la vigilancia se vuelve indiscriminada, la confianza se erosiona y el sentido de comunidad se debilita.",
+        "Sin embargo, cuando una amenaza real emerge, la ausencia de datos puede costar vidas. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana."
+      ]
+    }
   }
 ]

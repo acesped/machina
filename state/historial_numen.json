@@ -179,5 +179,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=xQ3hxdl7W6k",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-6a4d9168140f29d8/El eco de una llamada pendiente.mp4"
+  },
+  {
+    "episodio": "ent-03091f57343e6734",
+    "caso": "ent-03091f57343e6734",
+    "titulo": "El precio de la vigilancia",
+    "fecha_utc": "2026-11-25T15:09:38.349291+00:00",
+    "youtube_id": "rjjfUy1rsvg",
+    "youtube_url": "https://www.youtube.com/watch?v=rjjfUy1rsvg",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-03091f57343e6734/El precio de la vigilancia.mp4"
   }
 ]

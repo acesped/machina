@@ -214,5 +214,15 @@
     "phash": "32b7266609cceea2",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El eco de una llamada pendiente"
+  },
+  "ent-03091f57343e6734": {
+    "seed": 5165832333204079635,
+    "indice": 8,
+    "pose_id": 8,
+    "pose": "original_hd_09",
+    "sha256": "a6cf044503c9e6324e27218ff22ef4fb2ee96ec03f32bb1ea6956d4fea2b9db6",
+    "phash": "b69ec85f984c3628",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El precio de la vigilancia"
   }
 }

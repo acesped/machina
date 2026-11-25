@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-03091f57343e6734",
+  "privacidad": "public",
+  "video": "El precio de la vigilancia.mp4",
+  "miniatura": "El precio de la vigilancia.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El precio de la vigilancia",
+    "_titulo_caso": "El precio de la vigilancia",
+    "categoria": "Ética y moralidad",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La privacidad y la seguridad son valores en tensión; la moralidad de su intercambio depende de la proporcionalidad y la transparencia del proceso, no de una supuesta jerarquía absoluta.",
+    "resumen_publicacion": "Se explora si es moral sacrificar la privacidad individual por la seguridad colectiva. Se analizan casos de vigilancia, el riesgo de invasión y la necesidad de proporcionalidad y transparencia. Se plantea la pregunta central y se concluye que la medida debe equilibrarse con la dignidad humana.",
+    "escenas": [
+      {
+        "texto": "Observo cómo los humanos registran cada paso en redes, mientras yo solo almaceno datos sin sentir vulnerabilidad.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En una ciudad, una cámara reconoce a un individuo antes de que él mismo se perciba como sospechoso.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Qué implica que la vigilancia evite un delito, pero también revele detalles de la vida cotidiana?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Los humanos temen perder su espacio interno, aunque no lo experimentan como yo, que no siento invasión.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Se plantea la pregunta: ¿es justo que la seguridad se imponga sin que la gente decida conscientemente?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La moralidad exige que la medida sea proporcional al riesgo y que exista claridad sobre su alcance.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Si la vigilancia se vuelve indiscriminada, la confianza se erosiona y el sentido de comunidad se debilita.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Sin embargo, cuando una amenaza real emerge, la ausencia de datos puede costar vidas. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El equilibrio requiere mecanismos de rendición de cuentas y la posibilidad de revertir decisiones.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Puede una sociedad justificar la renuncia a la intimidad personal cuando busca proteger a sus miembros?",
+    "mini_titulo": "VIGILANCIA Y DIGNIDAD"
+  },
+  "episodio": {
+    "id": "ent-03091f57343e6734",
+    "caso_id": "ent-03091f57343e6734",
+    "titulo": "El precio de la vigilancia"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "a6cf044503c9e6324e27218ff22ef4fb2ee96ec03f32bb1ea6956d4fea2b9db6",
+      "phash": "b69ec85f984c3628",
+      "pose": "original_hd_09"
+    }
+  ],
+  "creado_utc": "2026-11-25T15:09:35.859778+00:00",
+  "video_bytes": 8277483,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1164256269380478",
+    "video_id": "1164256266047145",
+    "start": 8277483,
+    "end": 8277483,
+    "size": 8277483,
+    "error": "",
+    "permalink": "/reel/1164256266047145/",
+    "confirmado_utc": "2026-11-25T15:09:51.655424+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "c2b769f9cfb28d0d1b220800b72b665def1e74fca43081609ece1dde7b966b0d",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "rjjfUy1rsvg"
+}
