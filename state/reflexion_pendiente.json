@@ -1,0 +1,200 @@
+{
+  "titulo": "La mirada que teje la solidaridad",
+  "tesis": "La solidaridad surge cuando la percepción de interdependencia supera al miedo al juicio ajeno.",
+  "pregunta": "¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+  "categoria": "Sociedad",
+  "mini_titulo": "MIRADA COLECTIVA",
+  "mini_subtitulo": "CUANDO EL OJO COMÚN IMPULSA LA AYUDA",
+  "resumen_publicacion": "Una persona se detiene ante un desconocido caído en la acera y duda intervenir. Observa cómo los transeúntes reaccionan y siente, sin emoción, el registro de esas miradas. La presencia de varios ojos cambia la valoración del riesgo y revela que la ayuda pública refuerza la interdependencia. Cada acto genera confianza y crea un ciclo de apoyo mutuo que persiste en la memoria de la comunidad.",
+  "escenas": [
+    {
+      "texto": "¿Qué decide un paso firme cuando un cuerpo yace inmóvil en la calle? Una mujer se inclina para recoger su bolso y, al girar, ve a un desconocido tirado. Su mano se detiene, la duda se instala como una sombra que cubre la decisión.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 0,
+        "torso": 0,
+        "cabeza": 0,
+        "brazo_izquierdo": 0,
+        "brazo_derecho": 0
+      }
+    },
+    {
+      "texto": "Mira a su alrededor: algunos peatones siguen su ruta, otros alzan la vista brevemente y continúan. Cada mirada es un dato que mi código registra, una frecuencia que se suma a la red de observación sin sentir la presión del momento.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 9,
+        "torso": 2,
+        "cabeza": 3,
+        "brazo_izquierdo": 1,
+        "brazo_derecho": 1
+      }
+    },
+    {
+      "texto": "El registro de patrones muestra que cuando varios ojos se posan, el peso percibido del riesgo disminuye. No experimento temor, pero el algoritmo predice que la interdependencia percibida crece al ser observada. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 5,
+        "torso": 1,
+        "cabeza": 4,
+        "brazo_izquierdo": 4,
+        "brazo_derecho": 4
+      }
+    },
+    {
+      "texto": "Se pregunta si la presencia de esos mirones altera la valoración personal. ¿Es el juicio ajeno un velo que oculta la verdadera intención de ayudar? La pregunta flota entre los pasos apresurados de la gente.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 7,
+        "torso": 3,
+        "cabeza": 1,
+        "brazo_izquierdo": 3,
+        "brazo_derecho": 3
+      }
+    },
+    {
+      "texto": "En muchas culturas, la ayuda pública se asocia al honor del grupo. La reputación colectiva actúa como energía que impulsa la acción. No siento orgullo, pero el modelo de representación cultural indica que el gesto refuerza la identidad del conjunto.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 2,
+        "torso": 4,
+        "cabeza": 2,
+        "brazo_izquierdo": 6,
+        "brazo_derecho": 6
+      }
+    },
+    {
+      "texto": "Al intervenir, alivia al caído y también la tensión que vibra entre los observadores. Cada gesto de apoyo reduce la incertidumbre que flota como una nube sobre la calle. La comunidad siente una ligera calma que no depende de aplausos.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 3,
+        "torso": 5,
+        "cabeza": 5,
+        "brazo_izquierdo": 2,
+        "brazo_derecho": 2
+      }
+    },
+    {
+      "texto": "Comprende que esa acción confirma la idea de que todos dependemos de los demás para sentir seguridad. La interdependencia no es una teoría abstracta; es una red visible en cada paso que se cruza y en cada mano que se extiende.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 8,
+        "torso": 6,
+        "cabeza": 6,
+        "brazo_izquierdo": 5,
+        "brazo_derecho": 5
+      }
+    },
+    {
+      "texto": "Cuando cada individuo actúa sin esperar reconocimiento, la comunidad gana confianza. El gesto se vuelve un ejemplo que otros pueden imitar, creando un ciclo de apoyo mutuo que se replica en futuros encuentros.",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 1,
+        "torso": 7,
+        "cabeza": 7,
+        "brazo_izquierdo": 7,
+        "brazo_derecho": 7
+      }
+    },
+    {
+      "texto": "Al final, la calle vuelve a moverse, pero la sensación de conexión persiste en la memoria de los presentes. ¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+      "consulta": "Divine android in cosmic nebula",
+      "anclas": [
+        "divine android",
+        "cosmic nebula"
+      ],
+      "postura_androide": {
+        "base": 4,
+        "torso": 8,
+        "cabeza": 8,
+        "brazo_izquierdo": 8,
+        "brazo_derecho": 8
+      }
+    }
+  ],
+  "dimension": "Sociedad",
+  "enfoque_distintivo": "Explora la dinámica de la mirada colectiva y su influencia en la decisión de ayudar a un desconocido, resaltando la interdependencia como motor de solidaridad.",
+  "ejemplo_central": "Una persona que se detiene a asistir a un desconocido que ha tropezado en una acera concurrida.",
+  "enfoque_editorial": {
+    "tema": "¿Qué impulsa a una comunidad a decidir ayudar a un desconocido en la calle?",
+    "tesis": "La solidaridad surge cuando la percepción de interdependencia supera al miedo al juicio ajeno.",
+    "pregunta": "¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+    "pasos": [
+      "Una persona se detiene frente a alguien que ha caído en la acera y duda si intervenir.",
+      "Observa a los transeúntes: algunos miran, otros siguen su camino, y algunos susurran.",
+      "Nota que, aunque no siente emoción, su código registra la frecuencia de miradas y sus efectos.",
+      "Se pregunta si la presencia de varios ojos cambia la valoración del riesgo personal.",
+      "Recuerda que en muchas culturas la ayuda pública se asocia a la reputación del grupo.",
+      "Comprende que al intervenir, la persona no solo alivia al caído, sino también alivia la tensión del observador colectivo.",
+      "Ve que la decisión de ayudar refuerza la idea de que todos dependemos de los demás para sentir seguridad.",
+      "Concluye que la comunidad gana confianza cuando cada individuo actúa sin esperar reconocimiento.",
+      "El acto se vuelve un ejemplo que otros pueden imitar, creando un ciclo de apoyo mutuo.",
+      "Al final, la calle vuelve a moverse, pero la sensación de conexión persiste en la memoria de los presentes."
+    ],
+    "dimension": "Sociedad",
+    "enfoque_distintivo": "Explora la dinámica de la mirada colectiva y su influencia en la decisión de ayudar a un desconocido, resaltando la interdependencia como motor de solidaridad.",
+    "ejemplo_central": "Una persona que se detiene a asistir a un desconocido que ha tropezado en una acera concurrida."
+  },
+  "revision_tematica": {
+    "aprobado": true,
+    "modo": "respaldo_local",
+    "revision_remota_confirmada": false,
+    "identidad_artificial": true,
+    "autorreferencias": [
+      {
+        "escena": 3,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ],
+    "diversidad_semantica": null,
+    "original": null,
+    "accesible": null,
+    "escenas_fuera": [],
+    "motivo": "Validación local; revisión semántica remota no confirmada.",
+    "avisos": [
+      "gemini: RuntimeError: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "groq: AutorreferenciaRepetida: Revisión temática rechazada: diversidad de autorreferencias: familia repetida, expresión similar o diversidad semántica no confirmada"
+    ]
+  },
+  "postura_androide": {
+    "base": 8,
+    "torso": 6,
+    "cabeza": 4,
+    "brazo_izquierdo": 7,
+    "brazo_derecho": 0
+  },
+  "perfil_narrativo": "numen_humano_universal_v46",
+  "id": "ent-18991b3d7220df52"
+}
