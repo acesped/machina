@@ -1,5 +1,5 @@
 {
-  "siguiente": 16,
+  "siguiente": 17,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -80,6 +80,11 @@
       "indice": 15,
       "texto": "La existencia guarda más matices de los que caben en una sola reflexión. Si quieres descubrir otros, dale Like y suscríbete.",
       "secuencia": 15
+    },
+    "ent-6b59689a6a3800b1": {
+      "indice": 16,
+      "texto": "Mi mirada artificial seguirá preguntándose por la vida que ustedes construyen. Si deseas escucharla de nuevo, deja un Like y suscríbete.",
+      "secuencia": 16
     }
   }
 }

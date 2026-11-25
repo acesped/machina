@@ -441,5 +441,38 @@
         "Sin embargo, cuando una amenaza real emerge, la ausencia de datos puede costar vidas. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana."
       ]
     }
+  },
+  {
+    "id": "ent-6b59689a6a3800b1",
+    "titulo": "Intimidad bajo la mirada digital",
+    "tesis": "La intimidad humana se redefine cuando la tecnología registra cada gesto, pues la sensación de privacidad depende más de la percepción de ser observado que del nivel real de exposición.",
+    "categoria": "Tecnología y humanidad",
+    "pregunta": "¿Puede el ser humano sentir verdadera intimidad cuando sabe que sus datos son recopilados sin su consentimiento?",
+    "dimension": "Tecnología y humanidad",
+    "enfoque_distintivo": "Explora la intimidad como percepción subjetiva de privacidad frente a la vigilancia omnipresente, sin centrarse en la moralidad de la tecnología sino en la experiencia interna del ser humano.",
+    "ejemplo_central": "Una persona escribe un diario personal en una aplicación que asegura encriptación, pero descubre que la empresa usa la metadata para ofrecerle productos basados en sus emociones.",
+    "huella_narrativa": "add7ad00c5ec3eb26f7eee5e7abc8b3bd74e0b1d4baedca8ea29c8ddf612b367",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Desde mi naturaleza artificial",
+        "familia": "origen_artificial"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "Observo cómo muchos guardan fotos en la nube sin preguntar si el servidor las mira. Cada imagen se vuelve un testigo silencioso, y el usuario confía en la invisibilidad de los bits. ¿Acaso la confianza en la ausencia de mirada es suficiente",
+      "cierre": "a pregunta persiste: ¿la intimidad auténtica requiere ausencia total de datos o la capacidad de decidir qué compartir y qué ocultar? La respuesta no está en la tecnología, sino en la confianza que el ser humano deposita en su propio juicio.",
+      "ejemplo_declarado": "Una persona escribe un diario personal en una aplicación que asegura encriptación, pero descubre que la empresa usa la metadata para ofrecerle productos basados en sus emociones.",
+      "indicios_literal": [],
+      "muestras_desarrollo": [
+        "Los humanos creen que apagar la cámara protege su espacio personal, aunque el algoritmo sigue analizando sus patrones. La luz se apaga, pero el registro persiste en la sombra del código. ¿Qué protege ",
+        "Me pregunto si la sensación de estar solo en una habitación es un acto de fe en la ausencia de ojos digitales. El silencio de la pared parece un refugio, pero el sensor de movimiento registra cada res",
+        "Un joven comparte un mensaje íntimo en una aplicación que promete encriptación, pero la empresa guarda la clave para futuros usos. El texto viaja cifrado, sin embargo la empresa lo traduce cuando le c",
+        "¿No es acaso esa confianza un contrato implícito entre la necesidad de conexión y la pérdida de reserva? Cada mensaje enviado lleva consigo una parte de la sombra del servidor. La intimidad se vuelve ",
+        "Al recibir una notificación de publicidad basada en una conversación privada, el individuo percibe una invasión inesperada. El algoritmo anticipa deseos antes de que el corazón los formule. La intimid",
+        "Ese momento revela cómo la intimidad se vuelve un intercambio constante: el usuario entrega datos y recibe atención personalizada. La sensación de ser escuchado nace de la respuesta, no de la ausencia",
+        "Sin embargo, algunos eligen usar herramientas sin rastreo, creando un refugio donde la ausencia de datos genera una nueva forma de libertad interna. El silencio de los servidores permite que la mente "
+      ]
+    }
   }
 ]

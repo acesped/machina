@@ -224,5 +224,15 @@
     "phash": "b69ec85f984c3628",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El precio de la vigilancia"
+  },
+  "ent-6b59689a6a3800b1": {
+    "seed": 2577182304201686214,
+    "indice": 5,
+    "pose_id": 5,
+    "pose": "original_hd_06",
+    "sha256": "f1523f2d3cc8f23d75299662d87b83320d71689455a6fcd04a0776c0b43debf5",
+    "phash": "3672458ca3e2f3b0",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "Intimidad bajo la mirada digital"
   }
 }

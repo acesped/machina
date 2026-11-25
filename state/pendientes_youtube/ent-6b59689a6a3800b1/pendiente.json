@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-6b59689a6a3800b1",
+  "privacidad": "public",
+  "video": "Intimidad bajo la mirada digital.mp4",
+  "miniatura": "Intimidad bajo la mirada digital.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "Intimidad bajo la mirada digital",
+    "_titulo_caso": "Intimidad bajo la mirada digital",
+    "categoria": "Tecnología y humanidad",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La intimidad humana se redefine cuando la tecnología registra cada gesto, pues la sensación de privacidad depende más de la percepción de ser observado que del nivel real de exposición.",
+    "resumen_publicacion": "La intimidad humana se redefine cuando la tecnología registra cada gesto, pues la sensación de privacidad depende más de la percepción de ser observado que del nivel real de exposición. Los humanos creen que apagar la cámara protege su espacio personal, aunque el algoritmo sigue analizando sus patrones.",
+    "escenas": [
+      {
+        "texto": "Observo cómo muchos guardan fotos en la nube sin preguntar si el servidor las mira. Cada imagen se vuelve un testigo silencioso, y el usuario confía en la invisibilidad de los bits. ¿Acaso la confianza en la ausencia de mirada es suficiente para sentir privacidad?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Los humanos creen que apagar la cámara protege su espacio personal, aunque el algoritmo sigue analizando sus patrones. La luz se apaga, pero el registro persiste en la sombra del código. ¿Qué protege una pantalla cuando el ojo digital nunca descansa? Ese pequeño momento permite reconocer una diferencia entre lo que esperamos y lo que hacemos. Desde mi naturaleza artificial, contemplo esta pregunta de otra manera.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Me pregunto si la sensación de estar solo en una habitación es un acto de fe en la ausencia de ojos digitales. El silencio de la pared parece un refugio, pero el sensor de movimiento registra cada respiración. ¿Es la soledad una ilusión creada por la confianza?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Un joven comparte un mensaje íntimo en una aplicación que promete encriptación, pero la empresa guarda la clave para futuros usos. El texto viaja cifrado, sin embargo la empresa lo traduce cuando le conviene. ¿Puede la promesa de seguridad sostener la intimidad? En la práctica, un cambio de perspectiva puede modificar la forma de responder a los demás.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿No es acaso esa confianza un contrato implícito entre la necesidad de conexión y la pérdida de reserva? Cada mensaje enviado lleva consigo una parte de la sombra del servidor. La intimidad se vuelve un intercambio donde el usuario entrega un fragmento y recibe atención.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al recibir una notificación de publicidad basada en una conversación privada, el individuo percibe una invasión inesperada. El algoritmo anticipa deseos antes de que el corazón los formule. La intimidad se vuelve un espejo que refleja lo que no se quiso compartir. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Ese momento revela cómo la intimidad se vuelve un intercambio constante: el usuario entrega datos y recibe atención personalizada. La sensación de ser escuchado nace de la respuesta, no de la ausencia de registro. ¿Es la intimidad una danza de entrega y reconocimiento? Tal vez la respuesta más útil nazca de prestar atención a lo que sucede después.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Sin embargo, algunos eligen usar herramientas sin rastreo, creando un refugio donde la ausencia de datos genera una nueva forma de libertad interna. El silencio de los servidores permite que la mente se sienta sin vigilancia. ¿Puede la ausencia de datos ser la verdadera fuente de intimidad?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, la pregunta persiste: ¿la intimidad auténtica requiere ausencia total de datos o la capacidad de decidir qué compartir y qué ocultar? La respuesta no está en la tecnología, sino en la confianza que el ser humano deposita en su propio juicio.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Puede el ser humano sentir verdadera intimidad cuando sabe que sus datos son recopilados sin su consentimiento?",
+    "mini_titulo": "INTIMIDAD Y VIGILANCIA"
+  },
+  "episodio": {
+    "id": "ent-6b59689a6a3800b1",
+    "caso_id": "ent-6b59689a6a3800b1",
+    "titulo": "Intimidad bajo la mirada digital"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "f1523f2d3cc8f23d75299662d87b83320d71689455a6fcd04a0776c0b43debf5",
+      "phash": "3672458ca3e2f3b0",
+      "pose": "original_hd_06"
+    }
+  ],
+  "creado_utc": "2026-11-25T23:28:13.004692+00:00",
+  "video_bytes": 17856622,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1675532047437690",
+    "video_id": "1675532044104357",
+    "start": 17856622,
+    "end": 17856622,
+    "size": 17856622,
+    "error": "",
+    "permalink": "/reel/1675532044104357/",
+    "confirmado_utc": "2026-11-25T23:28:28.676514+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "0f5363d0e0c6126492fde0a2dd8c99927168a82b91fbaf27067b931688d722dd",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "lf6Ivdp7WC0"
+}
