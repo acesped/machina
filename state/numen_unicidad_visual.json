@@ -164,5 +164,15 @@
     "phash": "ac656b9be4664328",
     "version": "cosmos-v6-arte-full-hd",
     "tema": "La voz que acompaña en la fila"
+  },
+  "ent-ff51179fbd180924": {
+    "seed": 10345222668723681093,
+    "indice": 1,
+    "pose_id": 126,
+    "pose": "pose_real_027",
+    "sha256": "d57f492c4587deb4a20d341f518af27daf16b357b292e17493f468ecd883bd3c",
+    "phash": "c79fb0acc02daf02",
+    "version": "cosmos-v9-postura-local-unica",
+    "tema": "La duda como puente"
   }
 }
