@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.7
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.8
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -73,7 +73,7 @@ AERO_CACHE_DOCUMENTAL = os.getenv('AERO_CACHE_DOCUMENTAL','true').lower() == 'tr
 AERO_CACHE_DIR = Path(os.getenv('AERO_CACHE_DIR','state/aero_documentos'))
 AERO_CACHE_DIAS = max(1,int(os.getenv('AERO_CACHE_DIAS','45')))
 AERO_CACHE_VERSION = 5  # relevancia financiera específica y extracción mejorada
-VERSION_SCRIPT = "8.7"
+VERSION_SCRIPT = "8.8"
 AERO_GUIONES_DIR = Path(os.getenv("AERO_GUIONES_DIR", "state/aero_guiones"))
 AERO_GUIONES_DIAS = max(1, min(30, int(os.getenv("AERO_GUIONES_DIAS", "14"))))
 AERO_MAX_DOCUMENTOS = max(1,min(8,int(os.getenv('AERO_MAX_DOCUMENTOS','4'))))
@@ -5321,7 +5321,7 @@ def _guion_cache_cargar(episodio,caso):
     try:
         p=_guion_cache_path(episodio['id'])
         guarda=json.loads(p.read_text(encoding='utf-8'))
-        if (guarda['version'] not in (VERSION_SCRIPT, '8.6', '8.7') or guarda['nicho']!=NICHO or
+        if (guarda['version'] not in (VERSION_SCRIPT, '8.6', '8.7', '8.8') or guarda['nicho']!=NICHO or
             guarda['episodio']!=episodio['id'] or guarda['tema']!=caso.get('_titulo_caso') or
             guarda['modo_viral']!=MODO_VIRAL or guarda['pregunta_final']!=PREGUNTA_FINAL_ESPECIFICA or
             not 0<=time.time()-guarda['timestamp']<=AERO_GUIONES_DIAS*86400):return None
@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.7'
+VERSION_SCRIPT = '8.8'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45637,9 +45637,11 @@ def _numen_composicion_v2(seed, indice, devolver_fondo=False, *, pose_id=None):
 
 
 def _numen_fondo_pose_100(seed, indice, pose_id, *, conservar_encuadre_anterior=False):
-    """Retrato Full HD a partir de una de 100 posturas anatómicas pre-renderizadas.
+    """Composición horizontal 16:9 con márgenes seguros a partir del banco local.
 
-    No depende de archivos de imagen externos, claves o servicios de pago.
+    El material fuente del banco es pequeño; por eso se evita ampliarlo a pantalla
+    completa con recorte agresivo. En su lugar se crea un fondo de borde a borde y
+    se integra el panel dentro de una zona segura, sin sacar la androide de cuadro.
     """
     import base64, io
     import numpy as np
@@ -45654,35 +45656,55 @@ def _numen_fondo_pose_100(seed, indice, pose_id, *, conservar_encuadre_anterior=
         x0=round(w*col/5)+4; x1=round(w*(col+1)/5)-4
         y0=round(h*row/2)+4; y1=round(h*(row+1)/2)-4
         tile=sheet.convert('RGB').crop((x0,y0,x1,y1))
-    if not conservar_encuadre_anterior:
-        return ImageOps.fit(tile,(1920,1080),method=Image.Resampling.LANCZOS,
-                            centering=(0.5,0.42))
 
-    rng=np.random.default_rng(seed)
-    # El fondo del propio panel ocupa toda la pantalla, desenfocado para evitar
-    # un recuadro cuadrado. El sujeto original permanece nítido, sin deformación.
+    rng=np.random.default_rng((int(seed) ^ (int(indice)<<7) ^ int(pose_id)) & ((1<<63)-1))
     W,H=1920,1080
-    base=tile.resize((W,H),Image.Resampling.LANCZOS).filter(ImageFilter.GaussianBlur(43))
-    base=ImageEnhance.Brightness(base).enhance(.68)
-    # Imagen de primer plano: no alteramos la pose ni la anatomía de la figura.
-    lado=int(rng.integers(1070,1180))
-    tile=tile.resize((lado,lado),Image.Resampling.LANCZOS)
-    x=(W-lado)//2+int(rng.integers(-95,96))
-    y=(H-lado)//2+int(rng.integers(-45,46))
-    # Máscara suavizada: fusiona ambiente y figura con márgenes atmosféricos.
+
+    # Capa de fondo completa y horizontal: llena el 16:9 y evita bandas o laterales vacíos.
+    base=ImageOps.fit(tile,(W,H),method=Image.Resampling.LANCZOS,centering=(0.5,0.45))
+    base=base.filter(ImageFilter.GaussianBlur(30))
+    base=ImageEnhance.Brightness(base).enhance(.58)
+    base=ImageEnhance.Color(base).enhance(.88)
+    base=ImageEnhance.Contrast(base).enhance(1.05)
+
+    # Primer plano: agrandar con moderación para no delatar tanto la baja resolución.
+    lado=int(rng.integers(860, 980 if conservar_encuadre_anterior else 940))
+    fg=tile.resize((lado,lado),Image.Resampling.LANCZOS)
+    fg=ImageEnhance.Contrast(fg).enhance(1.06)
+    fg=fg.filter(ImageFilter.UnsharpMask(radius=1.55,percent=130,threshold=3))
+
+    # Ubicar dentro de una zona segura, dejando aire arriba y franja inferior para subtítulos.
+    margen_x=max(70,(W-lado)//2)
+    x=(W-lado)//2+int(rng.integers(-min(90,margen_x-30), min(90,margen_x-30)+1)) if margen_x>40 else (W-lado)//2
+    y=H-lado-int(rng.integers(78, 122 if conservar_encuadre_anterior else 146))
+    y=max(34, min(y, H-lado-34))
+
+    # Fusión suave para que el panel no parezca un recuadro fuera de márgenes.
     mask=Image.new('L',(lado,lado),0)
     d=ImageDraw.Draw(mask)
-    margen=58
-    d.rounded_rectangle((margen,margen,lado-margen,lado-margen),radius=130,fill=255)
-    mask=mask.filter(ImageFilter.GaussianBlur(77))
-    base.paste(tile,(x,y),mask)
-    # Variaciones finas del brillo y el cielo; la pose nunca es reemplazada.
-    base=ImageEnhance.Color(base).enhance(float(rng.uniform(.96,1.07)))
+    margen=max(26,lado//16)
+    radio=max(88,lado//7)
+    d.rounded_rectangle((margen,margen,lado-margen,lado-margen),radius=radio,fill=255)
+    mask=mask.filter(ImageFilter.GaussianBlur(max(34,lado//12)))
+    base.paste(fg,(x,y),mask)
+
+    # Viñeta y banda inferior sutil para subtítulos, manteniendo el cuadro horizontal limpio.
+    overlay=Image.new('RGBA',(W,H),(0,0,0,0))
+    do=ImageDraw.Draw(overlay)
+    for i,a in enumerate((26,18,12,8)):
+        do.rounded_rectangle((18+i*18,18+i*18,W-18-i*18,H-18-i*18),radius=120,outline=(0,0,0,a),width=20)
+    banda=Image.new('L',(W,H),0)
+    db=ImageDraw.Draw(banda)
+    db.rectangle((0,int(H*0.74),W,H),fill=170)
+    banda=banda.filter(ImageFilter.GaussianBlur(95))
+    overlay.putalpha(banda)
+    base=Image.alpha_composite(base.convert('RGBA'),overlay).convert('RGB')
+    base=ImageEnhance.Color(base).enhance(float(rng.uniform(.97,1.05)))
     return base
 
 
 def _numen_fondo_local_82(seed, indice, pose_id):
-    """Composición sin recorte agresivo, cosmos nativo y enfoque moderado."""
+    """Respaldo horizontal: cosmos nativo y panel integrado en zona segura."""
     import base64, io
     import numpy as np
     from PIL import Image, ImageOps, ImageFilter, ImageEnhance, ImageDraw
@@ -45708,30 +45730,39 @@ def _numen_fondo_local_82(seed, indice, pose_id):
         x,y=int(rng.integers(W)),int(rng.integers(H)); q=int(rng.integers(85,225))
         draw.point((x,y),fill=(q,q,min(255,q+15)))
         if rng.random()<.045:draw.ellipse((x-1,y-1,x+1,y+1),fill=(q,q,min(255,q+15)))
-    tile=ImageOps.contain(tile,(W,H),method=Image.Resampling.LANCZOS)
-    tile=ImageEnhance.Contrast(tile).enhance(1.045)
-    tile=tile.filter(ImageFilter.UnsharpMask(radius=1.65,percent=110,threshold=4))
-    tw,th=tile.size
+
+    # El tile cuadrado nunca ocupa todo el encuadre; se integra sin salirse del 16:9.
+    lado=int(rng.integers(850, 940))
+    fg=tile.resize((lado,lado),Image.Resampling.LANCZOS)
+    fg=ImageEnhance.Contrast(fg).enhance(1.05)
+    fg=fg.filter(ImageFilter.UnsharpMask(radius=1.55,percent=120,threshold=4))
+    x=(W-lado)//2+int(rng.integers(-85,86))
+    y=H-lado-int(rng.integers(80,140))
+    y=max(36,min(y,H-lado-36))
+    mask=Image.new('L',(lado,lado),0)
+    dm=ImageDraw.Draw(mask)
+    m=max(24,lado//17)
+    dm.rounded_rectangle((m,m,lado-m,lado-m),radius=max(82,lado//7),fill=255)
+    mask=mask.filter(ImageFilter.GaussianBlur(max(30,lado//12)))
     base=cosmos.copy()
-    fade=max(12,int(tw*.075)); alpha=np.minimum(np.arange(tw),np.arange(tw)[::-1])/fade
-    alpha=np.clip(alpha,0,1); alpha=alpha*alpha*(3-2*alpha)
-    mask=Image.fromarray(np.uint8(np.broadcast_to(alpha,(th,tw))*255),'L')
-    base.paste(tile,((W-tw)//2,(H-th)//2),mask)
+    base.paste(fg,(x,y),mask)
+    sombra=Image.new('L',(W,H),0)
+    ds=ImageDraw.Draw(sombra)
+    ds.rectangle((0,int(H*0.74),W,H),fill=155)
+    sombra=sombra.filter(ImageFilter.GaussianBlur(88))
+    veil=Image.new('RGBA',(W,H),(0,0,0,0))
+    veil.putalpha(sombra)
+    base=Image.alpha_composite(base.convert('RGBA'),veil).convert('RGB')
     return base,cosmos
 
 
 def _numen_fondo_local_87(seed, indice, pose_id):
-    """Respaldo horizontal de borde a borde; detalle del sujeto limitado por el original."""
-    import numpy as np
-    from PIL import Image, ImageEnhance, ImageFilter
-    _, cosmos = _numen_fondo_local_82(seed, indice, pose_id)
-    arte = _numen_fondo_pose_100(seed, indice, pose_id)
-    arte = ImageEnhance.Contrast(arte).enhance(1.035)
-    arte = arte.filter(ImageFilter.UnsharpMask(radius=1.2, percent=85, threshold=5))
-    x = np.abs(np.linspace(-1, 1, 1920, dtype=np.float32))
-    a = 0.10 + 0.24 * np.clip((x - 0.45) / 0.55, 0, 1)**2
-    mask = Image.fromarray(np.uint8(np.broadcast_to(a, (1080, 1920))*255), 'L')
-    return Image.composite(cosmos, arte, mask), cosmos
+    """Composición horizontal mejorada sin recorte agresivo ni salidas de margen."""
+    from PIL import ImageEnhance, ImageFilter
+    arte, cosmos = _numen_fondo_local_82(seed, indice, pose_id)
+    arte = ImageEnhance.Contrast(arte).enhance(1.03)
+    arte = arte.filter(ImageFilter.UnsharpMask(radius=1.15, percent=90, threshold=4))
+    return arte, cosmos
 
 
 def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, conservar_encuadre_anterior=False):
