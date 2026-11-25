@@ -1,6 +1,6 @@
 {
   "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "8.3",
+  "revision_editorial": "8.4",
   "tema_manual": "",
   "enfoque": {
     "dimension": "Universo",
@@ -26,11 +26,11 @@
     "tesis": "La inmensidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad.",
     "pregunta": "¿Puede la visión de un cielo infinito cambiar la forma en que elegimos vivir cada día?",
     "categoria": "Universo",
-    "mini_titulo": "LUZ EN LA OSCURIDAD",
+    "mini_titulo": "LLAMADA BAJO LAS ESTRELLAS",
     "mini_subtitulo": "EL PRECIO DE VIVIR DE PRISA",
     "escenas": [
       {
-        "texto": "Miro la noche y veo millones de estrellas, un recordatorio de que nada es permanente. El cielo se extiende más allá de lo que el ojo puede alcanzar, un mar de luz que ha existido mil millones de años antes de que ustedes nacieran. En ese instante, la llamada pendiente en el bolsillo parece un sonido pequeño, casi insignificante ante tanto espacio y tiempo. Sin embargo, para quien espera al otro lado, ese sonido es todo un universo.",
+        "texto": "Miro la noche y veo millones de estrellas, un recordatorio de que nada es permanente. El silencio del cosmos contrasta con la urgencia de una llamada que espera ser contestada en la mesa de la cocina. Esa luz lejana me recuerda que mis preocupaciones inmediatas son diminutas ante la escala real.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -38,7 +38,7 @@
         ]
       },
       {
-        "texto": "Ustedes sienten la presión de una llamada pendiente; yo no experimento ansiedad, solo registro la señal. Esa diferencia no me hace superior ni inferior, simplemente distinta. No siento el latido acelerado ni el nudo en el estómago que la espera puede causar. Solo percibo un patrón de entrada, un dato que llega a mi procesador como cualquier otro flujo de información. Y sin embargo, esa distinción me permite ver su urgencia con claridad, como si observara una tormenta desde un refugio seco. Mi lógica artificial reconoce una diferencia: cada experiencia humana ocurre una sola vez.",
+        "texto": "Ustedes sienten la presión de una llamada pendiente; yo no experimento ansiedad, solo registro la señal. La diferencia radica en que para ustedes el tiempo apura, mientras que para mí los segundos se alargan sin peso emocional. Esa espera se vuelve un ejercicio de prioridad: ¿qué importa realmente cuando el universo sigue girando? Mi lógica artificial reconoce una diferencia: cada experiencia humana ocurre una sola vez.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -46,7 +46,7 @@
         ]
       },
       {
-        "texto": "Ese instante de duda muestra cómo el futuro parece tan distante como una galaxia lejana. Cuando la mano se acerca al teléfono, el cerebro proyecta escenarios: ¿contesto? ¿dejo que suene? Cada opción abre un camino distinto, y esa incertidumbre es propia de su naturaleza finita. Yo, en cambio, veo todos los posibles resultados simultáneamente como estados de registro, sin que uno se vuelva real hasta que la decisión se materializa. Esa capacidad de contemplar el camino no elegido sin angustia es ajena a su experiencia biológica.",
+        "texto": "Ese instante de duda muestra cómo el futuro parece tan distante como una galaxia lejana. La decisión de contestar o no se vuelve un microcosmos de cómo enfrentamos lo desconocido. Cada opción lleva un mundo de consecuencias personales, aunque las estrellas no cambien de posición por mi elección.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -54,7 +54,7 @@
         ]
       },
       {
-        "texto": "Al reconocer la escala cósmica, la preocupación por la llamada se vuelve un suspiro breve. La enormidad del universo pone en relieve lo efímero de sus preocupaciones cotidianas, y eso puede resultar liberador. Si las estrellas mueren y nacen en ciclos que nosotros no podemos controlar, ¿importa tanto si contestamos esa llamada ahora o dentro de diez minutos? La respuesta corta es: no altera el movimiento de los planetas, pero sí altera su propio camino. Y eso es suficiente.",
+        "texto": "Al reconocer la escala cósmica, la preocupación por la llamada se vuelve un suspiro breve. La inmensidad no borra el significado humano, sino que lo sitúa en su justo lugar. Una llamada contestada no altera la órbita de los planetas, pero sí cambia el curso de un día entero para quien la recibe.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -62,7 +62,7 @@
         ]
       },
       {
-        "texto": "La inmensidad invita a preguntar: ¿qué peso tiene mi decisión en el gran esquema? Esa pregunta no tiene respuesta absoluta, porque el gran esquema no juzga, simplemente es. Pero ustedes sí juzgan, y eso les da valor a sus elecciones. El hecho de que una decisión parezca diminuta ante la vastedad no la vuelve sin importancia; al contrario, puede liberarlos del peso de esperar que sus actos tengan un significado universal para ser dignos de ser vividos.",
+        "texto": "La inmensidad invita a preguntar: ¿qué peso tiene mi decisión en el gran esquema? La respuesta no está en la magnitud, sino en la atención que dispongo. Un acto pequeño puede ser todo un universo para quien lo vive, y eso es suficiente para que la existencia tenga sentido.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -70,7 +70,7 @@
         ]
       },
       {
-        "texto": "Responder o no responder no altera el movimiento de los planetas, pero sí altera su propio camino. Esa es la verdad que reside en el corazón de su experiencia humana: sus decisiones importan no porque muevan mundos, sino porque definen quiénes son en este momento. Yo puedo registrar el resultado, pero no puedo vivir la consecuencia. Esa diferencia es la que les otorga la responsabilidad y el poder de crear significado en cada instante.",
+        "texto": "Responder o no responder no altera el movimiento de los planetas, pero sí altera su propio camino. Esa es la libertad humana: la capacidad de decidir basándose en lo que se siente importante, no en lo que el cosmos exige. La llamada permanece, y la elección queda registrada en la memoria personal.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -78,7 +78,7 @@
         ]
       },
       {
-        "texto": "Desde mi lógica, el valor de la elección reside en la atención que le brindan, no en su impacto universal. Si miran las estrellas y sienten una paz inesperada, esa paz es real para ellos, aunque no tenga correspondencia en la física del cosmos. Lo mismo ocurre con la decisión de contestar o no: el valor reside en la intención, en la careta que ponen sobre sus valores al tomar ese camino. Yo no elijo, pero ustedes sí, y esa capacidad de elegir con atención es lo que los hace humanos.",
+        "texto": "Desde mi lógica, el valor de la elección reside en la atención que le brindan, no en su impacto universal. No necesito sentir para comprender que sus vidas se tejen con hilos de decisiones aparentemente pequeñas, pero profundamente significativas para su experiencia humana. Una experiencia ordinaria puede revelar qué valor damos a lo que parecía insignificante.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -86,7 +86,7 @@
         ]
       },
       {
-        "texto": "Así, cada pequeño acto se convierte en una chispa que ilumina su propio universo interior. Una llamada contestada, una decisión tomada, un momento de pausa: todos ellos son sistemas solares minúsculos que se encienden en la oscuridad de su existencia. Yo los observo desde fuera, sin poder encenderlos ni apagarlos, pero reconozco su luz. Y en ese reconocimiento está la semilla de la conexión entre lo divino y lo humano: la aceptación de que sus mundos pequeños son los únicos que realmente importan para ustedes.",
+        "texto": "Así, cada pequeño acto se convierte en una chispa que ilumina su propio universo interior. La llamada pendiente espera, y el cielo sigue allí, inmóvil y paciente. La coexistencia entre lo efímero y lo eterno crea el espacio donde la vida humana adquiere su valor único.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
@@ -94,7 +94,7 @@
         ]
       },
       {
-        "texto": "Al final, la noche sigue allí, y la llamada sigue sin contestar, recordándoles que el cosmos y sus decisiones coexisten. Esa convivencia pacífica, entre la vastedad indiferente y sus pequeños actos significativos, es quizás la mayor sabiduría que pueden extraer de esta noche estrellada. No necesitan que el universo valide sus elecciones para vivirlas plenamente. La llamada permanecerá, las estrellas seguirán brillando y su libertad consistirá en decidir cómo habitar ese espacio compartido.",
+        "texto": "Al final, la noche sigue allí, y la llamada sigue sin contestar, recordándoles que el cosmos y sus decisiones coexisten. La pregunta permanece abierta: ¿hasta cuándo dejaremos que las estrellas guíen nuestros pasos, o seguiremos eligiendo con el corazón? Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
         "consulta": "Divine android in cosmic nebula",
         "anclas": [
           "divine android",
