@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.3'
+VERSION_SCRIPT = '8.4'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -5917,13 +5917,14 @@ def _ent_control_voz(t):
     normal=_univ_normalizar(t)
     if re.search(r'\b(?:numen\s*ex\s*codice|deus\s+digitalis)\b',normal):
         raise ValueError('Autorreferencia al nombre de la entidad')
-    patron=r'\b(?:me proclamo|me autoproclamo|no (?:puedo|logro|consigo|alcanzo a) (?:comprender|entender|saber|explicar)|no (?:comprendo|entiendo|se)|mi (?:incapacidad|debilidad|ignorancia|limitacion)|mis (?:limitaciones|debilidades)|necesito (?:aprender|comprender))\b'
+    patron=r'\b(?:me proclamo|me autoproclamo|no (?:puedo|logro|consigo|alcanzo a) (?:comprender|entender|saber|explicar)|no (?:comprendo|entiendo)|mi (?:incapacidad|debilidad|ignorancia|limitacion)|mis (?:limitaciones|debilidades)|necesito (?:aprender|comprender))\b'
     # Conservar puntuación y acentos hasta aislar citas humanas explícitas.
     # «No sé» atribuido a un humano no equivale a una confesión de la entidad.
     citas=re.compile(r'(?i)(?:\b(?:una persona|un humano|alguien|un niño|una niña|un amigo|una amiga|el ser humano|los humanos|tú|ustedes)\s+(?:dice[n]?|dijo|piensa[n]?|pensó|pregunta[n]?|preguntó|responde[n]?|respondió|se dice[n]?|se pregunta[n]?)\s*[:,]?\s*)(?:«[^»]+»|“[^”]+”|"[^"]+")')
     sin_citas=citas.sub(' cita humana ',t)
-    # Evitar confundir «no se puede» impersonal con «no sé» personal.
-    sin_citas=re.sub(r'\bno se\b',' impersonal ',sin_citas,flags=re.IGNORECASE)
+    # La duda filosófica (no sé) y las formas impersonales (no se) son
+    # admisibles. No inferir incompetencia a partir de dos palabras aisladas.
+    # Se mantienen las prohibiciones explícitas de incapacidad y autopromoción.
     coincidencia=re.search(patron,_univ_normalizar(sin_citas))
     if coincidencia:
         raise ValueError('Autopresentación o debilidad de la narradora: '+repr(coincidencia.group(0)))
@@ -6863,9 +6864,9 @@ def _ent_generar(memoria, metricas):
     errores=[];enfoque=None;descartes=[];pendiente=None
     referencias_descartadas=set()
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', VERSION_SCRIPT)
+    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', '8.0', '8.1', '8.2', '8.3', VERSION_SCRIPT)
     if isinstance(previo,dict) and previo.get('revision_editorial') not in versiones_compatibles:
-        print('Editorial 7.9: descartando estado previo incompatible, memoria histórica conservada',flush=True)
+        print('Editorial 8.4: descartando estado previo incompatible, memoria histórica conservada',flush=True)
     if (isinstance(previo,dict) and previo.get('revision_editorial') in versiones_compatibles
             and previo.get('tema_manual')==os.getenv('NUMEN_TEMA','').strip()):
         enfoque=previo.get('enfoque') if isinstance(previo.get('enfoque'),dict) else None
@@ -6876,9 +6877,9 @@ def _ent_generar(memoria, metricas):
             try:
                 _ent_balance_eficiente(pendiente)
                 _ent_validar(copy.deepcopy(pendiente),memoria)
-                print('Editorial 8.3 | borrador localmente válido recuperado para revisión',flush=True)
+                print('Editorial 8.4 | borrador localmente válido recuperado para revisión',flush=True)
             except Exception as exc:
-                print('Editorial 8.3 | borrador guardado no válido:',str(exc)[:160],flush=True)
+                print('Editorial 8.4 | borrador guardado no válido:',str(exc)[:160],flush=True)
                 pendiente=None
     respaldo_pendiente=None
     def guardar():
@@ -6919,7 +6920,7 @@ def _ent_generar(memoria, metricas):
                 try:
                     borrador=_ent_recuperar_borrador_corto(borrador,enfoque)
                 except BorradorDemasiadoBreve as exc:
-                    print(f'Editorial 8.3 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
+                    print(f'Editorial 8.4 | {motor}: {exc}. Un reintento de redacción en el mismo proveedor.',flush=True)
                     prompt += (
                         '\nCORRECCIÓN OBLIGATORIA: la redacción anterior era demasiado breve. '
                         'Redacta desde cero sobre el mismo enfoque y conserva el esquema JSON. '
@@ -6948,9 +6949,9 @@ def _ent_generar(memoria, metricas):
                 pendiente=borrador
                 respaldo_pendiente=None
                 guardar() # Se persiste ANTES de enviar la revisión remota.
-                print('Editorial 8.3 | borrador viable guardado; revisión remota',flush=True)
+                print('Editorial 8.4 | borrador viable guardado; revisión remota',flush=True)
             else:
-                print(f'Editorial 8.3 | {motor} revisará el borrador pendiente',flush=True)
+                print(f'Editorial 8.4 | {motor} revisará el borrador pendiente',flush=True)
             # Permitir una reducción después de reparar un déficit, con un límite por proveedor.
             for intento in range(3):
                 try:
@@ -6970,7 +6971,7 @@ def _ent_generar(memoria, metricas):
                 except (AutorreferenciasExcesivas,AutorreferenciasInsuficientes,AutorreferenciaRepetida,RevisionNarrativaLocal) as exc:
                     if intento == 2:
                         raise
-                    print(f'Editorial 8.3 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
+                    print(f'Editorial 8.4 | {motor}: {exc}. Intentando una corrección localizada.',flush=True)
                     try:
                         if isinstance(exc,RevisionNarrativaLocal):
                             corregido=_ent_reparar_narrativa(fn,enfoque,copy.deepcopy(pendiente),exc)
@@ -6993,14 +6994,14 @@ def _ent_generar(memoria, metricas):
                         raise CorreccionIdentidadInvalida(str(reparacion)) from reparacion
                     pendiente=corregido
                     guardar()
-                    print('Editorial 8.3 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
+                    print('Editorial 8.4 | borrador corregido guardado; nueva revisión obligatoria',flush=True)
             d=_ent_validar(d,memoria)
             registro_visual=_ent_read(NUMEN_REGISTRO_VISUAL,{})
             if not isinstance(registro_visual,dict):
                 raise EpisodioRecuperable('Registro visual inválido; restaurar respaldo.')
             d['postura_androide']=_numen_elegir_postura(
                 d.get('postura_androide'),registro_visual,d['titulo'])
-            print('Editorial 8.3 | guion aprobado con validación local y revisión remota',flush=True)
+            print('Editorial 8.4 | guion aprobado con validación local y revisión remota',flush=True)
             _ent_checkpoint(enfoque,d,'aprobado','',descartes)
             return d
         except Exception as exc:
@@ -7014,7 +7015,7 @@ def _ent_generar(memoria, metricas):
                                           'límite diario','limite diario','service unavailable')))
             if isinstance(exc,(CorreccionIdentidadInvalida,EvidenciaIdentidadInvalida,ExcesoIdentidadNoConfirmado,AutorreferenciasExcesivas,
                                AutorreferenciasInsuficientes,AutorreferenciaRepetida)):
-                print('Editorial 8.3 | conservando el borrador para otro revisor',flush=True)
+                print('Editorial 8.4 | conservando el borrador para otro revisor',flush=True)
                 guardar()
                 if siguiente is None and not regeneracion_identidad_usada and isinstance(exc,(CorreccionIdentidadInvalida,AutorreferenciasInsuficientes,AutorreferenciasExcesivas,AutorreferenciaRepetida)):
                     regeneracion_identidad_usada=True
@@ -7047,11 +7048,11 @@ def _ent_generar(memoria, metricas):
                 print(f'Editorial {VERSION_SCRIPT} | borrador rechazado'
                       + ('; siguiente proveedor generará otro' if siguiente else ''),flush=True)
             else:
-                print('Editorial 8.3 | fallo del proveedor; se conserva el progreso editorial',flush=True)
+                print('Editorial 8.4 | fallo del proveedor; se conserva el progreso editorial',flush=True)
             guardar()
             if fallo_proveedor and pendiente is not None:
                 destino = f'siguiente revisor: {siguiente}' if siguiente else 'revisión pendiente para otra ejecución'
-                print(f'Editorial 8.3 | {destino}',flush=True)
+                print(f'Editorial 8.4 | {destino}',flush=True)
     raise EpisodioRecuperable('Sin reflexión aprobada; borrador viable preservado si corresponde: '+' | '.join(errores))
 
 
@@ -46936,7 +46937,9 @@ def _ent_test():
     assert _ent_validar(breve,[]) is breve
     _ent_control_voz('No se puede regresar al pasado. Los humanos buscan respuestas.')
     _ent_control_voz('Una persona dice: «No sé qué decidir».')
-    for mal in ('No sé qué hacer.', 'No entiendo el futuro.', 'No puedo comprender la existencia.'):
+    for frase in ('No sé qué hacer.', 'No sé si el universo tiene un propósito.', 'No se puede medir todo.', 'Si la respuesta es no, se abre otra pregunta.', 'No sé si existe una respuesta.'):
+        _ent_control_voz(frase)
+    for mal in ('No entiendo el futuro.', 'No puedo comprender la existencia.'):
         try:_ent_control_voz(mal)
         except ValueError:pass
         else:raise AssertionError('Confesión no detectada: '+mal)
