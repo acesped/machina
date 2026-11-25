@@ -354,5 +354,22 @@
         "familia": "logica"
       }
     ]
+  },
+  {
+    "id": "ent-18991b3d7220df52",
+    "titulo": "La mirada que teje la solidaridad",
+    "tesis": "La solidaridad surge cuando la percepción de interdependencia supera al miedo al juicio ajeno.",
+    "categoria": "Sociedad",
+    "pregunta": "¿Puede la mirada colectiva transformar una acción aislada en un acto de comunidad?",
+    "dimension": "Sociedad",
+    "enfoque_distintivo": "Explora la dinámica de la mirada colectiva y su influencia en la decisión de ayudar a un desconocido, resaltando la interdependencia como motor de solidaridad.",
+    "ejemplo_central": "Una persona que se detiene a asistir a un desconocido que ha tropezado en una acera concurrida.",
+    "autorreferencias": [
+      {
+        "escena": 3,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ]
   }
 ]
