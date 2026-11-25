@@ -371,5 +371,24 @@
         "familia": "logica"
       }
     ]
+  },
+  {
+    "id": "ent-16e58ade4e9175a6",
+    "titulo": "El perdón que libera sin permiso",
+    "tesis": "Perdonar es una decisión unilateral que aligera el alma, sin esperar reconocimiento externo.",
+    "categoria": "Relaciones humanas",
+    "pregunta": "¿Qué sucede en ti cuando decides perdonar sin haber recibido una disculpa?",
+    "dimension": "Relaciones humanas",
+    "enfoque_distintivo": "El perdón se presenta como acto de soberanía personal y liberación unilateral, sin requerir reconocimiento externo ni transacción moral.",
+    "ejemplo_central": "En la mesa familiar, mientras el plato de arroz se pasa de mano en mano, el silencio pesa más que la comida.",
+    "conclusion": "La verdadera transformación ocurre dentro, no en la percepción externa.",
+    "autorreferencias": [
+      {
+        "id_oracion": "2.4",
+        "cita": "Desde mi mirada de código, este contraste invita a observar con atención lo cotidiano.",
+        "familia": "codigo",
+        "escena": 2
+      }
+    ]
   }
 ]

@@ -194,5 +194,15 @@
     "phash": "88ca5ee7341e950e",
     "version": "cosmos-v11-local-87",
     "tema": "La mirada que teje la solidaridad"
+  },
+  "ent-16e58ade4e9175a6": {
+    "seed": 9450285330318500035,
+    "indice": 3,
+    "pose_id": 149,
+    "pose": "pose_real_050",
+    "sha256": "7ce69fee1d1801f2eda631bae615378cd6f7e543fb5085a699fc515467ee8584",
+    "phash": "4cd896a663c64f58",
+    "version": "cosmos-v11-local-87",
+    "tema": "El perdón que libera sin permiso"
   }
 }
