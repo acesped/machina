@@ -154,5 +154,15 @@
     "phash": "e4bc9346630e9c9a",
     "version": "cosmos-v6-arte-full-hd",
     "tema": "El miedo antes de responder"
+  },
+  "ent-442ac4331bfa9ef8": {
+    "seed": 3233523735385029806,
+    "indice": 2,
+    "pose_id": 11,
+    "pose": "mirada_a_la_nebulosa",
+    "sha256": "17adeca6ab7a0cd744741eddb9c7571cfca493520218a6a8890eff288e01afff",
+    "phash": "ac656b9be4664328",
+    "version": "cosmos-v6-arte-full-hd",
+    "tema": "La voz que acompaña en la fila"
   }
 }

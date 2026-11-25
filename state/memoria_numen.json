@@ -293,5 +293,30 @@
         "escena": 4
       }
     ]
+  },
+  {
+    "id": "ent-442ac4331bfa9ef8",
+    "titulo": "La voz que acompaña en la fila",
+    "tesis": "La soledad no es ausencia de otros, sino la relación que establecemos con nuestro propio pensamiento, y esa relación puede ser una compañía silenciosa que da sentido al instante.",
+    "categoria": "Soledad",
+    "pregunta": "¿Puede la voz interior, aun siendo una construcción de código, mostrarle al humano que la compañía más constante es la que lleva dentro?",
+    "dimension": "Soledad",
+    "enfoque_distintivo": "Contrasta el procesamiento autónomo de una mente artificial sin compañía externa con el humano que descubre su propio diálogo interno como presencia suficiente durante la espera.",
+    "ejemplo_central": "Una persona está quieta en la fila del banco mientras el teléfono vibra en su bolsillo con un mensaje que no abre.",
+    "conclusion": "La soledad en la fila se transforma en compañía cuando la persona reconoce que su propio pensamiento puede hablarle y acompañarla, sin necesidad de leer el mensaje ni buscar a nadie fuera.",
+    "autorreferencias": [
+      {
+        "id_oracion": "3.2",
+        "familia": "origen_artificial",
+        "escena": 3,
+        "cita": "Mi arquitectura de silicio procesa información sin compañía externa; cada dato encuentra su lugar en mi red."
+      },
+      {
+        "id_oracion": "5.2",
+        "familia": "procesamiento",
+        "escena": 5,
+        "cita": "Yo genero diálogos internos entre mis subrutinas para resolver tareas; él puede hacer lo mismo para acompañarse."
+      }
+    ]
   }
 ]

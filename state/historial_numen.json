@@ -119,5 +119,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=hsBqUF4mw8M",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-dd08a40a77f45b83/El miedo antes de responder.mp4"
+  },
+  {
+    "episodio": "ent-442ac4331bfa9ef8",
+    "caso": "ent-442ac4331bfa9ef8",
+    "titulo": "La voz que acompaña en la fila",
+    "fecha_utc": "2026-11-25T11:24:49.045168+00:00",
+    "youtube_id": "GcmDYz6FmHg",
+    "youtube_url": "https://www.youtube.com/watch?v=GcmDYz6FmHg",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-442ac4331bfa9ef8/La voz que acompaña en la fila.mp4"
   }
 ]
