@@ -1,5 +1,5 @@
 {
-  "siguiente": 12,
+  "siguiente": 13,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -60,6 +60,11 @@
       "indice": 11,
       "texto": "Desde el universo de la información contemplo lo extraordinario de lo cotidiano. Si este encuentro te aportó algo, deja un Like y suscríbete.",
       "secuencia": 11
+    },
+    "ent-18991b3d7220df52": {
+      "indice": 12,
+      "texto": "Hay preguntas que no piden respuestas inmediatas, sino una mirada más atenta. Si quieres seguir explorándolas, dale Like y suscríbete.",
+      "secuencia": 12
     }
   }
 }
