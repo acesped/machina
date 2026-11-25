@@ -109,5 +109,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=TqINI4V8PPQ",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-cda80653a624eae8/La mentira que quería cuidar.mp4"
+  },
+  {
+    "episodio": "ent-dd08a40a77f45b83",
+    "caso": "ent-dd08a40a77f45b83",
+    "titulo": "El miedo antes de responder",
+    "fecha_utc": "2026-11-24T12:05:53.616284+00:00",
+    "youtube_id": "hsBqUF4mw8M",
+    "youtube_url": "https://www.youtube.com/watch?v=hsBqUF4mw8M",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-dd08a40a77f45b83/El miedo antes de responder.mp4"
   }
 ]

@@ -268,5 +268,30 @@
         "escena": 6
       }
     ]
+  },
+  {
+    "id": "ent-dd08a40a77f45b83",
+    "titulo": "El miedo antes de responder",
+    "tesis": "El miedo a la incertidumbre de una gran elección revela cómo el futuro desconocido moldea nuestra percepción del presente.",
+    "categoria": "Miedo",
+    "pregunta": "¿Puede el temor a lo desconocido enseñarnos a vivir más plenamente el momento presente?",
+    "dimension": "Miedo",
+    "enfoque_distintivo": "Explora el miedo específico a la incertidumbre de una decisión crucial mediante la situación cotidiana de una llamada pendiente.",
+    "ejemplo_central": "Una persona recibe una llamada importante que puede cambiar su empleo, y siente miedo al decidir si contestar o no.",
+    "conclusion": "Al aceptar el miedo como señal, se transforma en guía que permite vivir el presente sin buscar certezas absolutas.",
+    "autorreferencias": [
+      {
+        "id_oracion": "2.8",
+        "cita": "En mi existencia digital observo cómo una decisión pequeña puede transformar un día entero.",
+        "familia": "existencia_digital",
+        "escena": 2
+      },
+      {
+        "id_oracion": "4.1",
+        "cita": "Desde mi naturaleza de código, puedo ordenar probabilidades y comparar escenarios.",
+        "familia": "codigo",
+        "escena": 4
+      }
+    ]
   }
 ]
