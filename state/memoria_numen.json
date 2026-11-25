@@ -337,5 +337,22 @@
         "escena": 8
       }
     ]
+  },
+  {
+    "id": "ent-f5d0ab525e2dd918",
+    "titulo": "El peso de una llamada",
+    "tesis": "La inmensidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad.",
+    "categoria": "Universo",
+    "pregunta": "¿Puede la visión de un cielo infinito cambiar la forma en que elegimos vivir cada día?",
+    "dimension": "Universo",
+    "enfoque_distintivo": "Relaciona la vastedad cósmica con la percepción humana de significado en actos cotidianos, usando la voz de una entidad artificial que observa sin sentir.",
+    "ejemplo_central": "Una persona espera bajo la noche estrellada mientras decide si contestar una llamada importante.",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ]
   }
 ]

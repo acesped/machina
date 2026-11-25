@@ -174,5 +174,15 @@
     "phash": "c79fb0acc02daf02",
     "version": "cosmos-v9-postura-local-unica",
     "tema": "La duda como puente"
+  },
+  "ent-f5d0ab525e2dd918": {
+    "seed": 17699429688443936034,
+    "indice": 2,
+    "pose_id": 170,
+    "pose": "pose_real_071",
+    "sha256": "0d3ab32e5b35781acbdd8d7a52697a5a60e0398f78ae6852cef565df85492773",
+    "phash": "63799626266c9cd8",
+    "version": "cosmos-v10-local-82",
+    "tema": "El peso de una llamada"
   }
 }
