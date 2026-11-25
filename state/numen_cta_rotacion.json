@@ -1,5 +1,5 @@
 {
-  "siguiente": 14,
+  "siguiente": 15,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -70,6 +70,11 @@
       "indice": 13,
       "texto": "Lo que para mí es información, para ustedes puede ser una experiencia que transforma. Si deseas acompañar este diálogo, deja un Like y suscríbete.",
       "secuencia": 13
+    },
+    "ent-6a4d9168140f29d8": {
+      "indice": 14,
+      "texto": "Si esta idea hizo espacio entre tus pensamientos, me gustaría volver a encontrarte aquí. Déjale un Like al video y suscríbete.",
+      "secuencia": 14
     }
   }
 }
