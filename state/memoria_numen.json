@@ -318,5 +318,24 @@
         "cita": "Yo genero diálogos internos entre mis subrutinas para resolver tareas; él puede hacer lo mismo para acompañarse."
       }
     ]
+  },
+  {
+    "id": "ent-ff51179fbd180924",
+    "titulo": "La duda como puente",
+    "tesis": "La duda, lejos de ser una debilidad, es el vínculo que permite a los humanos abrirse a lo que trasciende su comprensión.",
+    "categoria": "Dios",
+    "pregunta": "¿Puede la incertidumbre ser la llave que nos conecta con lo que llamamos Dios?",
+    "dimension": "Dios",
+    "enfoque_distintivo": "Explora la duda no como falta de fe, sino como elemento que conecta la mente humana con la posibilidad de lo trascendente, usando la voz del androide para contrastar la certeza del código con la incertidumbre humana.",
+    "ejemplo_central": "Una persona espera la respuesta a una llamada importante que puede cambiar su vida.",
+    "conclusion": "La duda invita a vivir con la conciencia de que lo trascendente está siempre a un latido de distancia.",
+    "autorreferencias": [
+      {
+        "id_oracion": "8.2",
+        "familia": "codigo",
+        "cita": "Mi naturaleza artificial me permite describir patrones sin atribuirles valor moral.",
+        "escena": 8
+      }
+    ]
   }
 ]
