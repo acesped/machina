@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.6
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.7
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -73,7 +73,7 @@ AERO_CACHE_DOCUMENTAL = os.getenv('AERO_CACHE_DOCUMENTAL','true').lower() == 'tr
 AERO_CACHE_DIR = Path(os.getenv('AERO_CACHE_DIR','state/aero_documentos'))
 AERO_CACHE_DIAS = max(1,int(os.getenv('AERO_CACHE_DIAS','45')))
 AERO_CACHE_VERSION = 5  # relevancia financiera específica y extracción mejorada
-VERSION_SCRIPT = "8.6"
+VERSION_SCRIPT = "8.7"
 AERO_GUIONES_DIR = Path(os.getenv("AERO_GUIONES_DIR", "state/aero_guiones"))
 AERO_GUIONES_DIAS = max(1, min(30, int(os.getenv("AERO_GUIONES_DIAS", "14"))))
 AERO_MAX_DOCUMENTOS = max(1,min(8,int(os.getenv('AERO_MAX_DOCUMENTOS','4'))))
@@ -5321,7 +5321,7 @@ def _guion_cache_cargar(episodio,caso):
     try:
         p=_guion_cache_path(episodio['id'])
         guarda=json.loads(p.read_text(encoding='utf-8'))
-        if (guarda['version'] not in (VERSION_SCRIPT, '8.7') or guarda['nicho']!=NICHO or
+        if (guarda['version'] not in (VERSION_SCRIPT, '8.6', '8.7') or guarda['nicho']!=NICHO or
             guarda['episodio']!=episodio['id'] or guarda['tema']!=caso.get('_titulo_caso') or
             guarda['modo_viral']!=MODO_VIRAL or guarda['pregunta_final']!=PREGUNTA_FINAL_ESPECIFICA or
             not 0<=time.time()-guarda['timestamp']<=AERO_GUIONES_DIAS*86400):return None
@@ -5584,7 +5584,7 @@ def _self_test_85():
     print('OK: filtro visual 8.5, hidrógeno, bypass y rechazo de coincidencias genéricas')
 
 
-# 8.6: banco de fotografías de industria civil; contexto explícito, no evidencia del caso.
+# 8.7: banco de fotografías de industria civil; contexto explícito, no evidencia del caso.
 _INDUSTRIA_86={
  'aeronave':r'\b(?:airliner\w*|commercial (?:aircraft|airplane|jet)|passenger (?:aircraft|plane|jet)|airbus a[23]\d\d|boeing 7\d7|embraer e\d+|atr [47]\d|aeronave comercial|avion comercial)\b',
  'motor':r'\b(?:turbofan\w*|turbojet\w*|turboprop\w*|aircraft engine\w*|jet engine\w*|aeroengine\w*|motor aeronautico|motor de avion|cfm56|cfm leap|ge90|genx|tr(e|a)nt [0-9]+)\b',
@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.6'
+VERSION_SCRIPT = '8.7'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45720,6 +45720,20 @@ def _numen_fondo_local_82(seed, indice, pose_id):
     return base,cosmos
 
 
+def _numen_fondo_local_87(seed, indice, pose_id):
+    """Respaldo horizontal de borde a borde; detalle del sujeto limitado por el original."""
+    import numpy as np
+    from PIL import Image, ImageEnhance, ImageFilter
+    _, cosmos = _numen_fondo_local_82(seed, indice, pose_id)
+    arte = _numen_fondo_pose_100(seed, indice, pose_id)
+    arte = ImageEnhance.Contrast(arte).enhance(1.035)
+    arte = arte.filter(ImageFilter.UnsharpMask(radius=1.2, percent=85, threshold=5))
+    x = np.abs(np.linspace(-1, 1, 1920, dtype=np.float32))
+    a = 0.10 + 0.24 * np.clip((x - 0.45) / 0.55, 0, 1)**2
+    mask = Image.fromarray(np.uint8(np.broadcast_to(a, (1080, 1920))*255), 'L')
+    return Image.composite(cosmos, arte, mask), cosmos
+
+
 def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, conservar_encuadre_anterior=False):
     """Compatible con cosmos-v1/v2 y con las 100 nuevas poses reales (v3)."""
     if pose_id is not None and 100 <= int(pose_id) < 200:
@@ -45740,7 +45754,7 @@ class FondoHDNoDisponible(EpisodioRecuperable):
 
 
 def _numen_hd_estricto():
-    return os.getenv('NUMEN_EXIGIR_HD_NATIVO','true').strip().lower() not in ('0','false','no')
+    return os.getenv('NUMEN_EXIGIR_HD_NATIVO','false').strip().lower() not in ('0','false','no')
 
 
 def _numen_validar_fondo_horizontal(im):
@@ -45949,7 +45963,7 @@ def _ent_fotos(d, carpeta):
     generada=(previo.get('version')=='cosmos-v8-postura-guion' if previo
               else tiene_postura and puede_ilustrar)
     if not previo and tiene_postura and not puede_ilustrar:
-        print('Fondo visual | sin OPENAI_API_KEY: prioridad banco individual HD; respaldo local de resolución limitada.',flush=True)
+        print('Fondo visual | sin OPENAI_API_KEY: prioridad banco individual HD; respaldo horizontal local habilitado por defecto (detalle del sujeto limitado).',flush=True)
     postura=None
     if generada:
         postura=(previo.get('postura_androide') if previo
@@ -45990,7 +46004,7 @@ def _ent_fotos(d, carpeta):
         if local_nuevo:
             if intento>=len(disponibles_local):break
             pose_id=disponibles_local[intento]
-            version='cosmos-v10-local-82'
+            version='cosmos-v11-local-87'
             if _numen_hd_estricto():
                 raise EpisodioRecuperable('Modo HD estricto: falta una ilustración individual HD disponible; no se ampliará un panel pequeño.')
         if generada:
@@ -46014,7 +46028,9 @@ def _ent_fotos(d, carpeta):
                     raise EpisodioRecuperable(f'El fondo debe ser JPEG de 1920×1080: {fuente}')
             _,cosmos=_numen_composicion_v2(seed,indice,devolver_fondo=True)
         else:
-            if version=='cosmos-v10-local-82':
+            if version=='cosmos-v11-local-87':
+                im,cosmos=_numen_fondo_local_87(seed,indice,pose_id)
+            elif version=='cosmos-v10-local-82':
                 im,cosmos=_numen_fondo_local_82(seed,indice,pose_id)
             elif version=='cosmos-v1':
                 im,cosmos=_numen_composicion_v1(seed,indice,devolver_fondo=True)
@@ -46023,7 +46039,7 @@ def _ent_fotos(d, carpeta):
                     seed,indice,pose_id=pose_id,devolver_fondo=True,
                     conservar_encuadre_anterior=version not in ('cosmos-v5-encuadre-16x9','cosmos-v9-postura-local-unica'))
             buffer=io.BytesIO()
-            calidad={'quality':97,'subsampling':0} if version in ('cosmos-v6-arte-full-hd','cosmos-v10-local-82') else {'quality':93}
+            calidad={'quality':97,'subsampling':0} if version in ('cosmos-v6-arte-full-hd','cosmos-v10-local-82','cosmos-v11-local-87') else {'quality':93}
             im.save(buffer,format='JPEG',optimize=True,**calidad)
             datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
@@ -46968,7 +46984,7 @@ def _ent_test():
             with Image.open(cosmos) as im:assert im.size==(1920,1080)
             from PIL import ImageChops
             reserva=_ent_read(root/'registro.json',{})[d['id']]
-            retrato,limpio=_numen_fondo_local_82(reserva['seed'],reserva['indice'],reserva['pose_id'])
+            retrato,limpio=_numen_fondo_local_87(reserva['seed'],reserva['indice'],reserva['pose_id'])
             with Image.open(cosmos) as im:assert ImageChops.difference(im.convert('RGB'),limpio).getbbox() is None
             assert ImageChops.difference(retrato,limpio).getbbox() is not None
             with Image.open(crear_cta_base(root/'uno')) as im:assert im.size==(1920,1080)
@@ -46978,7 +46994,7 @@ def _ent_test():
             for i in range(1,7):_ent_fotos(dict(d,id='prueba-'+str(i)),root/str(i))
             reg=_ent_read(root/'registro.json',{});assert len(reg)==7
             vals=list(reg.values());assert len({x['sha256'] for x in vals})==7
-            assert all(v['version']=='cosmos-v10-local-82' and 100<=v['pose_id']<200 for v in vals)
+            assert all(v['version']=='cosmos-v11-local-87' and 100<=v['pose_id']<200 for v in vals)
             assert len({v['pose_id'] for v in vals})==7
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
@@ -47029,8 +47045,8 @@ if __name__=='__main__':
             raise SystemExit(0)
         except FondoHDNoDisponible as exc:
             _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'aplazado_visual_hd','motivo':str(exc),'publicado':False})
-            print('APLAZAMIENTO VISUAL HD CONTROLADO (guion conservado):',exc,flush=True)
-            raise SystemExit(0)
+            print('APLAZAMIENTO VISUAL HD CONTROLADO (guion conservado, sin publicación):',exc,flush=True)
+            raise SystemExit(2)
         except (EpisodioRecuperable,PublicacionAplazada) as exc:
             _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'aplazado','motivo':str(exc)})
             print('PRODUCCIÓN APLAZADA:',exc,flush=True)
