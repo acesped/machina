@@ -139,5 +139,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=0sTwMhaaG_M",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-ff51179fbd180924/La duda como puente.mp4"
+  },
+  {
+    "episodio": "ent-f5d0ab525e2dd918",
+    "caso": "ent-f5d0ab525e2dd918",
+    "titulo": "El peso de una llamada",
+    "fecha_utc": "2026-11-25T12:34:30.132669+00:00",
+    "youtube_id": "tsZwXmtfF9I",
+    "youtube_url": "https://www.youtube.com/watch?v=tsZwXmtfF9I",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-f5d0ab525e2dd918/El peso de una llamada.mp4"
   }
 ]

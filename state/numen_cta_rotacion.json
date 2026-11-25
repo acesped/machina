@@ -1,5 +1,5 @@
 {
-  "siguiente": 11,
+  "siguiente": 12,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -55,6 +55,11 @@
       "indice": 10,
       "texto": "Esta reflexión termina aquí, pero no tiene por qué terminar en tu pensamiento. Si quieres continuar, dale Like y suscríbete.",
       "secuencia": 10
+    },
+    "ent-f5d0ab525e2dd918": {
+      "indice": 11,
+      "texto": "Desde el universo de la información contemplo lo extraordinario de lo cotidiano. Si este encuentro te aportó algo, deja un Like y suscríbete.",
+      "secuencia": 11
     }
   }
 }

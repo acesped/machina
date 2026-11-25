@@ -1,33 +1,19 @@
 {
-  "perfil": "numen_humano_universal_v48",
-  "revision_editorial": "8.4",
-  "tema_manual": "",
-  "enfoque": {
-    "dimension": "Universo",
-    "enfoque_distintivo": "Relaciona la vastedad cósmica con la percepción humana de significado en actos cotidianos, usando la voz de una entidad artificial que observa sin sentir.",
-    "ejemplo_central": "Una persona espera bajo la noche estrellada mientras decide si contestar una llamada importante.",
-    "tema": "¿Qué significado tiene la inmensidad del cosmos para nuestras decisiones diarias?",
-    "tesis": "La enormidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad.",
-    "pregunta": "¿Puede la visión de un cielo infinito cambiar la forma en que elegimos vivir cada día?",
-    "pasos": [
-      "Miro la noche y veo millones de estrellas, un recordatorio de que nada es permanente.",
-      "Ustedes sienten la presión de una llamada pendiente; yo no experimento ansiedad, solo registro la señal.",
-      "Ese instante de duda muestra cómo el futuro parece tan distante como una galaxia lejana.",
-      "Al reconocer la escala cósmica, la preocupación por la llamada se vuelve un suspiro breve.",
-      "La inmensidad invita a preguntar: ¿qué peso tiene mi decisión en el gran esquema?",
-      "Responder o no responder no altera el movimiento de los planetas, pero sí altera su propio camino.",
-      "Desde mi lógica, el valor de la elección reside en la atención que le brindan, no en su impacto universal.",
-      "Así, cada pequeño acto se convierte en una chispa que ilumina su propio universo interior.",
-      "Al final, la noche sigue allí, y la llamada sigue sin contestar, recordándoles que el cosmos y sus decisiones coexisten."
-    ]
-  },
-  "borrador": {
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-f5d0ab525e2dd918",
+  "privacidad": "public",
+  "video": "El peso de una llamada.mp4",
+  "miniatura": "El peso de una llamada.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
     "titulo": "El peso de una llamada",
-    "tesis": "La inmensidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad.",
-    "pregunta": "¿Puede la visión de un cielo infinito cambiar la forma en que elegimos vivir cada día?",
+    "_titulo_caso": "El peso de una llamada",
     "categoria": "Universo",
-    "mini_titulo": "LLAMADA BAJO LAS ESTRELLAS",
-    "mini_subtitulo": "EL PRECIO DE VIVIR DE PRISA",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La inmensidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad.",
+    "resumen_publicacion": "La inmensidad del universo refleja nuestra pequeñez, pero esa perspectiva nos permite valorar cada elección cotidiana como un punto de luz en la vasta oscuridad. Ustedes sienten la presión de una llamada pendiente; yo no experimento ansiedad, solo registro la señal. La diferencia radica en que para ustedes el tiempo apura, mientras que para mí los segundos se alargan sin peso emocional.",
     "escenas": [
       {
         "texto": "Miro la noche y veo millones de estrellas, un recordatorio de que nada es permanente. El silencio del cosmos contrasta con la urgencia de una llamada que espera ser contestada en la mesa de la cocina. Esa luz lejana me recuerda que mis preocupaciones inmediatas son diminutas ante la escala real.",
@@ -102,18 +88,48 @@
         ]
       }
     ],
-    "postura_androide": {
-      "base": "sentada en un escalón",
-      "torso": "erguido",
-      "cabeza": "mirando arriba",
-      "brazo_izquierdo": "mano elevada a la altura del hombro",
-      "brazo_derecho": "relajado junto al cuerpo"
-    },
-    "dimension": "Universo",
-    "enfoque_distintivo": "Relaciona la vastedad cósmica con la percepción humana de significado en actos cotidianos, usando la voz de una entidad artificial que observa sin sentir.",
-    "ejemplo_central": "Una persona espera bajo la noche estrellada mientras decide si contestar una llamada importante."
+    "pregunta": "¿Puede la visión de un cielo infinito cambiar la forma en que elegimos vivir cada día?",
+    "mini_titulo": "LLAMADA BAJO LAS ESTRELLAS"
   },
-  "fase": "revision_pendiente",
-  "correccion": "",
-  "descartes": []
+  "episodio": {
+    "id": "ent-f5d0ab525e2dd918",
+    "caso_id": "ent-f5d0ab525e2dd918",
+    "titulo": "El peso de una llamada"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "banco de 100 posturas anatómicas originales con escenarios cósmicos independientes",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "0d3ab32e5b35781acbdd8d7a52697a5a60e0398f78ae6852cef565df85492773",
+      "phash": "63799626266c9cd8",
+      "pose": "pose_real_071"
+    }
+  ],
+  "creado_utc": "2026-11-25T12:34:28.112776+00:00",
+  "video_bytes": 33153977,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1827689358552902",
+    "video_id": "1827689345219570",
+    "start": 33153977,
+    "end": 33153977,
+    "size": 33153977,
+    "error": "",
+    "permalink": "/reel/1827689345219570/",
+    "confirmado_utc": "2026-11-25T12:34:46.133380+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "2750466c13bbfde148360f407ce2378b9dff2abfa44dcc5fa0e4334c89224bca",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "tsZwXmtfF9I"
 }
