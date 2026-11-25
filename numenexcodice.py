@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.1'
+VERSION_SCRIPT = '8.2'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45750,6 +45750,45 @@ def _numen_fondo_pose_100(seed, indice, pose_id, *, conservar_encuadre_anterior=
     return base
 
 
+def _numen_fondo_local_82(seed, indice, pose_id):
+    """Composición sin recorte agresivo, cosmos nativo y enfoque moderado."""
+    import base64, io
+    import numpy as np
+    from PIL import Image, ImageOps, ImageFilter, ImageEnhance, ImageDraw
+    W,H=1920,1080
+    sheet_index,panel=divmod(pose_id-100,10)
+    with Image.open(io.BytesIO(base64.b64decode(''.join(_NUMEN_BANCO_100_WEBP[sheet_index])))) as sheet:
+        w,h=sheet.size; col,row=panel%5,panel//5
+        tile=sheet.convert('RGB').crop((round(w*col/5)+4,round(h*row/2)+4,round(w*(col+1)/5)-4,round(h*(row+1)/2)-4))
+    rng=np.random.default_rng(seed)
+    a=np.zeros((H,W),np.float32)
+    for scale,amp in ((5,1.),(13,.58),(31,.32),(77,.18),(183,.09),(401,.035)):
+        z=rng.integers(0,256,(scale,round(scale*W/H)),dtype=np.uint8)
+        a+=amp*np.asarray(Image.fromarray(z).resize((W,H),Image.Resampling.BICUBIC),dtype=np.float32)/255
+    a=(a-a.min())/max(float(a.max()-a.min()),1e-6)
+    colors=np.asarray(tile.resize((1,1),Image.Resampling.BOX),dtype=np.float32).reshape(3)/255
+    yy,xx=np.ogrid[0:H,0:W]
+    wave=np.exp(-((yy/H-.48-.18*np.sin(xx/W*6+rng.uniform(0,6)))+(a-.5)*.4)**2*15)
+    lum=(a**2)*(.26+.60*wave)
+    rgb=np.clip(np.array([.012,.013,.027])+lum[...,None]*(.18+colors*.68),0,1)
+    cosmos=Image.fromarray(np.uint8(rgb*255),'RGB')
+    draw=ImageDraw.Draw(cosmos)
+    for _ in range(1250):
+        x,y=int(rng.integers(W)),int(rng.integers(H)); q=int(rng.integers(85,225))
+        draw.point((x,y),fill=(q,q,min(255,q+15)))
+        if rng.random()<.045:draw.ellipse((x-1,y-1,x+1,y+1),fill=(q,q,min(255,q+15)))
+    tile=ImageOps.contain(tile,(W,H),method=Image.Resampling.LANCZOS)
+    tile=ImageEnhance.Contrast(tile).enhance(1.045)
+    tile=tile.filter(ImageFilter.UnsharpMask(radius=1.65,percent=110,threshold=4))
+    tw,th=tile.size
+    base=cosmos.copy()
+    fade=max(12,int(tw*.075)); alpha=np.minimum(np.arange(tw),np.arange(tw)[::-1])/fade
+    alpha=np.clip(alpha,0,1); alpha=alpha*alpha*(3-2*alpha)
+    mask=Image.fromarray(np.uint8(np.broadcast_to(alpha,(th,tw))*255),'L')
+    base.paste(tile,((W-tw)//2,(H-th)//2),mask)
+    return base,cosmos
+
+
 def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, conservar_encuadre_anterior=False):
     """Compatible con cosmos-v1/v2 y con las 100 nuevas poses reales (v3)."""
     if pose_id is not None and 100 <= int(pose_id) < 200:
@@ -45966,7 +46005,7 @@ def _ent_fotos(d, carpeta):
     generada=(previo.get('version')=='cosmos-v8-postura-guion' if previo
               else tiene_postura and puede_ilustrar)
     if not previo and tiene_postura and not puede_ilustrar:
-        print('Fondo visual | sin OPENAI_API_KEY: se usará el banco del androide o una composición local.',flush=True)
+        print('Fondo visual | sin OPENAI_API_KEY: prioridad banco individual HD; respaldo local de resolución limitada.',flush=True)
     postura=None
     if generada:
         postura=(previo.get('postura_androide') if previo
@@ -45975,9 +46014,17 @@ def _ent_fotos(d, carpeta):
             raise EpisodioRecuperable('La postura de la reserva visual es inválida.')
     banco=[NUMEN_BANCO_HD/f'{i:03d}.jpg' for i in range(1,101)]
     usados_hd={v.get('banco_slot') for v in otros if v.get('version')=='cosmos-v7-banco-hd'}
-    candidatos_hd=[p for p in banco if int(p.stem) not in usados_hd]
+    candidatos_hd=[]
+    for p in banco:
+        if int(p.stem) in usados_hd or not p.is_file():continue
+        try:
+            with Image.open(p) as im:
+                if im.size==(1920,1080) and im.format=='JPEG':
+                    im.verify(); candidatos_hd.append(p)
+        except (OSError,ValueError):
+            print(f'Fondo HD descartado: {p}',flush=True)
     usar_hd=(previo.get('version')=='cosmos-v7-banco-hd' if previo
-             else not generada and bool(candidatos_hd) and all(p.is_file() for p in banco))
+             else not generada and bool(candidatos_hd))
     usados_local={v.get('pose_id') for v in otros if 100<=v.get('pose_id',-1)<200}
     disponibles_local=sorted(set(range(100,200))-usados_local)
     local_nuevo=not previo and not generada and not usar_hd
@@ -45997,7 +46044,9 @@ def _ent_fotos(d, carpeta):
         if local_nuevo:
             if intento>=len(disponibles_local):break
             pose_id=disponibles_local[intento]
-            version='cosmos-v9-postura-local-unica'
+            version='cosmos-v10-local-82'
+            if os.getenv('NUMEN_EXIGIR_HD_NATIVO','0').lower() in ('1','true','yes'):
+                raise EpisodioRecuperable('Modo HD estricto: falta una ilustración individual HD disponible; no se ampliará un panel pequeño.')
         if generada:
             version='cosmos-v8-postura-guion'
             if previo or (intento==0 and cache.is_file()):
@@ -46019,14 +46068,16 @@ def _ent_fotos(d, carpeta):
                     raise EpisodioRecuperable(f'El fondo debe ser JPEG de 1920×1080: {fuente}')
             _,cosmos=_numen_composicion_v2(seed,indice,devolver_fondo=True)
         else:
-            if version=='cosmos-v1':
+            if version=='cosmos-v10-local-82':
+                im,cosmos=_numen_fondo_local_82(seed,indice,pose_id)
+            elif version=='cosmos-v1':
                 im,cosmos=_numen_composicion_v1(seed,indice,devolver_fondo=True)
             else:
                 im,cosmos=_numen_composicion(
                     seed,indice,pose_id=pose_id,devolver_fondo=True,
                     conservar_encuadre_anterior=version not in ('cosmos-v5-encuadre-16x9','cosmos-v9-postura-local-unica'))
             buffer=io.BytesIO()
-            calidad={'quality':97,'subsampling':0} if version=='cosmos-v6-arte-full-hd' else {'quality':93}
+            calidad={'quality':97,'subsampling':0} if version in ('cosmos-v6-arte-full-hd','cosmos-v10-local-82') else {'quality':93}
             im.save(buffer,format='JPEG',optimize=True,**calidad)
             datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
@@ -46957,7 +47008,7 @@ def _ent_test():
             with Image.open(cosmos) as im:assert im.size==(1920,1080)
             from PIL import ImageChops
             reserva=_ent_read(root/'registro.json',{})[d['id']]
-            retrato,limpio=_numen_composicion(reserva['seed'],reserva['indice'],devolver_fondo=True,pose_id=reserva['pose_id'],conservar_encuadre_anterior=False)
+            retrato,limpio=_numen_fondo_local_82(reserva['seed'],reserva['indice'],reserva['pose_id'])
             with Image.open(cosmos) as im:assert ImageChops.difference(im.convert('RGB'),limpio).getbbox() is None
             assert ImageChops.difference(retrato,limpio).getbbox() is not None
             with Image.open(crear_cta_base(root/'uno')) as im:assert im.size==(1920,1080)
@@ -46967,7 +47018,7 @@ def _ent_test():
             for i in range(1,7):_ent_fotos(dict(d,id='prueba-'+str(i)),root/str(i))
             reg=_ent_read(root/'registro.json',{});assert len(reg)==7
             vals=list(reg.values());assert len({x['sha256'] for x in vals})==7
-            assert all(v['version']=='cosmos-v9-postura-local-unica' and 100<=v['pose_id']<200 for v in vals)
+            assert all(v['version']=='cosmos-v10-local-82' and 100<=v['pose_id']<200 for v in vals)
             assert len({v['pose_id'] for v in vals})==7
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
