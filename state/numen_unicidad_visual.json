@@ -204,5 +204,15 @@
     "phash": "4cd896a663c64f58",
     "version": "cosmos-v11-local-87",
     "tema": "El perdón que libera sin permiso"
+  },
+  "ent-6a4d9168140f29d8": {
+    "seed": 5463849412668335299,
+    "indice": 4,
+    "pose_id": 4,
+    "pose": "original_hd_05",
+    "sha256": "0c72cece536a7c17f56a416d42a75c3690011245d5d4390b819a83030eb8af4b",
+    "phash": "32b7266609cceea2",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El eco de una llamada pendiente"
   }
 }

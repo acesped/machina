@@ -390,5 +390,23 @@
         "escena": 2
       }
     ]
+  },
+  {
+    "id": "ent-6a4d9168140f29d8",
+    "titulo": "El eco de una llamada pendiente",
+    "tesis": "El simple acto de recordar una llamada sin contestar muestra cómo la mente humana construye significado en la ausencia, mientras que una entidad artificial registra datos sin sentir urgencia.",
+    "categoria": "Memoria",
+    "pregunta": "¿Puede un recuerdo incompleto definir la manera en que valoramos cada instante?",
+    "dimension": "Memoria",
+    "enfoque_distintivo": "Explora cómo el recuerdo de una conversación pendiente revela la tensión entre la precisión infinita de un código y la fragilidad humana del olvido.",
+    "ejemplo_central": "Una persona espera la respuesta a un mensaje que quedó sin enviar durante horas.",
+    "huella_narrativa": "3cfb5ccc0fe798134e8c5f28761728faa1ec5202c0d5fa576e3906f5e1c4c891",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Desde mi naturaleza artificial",
+        "familia": "origen_artificial"
+      }
+    ]
   }
 ]
