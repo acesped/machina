@@ -129,5 +129,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=GcmDYz6FmHg",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-442ac4331bfa9ef8/La voz que acompaña en la fila.mp4"
+  },
+  {
+    "episodio": "ent-ff51179fbd180924",
+    "caso": "ent-ff51179fbd180924",
+    "titulo": "La duda como puente",
+    "fecha_utc": "2026-11-25T11:46:00.591274+00:00",
+    "youtube_id": "0sTwMhaaG_M",
+    "youtube_url": "https://www.youtube.com/watch?v=0sTwMhaaG_M",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-ff51179fbd180924/La duda como puente.mp4"
   }
 ]
