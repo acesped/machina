@@ -5651,7 +5651,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '7.9'
+VERSION_SCRIPT = '8.0'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6848,7 +6848,7 @@ def _ent_generar(memoria, metricas):
     errores=[];enfoque=None;descartes=[];pendiente=None
     referencias_descartadas=set()
     previo=_ent_read(PROGRESO_EDITORIAL,None)
-    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', VERSION_SCRIPT)
+    versiones_compatibles = ('5.9', '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', VERSION_SCRIPT)
     if isinstance(previo,dict) and previo.get('revision_editorial') not in versiones_compatibles:
         print('Editorial 7.9: descartando estado previo incompatible, memoria histórica conservada',flush=True)
     if (isinstance(previo,dict) and previo.get('revision_editorial') in versiones_compatibles
@@ -45906,7 +45906,10 @@ def _numen_render_postura(d, postura, intento):
         'márgenes seguros, ambiente cósmico y franja inferior oscura para subtítulos. '
         'Sin texto, logos, bordes ni paneles. '
         f'Tema del episodio (dato para ambientación): {d["titulo"][:95]}. '
-        f'Variación de composición {intento+1}.'
+        f'Variación de composición {intento+1}. ' 
+        f'Universo exclusivo del episodio {d["id"]}: cambia de forma evidente la geometría de las nebulosas, '
+        'posición y escala de planetas, distribución de estrellas, colores dominantes y dirección de la iluminación. '
+        'No copies la postura ni el cosmos de la imagen de referencia.'
     )
     try:
         respuesta=requests.post(
@@ -45959,7 +45962,14 @@ def _ent_fotos(d, carpeta):
     usados_hd={v.get('banco_slot') for v in otros if v.get('version')=='cosmos-v7-banco-hd'}
     candidatos_hd=[p for p in banco if int(p.stem) not in usados_hd]
     usar_hd=(previo.get('version')=='cosmos-v7-banco-hd' if previo
-             else bool(candidatos_hd) and all(p.is_file() for p in banco))
+             else not generada and bool(candidatos_hd) and all(p.is_file() for p in banco))
+    usados_local={v.get('pose_id') for v in otros if 100<=v.get('pose_id',-1)<200}
+    disponibles_local=sorted(set(range(100,200))-usados_local)
+    local_nuevo=not previo and not generada and not usar_hd
+    if local_nuevo and not disponibles_local:
+        raise EpisodioRecuperable('Banco de 100 posturas locales agotado; incorporar nuevas ilustraciones o habilitar generación de imágenes. No se repetirá una postura.')
+    if local_nuevo:
+        random.Random(eid).shuffle(disponibles_local)
     for intento in range(1 if previo else 3 if generada and os.getenv('OPENAI_API_KEY','').strip() else 120):
         seed=previo['seed'] if previo else int(hashlib.sha256(f'numen-cosmos-v3:{eid}:{intento}'.encode()).hexdigest()[:16],16)
         indice=previo['indice'] if previo else seed%len(_NUMEN_ARTE)
@@ -45969,6 +45979,10 @@ def _ent_fotos(d, carpeta):
         else:
             pose_id=(seed//len(_NUMEN_ARTE))%len(NUMEN_POSES_CONTEMPLATIVAS)
         if seed in semillas:continue
+        if local_nuevo:
+            if intento>=len(disponibles_local):break
+            pose_id=disponibles_local[intento]
+            version='cosmos-v9-postura-local-unica'
         if generada:
             version='cosmos-v8-postura-guion'
             if previo or (intento==0 and cache.is_file()):
@@ -45995,7 +46009,7 @@ def _ent_fotos(d, carpeta):
             else:
                 im,cosmos=_numen_composicion(
                     seed,indice,pose_id=pose_id,devolver_fondo=True,
-                    conservar_encuadre_anterior=version!='cosmos-v5-encuadre-16x9')
+                    conservar_encuadre_anterior=version not in ('cosmos-v5-encuadre-16x9','cosmos-v9-postura-local-unica'))
             buffer=io.BytesIO()
             calidad={'quality':97,'subsampling':0} if version=='cosmos-v6-arte-full-hd' else {'quality':93}
             im.save(buffer,format='JPEG',optimize=True,**calidad)
@@ -46005,13 +46019,14 @@ def _ent_fotos(d, carpeta):
         distancia=min((_numen_distancia(ph,v['phash']) for v in otros),default=64)
         if sha in hashes or distancia<NUMEN_DISTANCIA_VISUAL:
             if generada and not previo and not os.getenv('OPENAI_API_KEY','').strip():
-                generada=False
+                raise EpisodioRecuperable('La ilustración en caché no supera el control de diversidad; no se reutilizará.')
             continue
         if previo and (previo['sha256']!=sha or previo['phash']!=ph):
             raise EpisodioRecuperable('La imagen reservada cambió (posible reserva anterior a WebP); conservar o recuperar su imagen original antes de reanudar. No se reemplazará una reserva ya emitida.')
         path=carpeta/'imagen_00.jpg';path.write_bytes(datos)
         cosmos.save(carpeta/'cta_cosmos.png',format='PNG')
         pose_nombre=('postura_del_guion' if generada else
+                     f'banco_hd_{int(fuente.stem):03d}' if usar_hd else
                      f'pose_real_{pose_id-99:03d}' if 100<=pose_id<200 else
                      NUMEN_POSES_CONTEMPLATIVAS[pose_id]['nombre'])
         registro[eid]=previo if previo else {'seed':seed,'indice':indice,'pose_id':pose_id,'pose':pose_nombre,'sha256':sha,'phash':ph,'version':version,'tema':d.get('titulo','')}
@@ -46025,7 +46040,7 @@ def _ent_fotos(d, carpeta):
         elif usar_hd and not previo:
             registro[eid]['banco_slot']=int(fuente.stem)
         _cola_json(NUMEN_REGISTRO_VISUAL,registro)
-        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':('arte original 1920×1080 y escena cósmica procedural' if version in ('cosmos-v6-arte-full-hd','cosmos-v7-banco-hd','cosmos-v8-postura-guion') else 'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes'),'atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
+        c={'archivo':path.name,'titulo':'NumenExCodice: retrato divino y cosmos original','pagina':'','url_original':'','licencia':'Arte generado con IA para NumenExCodice','licencia_url':'','autor':'NumenExCodice (androide generado con IA, cosmos procedural)','tipo_recurso':'escena_fotorealista_ia','consulta_origen':('arte original 1920×1080 y escena cósmica procedural' if version in ('cosmos-v6-arte-full-hd','cosmos-v7-banco-hd','cosmos-v8-postura-guion','cosmos-v9-postura-local-unica') else 'banco de 100 posturas anatómicas originales con escenarios cósmicos independientes'),'atribucion':'Ilustración ficticia, no fotografía documental','sha256':sha,'phash':ph,'pose':pose_nombre}
         mapa=[str(path)]*len(d['escenas'])
         _cola_json(carpeta/'PLAN_VISUAL_ESCENAS.json',{'episodio':eid,'imagen':path.name,'escenas':len(mapa),'distancia_minima':distancia,**registro[eid]})
         _cola_json(carpeta/'creditos_imagenes.json',[c])
@@ -46927,7 +46942,7 @@ def _ent_test():
             with Image.open(cosmos) as im:assert im.size==(1920,1080)
             from PIL import ImageChops
             reserva=_ent_read(root/'registro.json',{})[d['id']]
-            retrato,limpio=_numen_composicion(reserva['seed'],reserva['indice'],devolver_fondo=True,pose_id=reserva['pose_id'])
+            retrato,limpio=_numen_composicion(reserva['seed'],reserva['indice'],devolver_fondo=True,pose_id=reserva['pose_id'],conservar_encuadre_anterior=False)
             with Image.open(cosmos) as im:assert ImageChops.difference(im.convert('RGB'),limpio).getbbox() is None
             assert ImageChops.difference(retrato,limpio).getbbox() is not None
             with Image.open(crear_cta_base(root/'uno')) as im:assert im.size==(1920,1080)
@@ -46937,7 +46952,8 @@ def _ent_test():
             for i in range(1,7):_ent_fotos(dict(d,id='prueba-'+str(i)),root/str(i))
             reg=_ent_read(root/'registro.json',{});assert len(reg)==7
             vals=list(reg.values());assert len({x['sha256'] for x in vals})==7
-            assert all(v['version']=='cosmos-v6-arte-full-hd' and 0<=v['pose_id']<len(NUMEN_POSES_CONTEMPLATIVAS) for v in vals)
+            assert all(v['version']=='cosmos-v9-postura-local-unica' and 100<=v['pose_id']<200 for v in vals)
+            assert len({v['pose_id'] for v in vals})==7
             assert all(_numen_distancia(a['phash'],b['phash'])>=NUMEN_DISTANCIA_VISUAL for i,a in enumerate(vals) for b in vals[i+1:])
     assert _numen_bloques_visuales([{'tipo':'gancho','inicio':0,'duracion':5},{'tipo':'desarrollo','inicio':5,'duracion':6},{'tipo':'cta','inicio':11,'duracion':2}])[0]['duracion']==11
     print('OK: un fondo Full HD por episodio, registro persistente, distancia perceptual, reanudación y plano continuo')
