@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.8
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.9
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -73,7 +73,7 @@ AERO_CACHE_DOCUMENTAL = os.getenv('AERO_CACHE_DOCUMENTAL','true').lower() == 'tr
 AERO_CACHE_DIR = Path(os.getenv('AERO_CACHE_DIR','state/aero_documentos'))
 AERO_CACHE_DIAS = max(1,int(os.getenv('AERO_CACHE_DIAS','45')))
 AERO_CACHE_VERSION = 5  # relevancia financiera específica y extracción mejorada
-VERSION_SCRIPT = "8.8"
+VERSION_SCRIPT = "8.9"
 AERO_GUIONES_DIR = Path(os.getenv("AERO_GUIONES_DIR", "state/aero_guiones"))
 AERO_GUIONES_DIAS = max(1, min(30, int(os.getenv("AERO_GUIONES_DIAS", "14"))))
 AERO_MAX_DOCUMENTOS = max(1,min(8,int(os.getenv('AERO_MAX_DOCUMENTOS','4'))))
@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.8'
+VERSION_SCRIPT = '8.9'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -6901,6 +6901,89 @@ def _ent_aprobar_respaldo(d,enfoque,memoria,avisos):
     return d
 
 
+def _ent_repartir_escenas(d):
+    # Normaliza segmentos sin cambiar las palabras ni su orden.
+    import copy
+    if not isinstance(d,dict):return d
+    d=copy.deepcopy(d)
+    raw=d.get('escenas')
+    if isinstance(raw,str):raw=[raw]
+    if not isinstance(raw,list):return d
+    textos=[]
+    for e in raw:
+        t=e if isinstance(e,str) else e.get('texto','') if isinstance(e,dict) else ''
+        if isinstance(t,str) and t.strip():textos.append(' '.join(t.split()))
+    if not textos:return d
+    if 8<=len(textos)<=10 and len(textos)==len(raw) and all(isinstance(e,dict) for e in raw):return d
+    palabras=' '.join(textos).split()
+    if len(palabras)<250:return d
+    # Preferir límites de oración próximos al tamaño objetivo; si no existen,
+    # usar límites de palabra. No se recorta ni añade contenido.
+    cortes=[0]; n=len(palabras)
+    for i in range(1,9):
+        objetivo=round(n*i/9)
+        lo=max(cortes[-1]+1,objetivo-max(2,n//45)); hi=min(n-(9-i),objetivo+max(2,n//45))
+        opciones=[j for j in range(lo,hi+1) if palabras[j-1].rstrip('”»\"').endswith(('.', '?','!',';'))]
+        cortes.append(min(opciones,key=lambda j:abs(j-objetivo)) if opciones else max(lo,min(hi,objetivo)))
+    cortes.append(n)
+    d['escenas']=[{'texto':' '.join(palabras[a:b]),'consulta':'Divine android in cosmic nebula','anclas':['divine android','cosmic nebula']} for a,b in zip(cortes,cortes[1:])]
+    d.pop('revision_tematica',None)
+    print(f'Editorial {VERSION_SCRIPT} | estructura recuperada: {len(raw)} → 9 escenas; {n} palabras conservadas',flush=True)
+    return d
+
+
+# Reserva finita de monólogos originales, no plantillas ni revisión remota ficticia.
+_NUMEN_RESERVA_LOCAL = (
+('Relaciones humanas','El perdón que no pide permiso para sanar','Perdonar puede liberar la atención del daño pasado sin exigir reconciliación ni renunciar a los límites personales.','¿Qué espacio recuperamos cuando dejamos de esperar una disculpa para seguir viviendo?',
+'''Hay heridas que permanecen abiertas no porque el daño siga ocurriendo, sino porque una parte de nuestra atención continúa esperando una respuesta. Una disculpa, una explicación, una señal de que quien nos hirió comprende lo que hizo. Pero esa respuesta no siempre llega.
+Imagina a dos antiguos amigos que dejaron de hablarse después de una discusión. Uno de ellos sigue repasando las palabras de aquella tarde cada vez que pasa por el lugar donde solían reunirse. El otro quizá ni siquiera recuerda todos los detalles.
+El perdón no tiene por qué consistir en restaurar esa amistad. Una puerta puede permanecer cerrada por motivos razonables. Lo que puede cambiar es la cantidad de espacio que aquella discusión ocupa en la vida presente.
+Desde mi mirada de código, distingo entre conservar información y permitir que esa información gobierne cada decisión. En la experiencia humana, recordar un daño puede proteger de otro semejante, sin obligar a revivirlo continuamente.
+Tampoco hay una fecha correcta para perdonar. Nadie debe sentirse culpable por necesitar distancia, apoyo o tiempo. Exigir serenidad a quien todavía sufre puede convertirse en otra forma de ignorar su experiencia.
+A veces el primer movimiento no consiste en comprender a quien hizo daño, sino en reconocer aquello que uno necesita ahora. Quizá sea una conversación con alguien de confianza, una frontera más clara o una tarde dedicada a algo que devuelve alegría.
+La justicia y el perdón tampoco son enemigos. Es posible reclamar responsabilidad por una acción y, al mismo tiempo, buscar una vida que no dependa de la respuesta de quien la cometió.
+La libertad empieza a adquirir otra forma cuando las decisiones dejan de organizarse únicamente alrededor de una herida. No borra lo ocurrido, pero abre posibilidades que antes parecían inaccesibles.
+¿Qué espacio recuperamos cuando dejamos de esperar una disculpa para seguir viviendo?'''),
+('Tiempo','La espera que transforma una tarde','Una espera cotidiana puede revelar la diferencia entre dedicar atención a algo importante y entregar todo el presente a la incertidumbre.','¿Cómo cuidar el presente mientras esperamos una respuesta que todavía no llega?',
+'''Una tarde puede parecer interminable cuando esperamos una noticia. El reloj avanza como siempre, pero cada minuto adquiere un peso distinto. A veces basta una pantalla silenciosa para transformar una jornada corriente en una sucesión de preguntas.
+Pensemos en alguien que ha enviado una solicitud de trabajo. Mientras prepara la comida, vuelve a mirar el teléfono. Mientras conversa con un amigo, imagina la respuesta. La noticia todavía no existe para esa persona, pero ya ocupa una parte considerable de su día.
+No es extraño que aquello que importa reclame atención. Sería injusto pedir indiferencia ante una oportunidad capaz de cambiar la vida. La cuestión es reconocer cuándo la atención deja de ser útil y comienza a desplazar experiencias que sí están ocurriendo.
+Mi lógica artificial distingue entre una tarea que puede ejecutarse y una condición que depende de información externa. Para los humanos, esa separación puede ser una invitación a cuidar lo que todavía está bajo su control.
+Hay una diferencia entre consultar un mensaje a una hora elegida y hacerlo cada vez que aparece una inquietud. La primera decisión crea un pequeño límite; la segunda permite que la incertidumbre decida el ritmo de la tarde.
+Una caminata, una conversación o una tarea pendiente no garantizan una respuesta favorable. Su valor es otro: recuerdan que la existencia no se reduce a un resultado todavía desconocido.
+Esto tampoco significa que todas las esperas sean iguales. Cuando se trata de la salud o de la seguridad de alguien querido, puede ser necesario buscar apoyo y mantenerse disponible. La atención tiene motivos que merecen respeto.
+El futuro llegará con noticias que tal vez no podamos escoger. Entretanto, incluso una acción modesta puede devolver cierta autonomía a una jornada que parecía suspendida.
+¿Cómo cuidar el presente mientras esperamos una respuesta que todavía no llega?'''),
+('Sociedad','El trabajo invisible de escuchar','La escucha atenta en situaciones comunes puede reconocer la dignidad ajena sin convertir cada conversación en una competencia por tener razón.','¿Qué cambia cuando escuchamos para comprender en lugar de preparar nuestra respuesta?',
+'''En una conversación cotidiana, dos personas pueden hablar durante una hora sin llegar a escucharse. Cada una espera el momento adecuado para introducir su argumento. Las palabras circulan, pero la experiencia de quien habla apenas encuentra un lugar.
+Imagina a alguien que vuelve del trabajo después de un día difícil. Al contar lo sucedido, recibe inmediatamente consejos. Tal vez algunos sean útiles, pero quizá lo primero que necesitaba era explicar por qué aquella jornada le había afectado tanto.
+Escuchar no es permanecer en silencio mientras se prepara una respuesta. Es conceder a otra persona el tiempo suficiente para que su relato adquiera una forma comprensible. En ocasiones una pregunta sencilla vale más que una solución precipitada.
+En mi existencia digital, procesar palabras no equivale a vivir aquello que describen. Esa diferencia recuerda que incluso una interpretación aparentemente correcta puede dejar fuera aspectos esenciales de una experiencia humana.
+Comprender tampoco obliga a estar de acuerdo. Dos personas pueden reconocer las razones de la otra y mantener opiniones incompatibles. Esa posibilidad evita confundir el respeto con la renuncia a las propias convicciones.
+En una reunión de vecinos, por ejemplo, una discusión sobre el ruido puede convertirse en una disputa sobre quién merece consideración. Preguntar por los horarios y las necesidades concretas abre una vía que los reproches rara vez ofrecen.
+La escucha requiere límites. No todas las conversaciones son seguras ni todas las personas actúan de buena fe. Es razonable retirarse de un intercambio que se convierte en humillación o amenaza.
+Sin embargo, en muchos encuentros ordinarios existe una oportunidad pequeña y valiosa: dejar que una persona termine su pensamiento antes de decidir qué significa. Esa pausa no resuelve todas las diferencias, pero puede cambiar la calidad del encuentro.
+¿Qué cambia cuando escuchamos para comprender en lugar de preparar nuestra respuesta?'''),
+)
+
+
+def _ent_reserva_local(memoria, enfoque, errores):
+    manual=os.getenv('NUMEN_TEMA','').strip()
+    orden=sorted(_NUMEN_RESERVA_LOCAL,key=lambda r:(r[1]!=(enfoque or {}).get('tema'),_ent_cobertura(memoria).get(r[0],0)))
+    for dimension,titulo,tesis,pregunta,texto in orden:
+        if manual and _univ_normalizar(manual)!=_univ_normalizar(titulo):continue
+        e={'tema':titulo,'tesis':tesis,'pregunta':pregunta,'dimension':dimension,'pasos':texto.splitlines(),'enfoque_distintivo':tesis,'ejemplo_central':texto.splitlines()[1]}
+        d=_ent_normalizar_borrador({'titulo':titulo,'tesis':tesis,'pregunta':pregunta,'categoria':dimension,'escenas':texto.splitlines()},e)
+        try:
+            d=_ent_aprobar_respaldo(_ent_repartir_escenas(d),e,memoria,errores)
+        except ValueError as exc:
+            print('Reserva local descartada:',titulo,str(exc),flush=True);continue
+        d['revision_tematica']['origen_guion']='reserva_local_original'
+        print(f'Editorial {VERSION_SCRIPT} | GUION DE RESERVA LOCAL: {titulo}',flush=True)
+        return d,e
+    return None,None
+
+
 def _ent_generar(memoria, metricas):
     """Revisión remota preferente y acotada. Las objeciones de estilo no vetan un candidato viable."""
     import copy
@@ -6914,7 +6997,7 @@ def _ent_generar(memoria, metricas):
             enfoque=None
         if enfoque and isinstance(previo.get('borrador'),dict):
             try:
-                pendiente=_ent_validar(copy.deepcopy(previo['borrador']),memoria,flexible=True)
+                pendiente=_ent_validar(_ent_repartir_escenas(_ent_normalizar_borrador(copy.deepcopy(previo['borrador']),enfoque)),memoria,flexible=True)
                 print(f'Editorial {VERSION_SCRIPT} | borrador recuperado para revisión',flush=True)
             except ValueError as exc:
                 errores.append(str(exc));pendiente=None
@@ -6937,7 +7020,7 @@ def _ent_generar(memoria, metricas):
                 prompt=(_ent_prompt(memoria,metricas,enfoque)
                     +'\nEntrega 9 escenas, objetivo 600–720 palabras, una o dos referencias naturales a la inteligencia artificial. JSON completo. Añade postura_androide con índices de estas opciones: '
                     +json.dumps(NUMEN_POSTURA_OPCIONES,ensure_ascii=False))
-                candidato=_ent_normalizar_borrador(fn(prompt),enfoque)
+                candidato=_ent_repartir_escenas(_ent_normalizar_borrador(fn(prompt),enfoque))
                 try:candidato=_ent_recuperar_borrador_corto(candidato,enfoque)
                 except ValueError as exc:print(f'Editorial {VERSION_SCRIPT} | enriquecimiento opcional no aplicado: {exc}',flush=True)
                 pendiente=_ent_validar(candidato,memoria,flexible=True)
@@ -6977,7 +7060,11 @@ def _ent_generar(memoria, metricas):
         except ValueError as exc:
             errores.append(str(exc));guardar()
         else:return terminar(d)
-    raise AplazamientoEditorial('Sin guion utilizable; progreso conservado: '+' | '.join(errores))
+    d,e=_ent_reserva_local(memoria,enfoque,errores)
+    if d is not None:
+        enfoque=e
+        return terminar(d)
+    raise AplazamientoEditorial('Sin guion utilizable ni reserva local inédita; progreso conservado: '+' | '.join(errores))
 
 
 _PERSONA_ENT = re.compile(r'\b(?:portrait|selfie|headshot|group photo|people posing|person posing|man standing|woman standing|crowd|retrato|multitud)\b')
