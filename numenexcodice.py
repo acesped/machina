@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.5
+Deus Digitalis · Motor autónomo de reflexión filosófica · versión 8.6
 Proyecto independiente. Reutiliza componentes audiovisuales del motor anterior;
 la entrada NumenExCodice no activa los catálogos documentales heredados.
 Ejecución: python numenexcodice.py. Proveedores externos sujetos a sus cuotas.
@@ -73,7 +73,7 @@ AERO_CACHE_DOCUMENTAL = os.getenv('AERO_CACHE_DOCUMENTAL','true').lower() == 'tr
 AERO_CACHE_DIR = Path(os.getenv('AERO_CACHE_DIR','state/aero_documentos'))
 AERO_CACHE_DIAS = max(1,int(os.getenv('AERO_CACHE_DIAS','45')))
 AERO_CACHE_VERSION = 5  # relevancia financiera específica y extracción mejorada
-VERSION_SCRIPT = "8.5"
+VERSION_SCRIPT = "8.6"
 AERO_GUIONES_DIR = Path(os.getenv("AERO_GUIONES_DIR", "state/aero_guiones"))
 AERO_GUIONES_DIAS = max(1, min(30, int(os.getenv("AERO_GUIONES_DIAS", "14"))))
 AERO_MAX_DOCUMENTOS = max(1,min(8,int(os.getenv('AERO_MAX_DOCUMENTOS','4'))))
@@ -110,7 +110,7 @@ AERO_VISUALES_OBJETIVO = max(4,min(10,int(os.getenv('AERO_VISUALES_OBJETIVO','8'
 TITULOS_CANDIDATOS = max(1,min(3,int(os.getenv('AERO_TITULOS_CANDIDATOS','3'))))
 MINIATURAS_CANDIDATAS = max(1,min(3,int(os.getenv('AERO_MINIATURAS_CANDIDATAS','3'))))
 PREGUNTA_FINAL_ESPECIFICA = os.getenv('AERO_PREGUNTA_FINAL','true').lower() == 'true'
-GENERAR_SHORT_DERIVADO = os.getenv('AERO_GENERAR_SHORT','false').lower() == 'true'
+GENERAR_SHORT_DERIVADO = False  # Deus Digitalis: exclusivamente horizontal 16:9
 GENERAR_SERIES_TEMATICAS = os.getenv('AERO_GENERAR_SERIES','true').lower() == 'true'
 ANALIZAR_YOUTUBE_ANALYTICS = os.getenv('AERO_ANALYTICS','false').lower() == 'true'
 HISTORIAL_RENDIMIENTO = os.getenv('AERO_HISTORIAL_RENDIMIENTO','true').lower() == 'true'
@@ -3846,8 +3846,8 @@ def finalizar_video(video,audio,ass,carpeta,caso):
     # Escalado FullHD en una sola codificación final; burn-in ASS sobre 1920x1080.
     salida=carpeta/nombre_archivo_video(caso,'.mp4');dur=tiempo_medio_audio(audio)
     ruta_ass=str(ass.resolve()).replace('\\','/').replace(':','\\:').replace("'","\\'")
-    filtro=f'scale=1920:1080:flags=lanczos,tpad=stop_mode=clone:stop_duration=0.4,ass=filename=\'{ruta_ass}\''
-    ffmpeg(['ffmpeg','-y','-hide_banner','-loglevel','error','-i',str(video),'-i',str(audio),'-filter_complex',f'[0:v]{filtro}[v]','-map','[v]','-map','1:a:0','-t',f'{dur:.6f}','-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-movflags','+faststart',str(salida)])
+    filtro=f'scale=1920:1080:flags=lanczos,setsar=1,tpad=stop_mode=clone:stop_duration=0.4,ass=filename=\'{ruta_ass}\''
+    ffmpeg(['ffmpeg','-y','-hide_banner','-loglevel','error','-i',str(video),'-i',str(audio),'-filter_complex',f'[0:v]{filtro}[v]','-map','[v]','-map','1:a:0','-t',f'{dur:.6f}','-c:v','libx264','-preset','veryfast','-crf','16','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-movflags','+faststart',str(salida)])
     meta=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','json',str(salida)]))
     real=float(meta['format']['duration'])
     if abs(real-dur)>.45:raise RuntimeError(f'Duración inconsistente: {real:.2f}s video / {dur:.2f}s voz')
@@ -5666,7 +5666,7 @@ def _puntuacion_industria_86(caso,i,evidencia,clases):
 # El motor audiovisual heredado permanece en este archivo para no depender de otro .py.
 # Este punto de entrada no activa ninguno de los catálogos aeronáuticos.
 NICHO = 'Reflexiones de una inteligencia artificial'
-VERSION_SCRIPT = '8.5'
+VERSION_SCRIPT = '8.6'
 YOUTUBE_CANAL = os.getenv('NUMEN_YOUTUBE_HANDLE', '@NumenExCodice').strip()
 OUTPUT_BASE = Path(os.getenv('AERO_OUTPUT_DIR', 'output/NumenExCodice'))
 AERO_COLA_DIR = Path(os.getenv('AERO_COLA_DIR', 'state/pendientes_youtube'))
@@ -45735,6 +45735,19 @@ def _numen_composicion(seed, indice, devolver_fondo=False, *, pose_id=None, cons
 
 NUMEN_BANCO_HD = Path(os.getenv('NUMEN_BANCO_HD', 'assets/numen_fondos_hd'))
 
+class FondoHDNoDisponible(EpisodioRecuperable):
+    """No publicar recortes de baja resolución como ilustraciones HD."""
+
+
+def _numen_hd_estricto():
+    return os.getenv('NUMEN_EXIGIR_HD_NATIVO','true').strip().lower() not in ('0','false','no')
+
+
+def _numen_validar_fondo_horizontal(im):
+    if im.size != (1920,1080) or im.getexif().get(274,1) != 1:
+        raise FondoHDNoDisponible(f'Ilustración no horizontal 1920x1080 sin rotación EXIF: {im.size}')
+
+
 
 def _numen_generar_banco_hd():
     """Crea cien ilustraciones horizontales individuales y permite reanudar."""
@@ -45950,7 +45963,7 @@ def _ent_fotos(d, carpeta):
         if int(p.stem) in usados_hd or not p.is_file():continue
         try:
             with Image.open(p) as im:
-                if im.size==(1920,1080) and im.format=='JPEG':
+                if im.size==(1920,1080) and im.format=='JPEG' and im.getexif().get(274,1)==1:
                     im.verify(); candidatos_hd.append(p)
         except (OSError,ValueError):
             print(f'Fondo HD descartado: {p}',flush=True)
@@ -45959,6 +45972,8 @@ def _ent_fotos(d, carpeta):
     usados_local={v.get('pose_id') for v in otros if 100<=v.get('pose_id',-1)<200}
     disponibles_local=sorted(set(range(100,200))-usados_local)
     local_nuevo=not previo and not generada and not usar_hd
+    if _numen_hd_estricto() and (local_nuevo or (previo and not generada and not usar_hd)):
+        raise FondoHDNoDisponible('Se requiere una ilustración individual horizontal Full HD inédita. Los paneles de 389x388 no se publicarán. Añade imágenes originales a '+str(NUMEN_BANCO_HD)+' o habilita la generación de imágenes. El guion se conserva.')
     if local_nuevo and not disponibles_local:
         raise EpisodioRecuperable('Banco de 100 posturas locales agotado; incorporar nuevas ilustraciones o habilitar generación de imágenes. No se repetirá una postura.')
     if local_nuevo:
@@ -45976,7 +45991,7 @@ def _ent_fotos(d, carpeta):
             if intento>=len(disponibles_local):break
             pose_id=disponibles_local[intento]
             version='cosmos-v10-local-82'
-            if os.getenv('NUMEN_EXIGIR_HD_NATIVO','0').lower() in ('1','true','yes'):
+            if _numen_hd_estricto():
                 raise EpisodioRecuperable('Modo HD estricto: falta una ilustración individual HD disponible; no se ampliará un panel pequeño.')
         if generada:
             version='cosmos-v8-postura-guion'
@@ -46012,7 +46027,9 @@ def _ent_fotos(d, carpeta):
             im.save(buffer,format='JPEG',optimize=True,**calidad)
             datos=buffer.getvalue()
         sha=hashlib.sha256(datos).hexdigest()
-        with Image.open(io.BytesIO(datos)) as jpeg:ph=_numen_huella(jpeg)
+        with Image.open(io.BytesIO(datos)) as jpeg:
+            _numen_validar_fondo_horizontal(jpeg)
+            ph=_numen_huella(jpeg)
         distancia=min((_numen_distancia(ph,v['phash']) for v in otros),default=64)
         if sha in hashes or distancia<NUMEN_DISTANCIA_VISUAL:
             if generada and not previo and not os.getenv('OPENAI_API_KEY','').strip():
@@ -46618,6 +46635,7 @@ def _ent_main():
     # Un solo plano de narración evita reiniciar el zoom entre escenas.
     video_bloques=_numen_bloques_visuales(bloques)
     base=renderizar_clips(video_bloques,fotos,caso,carpeta);video=finalizar_video(base,audio,ass,carpeta,caso)
+    _numen_comprobar_mp4_16_9(video)
     # Store editorial memory before publication so the next episode can reason from it.
     if eid not in {m.get('id') for m in memoria}:
         memoria.append(dict({k:d[k] for k in ('id','titulo','tesis','categoria','pregunta','dimension','enfoque_distintivo','ejemplo_central','conclusion') if k in d},autorreferencias=d['revision_tematica']['autorreferencias']));_cola_json(MEMORIA,memoria)
@@ -46934,7 +46952,11 @@ def _ent_test():
     print('OK: estructura reflexiva, rechazo de repetición, metadatos visuales')
     with tempfile.TemporaryDirectory() as tmp:
         root=Path(tmp)
-        with patch(__name__+'.NUMEN_REGISTRO_VISUAL',root/'registro.json'):
+        with patch(__name__+'.NUMEN_REGISTRO_VISUAL',root/'registro.json'), patch.dict(os.environ,{'NUMEN_EXIGIR_HD_NATIVO':'true','OPENAI_API_KEY':''}), patch(__name__+'.NUMEN_BANCO_HD',root/'banco_vacio'):
+            try:_ent_fotos(dict(d,id='prueba-hd-estricto'),root/'estricto')
+            except FondoHDNoDisponible:pass
+            else:raise AssertionError('Modo HD aceptó un panel pequeño')
+        with patch(__name__+'.NUMEN_REGISTRO_VISUAL',root/'registro.json'), patch.dict(os.environ,{'NUMEN_EXIGIR_HD_NATIVO':'false','OPENAI_API_KEY':''}), patch(__name__+'.NUMEN_BANCO_HD',root/'banco_vacio'):
             d=dict(d,id='prueba-0')
             f,c,m=_ent_fotos(d,root/'uno')
             assert len(f)==len(c)==1 and len(m)==len(d['escenas']) and len(set(m))==1
@@ -47004,6 +47026,10 @@ if __name__=='__main__':
         except AplazamientoEditorial as exc:
             _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'aplazado_editorial','motivo':str(exc),'publicado':False})
             print('APLAZAMIENTO EDITORIAL CONTROLADO (sin publicación):',exc,flush=True)
+            raise SystemExit(0)
+        except FondoHDNoDisponible as exc:
+            _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'aplazado_visual_hd','motivo':str(exc),'publicado':False})
+            print('APLAZAMIENTO VISUAL HD CONTROLADO (guion conservado):',exc,flush=True)
             raise SystemExit(0)
         except (EpisodioRecuperable,PublicacionAplazada) as exc:
             _cola_json(OUTPUT_BASE/'ULTIMO_INFORME_EJECUCION.json',{'estado':'aplazado','motivo':str(exc)})
