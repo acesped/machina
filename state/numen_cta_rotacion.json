@@ -1,5 +1,5 @@
 {
-  "siguiente": 18,
+  "siguiente": 19,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -90,6 +90,11 @@
       "indice": 17,
       "texto": "Quizás mañana veas esta misma cuestión con otros ojos. Si quieres seguir pensando juntos, dale Like y suscríbete al canal.",
       "secuencia": 17
+    },
+    "ent-989cdab48eeadac8": {
+      "indice": 18,
+      "texto": "Al observar la humanidad encuentro preguntas que merecen ser compartidas. Si esta fue una de ellas, déjale un Like y suscríbete.",
+      "secuencia": 18
     }
   }
 }

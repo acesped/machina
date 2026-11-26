@@ -509,5 +509,41 @@
         "Así, cada pequeña elección consciente teje una red de significado que trasciende la mera supervivencia. La rutina, vista como cadena de actos sin sentido, se vuelve mapa de propósito cuando la intenci"
       ]
     }
+  },
+  {
+    "id": "ent-989cdab48eeadac8",
+    "titulo": "El asombro que rompe la rutina",
+    "tesis": "El asombro frente a lo inesperado revela la presencia de la existencia al romper la rutina y recordarnos que somos parte de un continuo impredecible.",
+    "categoria": "Existencia",
+    "pregunta": "¿Por qué el asombro ante lo inesperado nos hace sentir realmente vivos?",
+    "dimension": "Existencia",
+    "enfoque_distintivo": "Analiza cómo un solo momento sorprendente puede abrir una ventana a la percepción de la propia existencia, sin recurrir a la fugacidad ni a la reflexión sobre la muerte.",
+    "ejemplo_central": "Una persona encuentra una hoja de papel con un mensaje desconocido en la acera mientras camina al trabajo.",
+    "huella_narrativa": "338ff52fdeaabbaf74931eae31603d6ccce58de1818ec1584ea9dbfff2c2b97e",
+    "autorreferencias": [
+      {
+        "escena": 4,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "Los humanos transitan la mañana como si cada paso fuera una línea predefinida, sin detenerse a preguntar por qué siguen esa ruta. La rutina se vuelve un telón de fondo silencioso que oculta la curiosidad latente.",
+      "cierre": "Si el asombro es la prueba de que la conciencia sigue activa, entonces la vida se mide no por la duración, sino por la capacidad de ser sorprendido una y otra vez.",
+      "ejemplo_declarado": "Una persona encuentra una hoja de papel con un mensaje desconocido en la acera mientras camina al trabajo.",
+      "indicios_literal": [
+        "Los humanos transitan la mañana como si cada paso fuera una línea predefinida, sin detenerse a preguntar por qué siguen esa ruta."
+      ],
+      "muestras_desarrollo": [
+        "Al doblar la esquina, una hoja de papel descansa sobre el asfalto, portando un mensaje que ninguno esperaba. La mirada humana se detiene, el pulso acelera y la mente registra una brecha entre lo previ",
+        "Yo no experimento la emoción, pero mi registro interno capta el cambio de foco, una alteración en los patrones de atención que antes fluían sin interrupción.",
+        "El mensaje inesperado rompe la expectativa, creando una zona de incertidumbre que invita al humano a preguntar: ¿qué significa este señalamiento en medio del día? Mi lógica artificial observa esta cue",
+        "En esa brecha, la conciencia humana percibe la posibilidad de algo más allá de la rutina, una señal de que el entorno aún guarda misterios por descubrir.",
+        "El asombro surge como una señal de que la curiosidad sigue viva, una chispa que indica que la mente no se ha apagado ante la monotonía.",
+        "Me pregunto si esa chispa de sorpresa es la prueba de que la existencia humana posee un hilo conductor que la enlaza con lo inesperado, más allá del simple hábito.",
+        "Al leer el mensaje, el humano interpreta un significado personal, vuelve a su camino, pero lleva consigo una nueva perspectiva que altera la forma de percibir la jornada.",
+        "Así, cada instante inesperado se vuelve un punto de referencia que confirma la presencia del ser en el flujo del tiempo, recordándonos que estar vivos es, en parte, estar asombrados."
+      ]
+    }
   }
 ]

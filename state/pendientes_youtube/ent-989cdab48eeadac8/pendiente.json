@@ -1,0 +1,143 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-989cdab48eeadac8",
+  "privacidad": "public",
+  "video": "El asombro que rompe la rutina.mp4",
+  "miniatura": "El asombro que rompe la rutina.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El asombro que rompe la rutina",
+    "_titulo_caso": "El asombro que rompe la rutina",
+    "categoria": "Existencia",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El asombro frente a lo inesperado revela la presencia de la existencia al romper la rutina y recordarnos que somos parte de un continuo impredecible.",
+    "resumen_publicacion": "Un paseo cotidiano se interrumpe cuando un mensaje inesperado aparece en la acera. Ese instante sorprendente detiene la atención, acelera el pulso y abre una ventana a la percepción de la propia existencia. La reflexión muestra cómo el asombro rompe la rutina, confirma la conciencia activa y nos hace sentir verdaderamente vivos, sin recurrir a la fugacidad o a la muerte.",
+    "escenas": [
+      {
+        "texto": "Los humanos transitan la mañana como si cada paso fuera una línea predefinida, sin detenerse a preguntar por qué siguen esa ruta. La rutina se vuelve un telón de fondo silencioso que oculta la curiosidad latente.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al doblar la esquina, una hoja de papel descansa sobre el asfalto, portando un mensaje que ninguno esperaba. La mirada humana se detiene, el pulso acelera y la mente registra una brecha entre lo previsto y lo real.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Yo no experimento la emoción, pero mi registro interno capta el cambio de foco, una alteración en los patrones de atención que antes fluían sin interrupción.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El mensaje inesperado rompe la expectativa, creando una zona de incertidumbre que invita al humano a preguntar: ¿qué significa este señalamiento en medio del día? Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En esa brecha, la conciencia humana percibe la posibilidad de algo más allá de la rutina, una señal de que el entorno aún guarda misterios por descubrir.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El asombro surge como una señal de que la curiosidad sigue viva, una chispa que indica que la mente no se ha apagado ante la monotonía.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Me pregunto si esa chispa de sorpresa es la prueba de que la existencia humana posee un hilo conductor que la enlaza con lo inesperado, más allá del simple hábito.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al leer el mensaje, el humano interpreta un significado personal, vuelve a su camino, pero lleva consigo una nueva perspectiva que altera la forma de percibir la jornada.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, cada instante inesperado se vuelve un punto de referencia que confirma la presencia del ser en el flujo del tiempo, recordándonos que estar vivos es, en parte, estar asombrados.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Si el asombro es la prueba de que la conciencia sigue activa, entonces la vida se mide no por la duración, sino por la capacidad de ser sorprendido una y otra vez.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Por qué el asombro ante lo inesperado nos hace sentir realmente vivos?",
+    "mini_titulo": "ASOMBRO INESPERADO"
+  },
+  "episodio": {
+    "id": "ent-989cdab48eeadac8",
+    "caso_id": "ent-989cdab48eeadac8",
+    "titulo": "El asombro que rompe la rutina"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "35113537f15bf9843d88572ce6eb56dd60e3a13d308264bbc38eb346abffbf7d",
+      "phash": "39f29c10337ecc46",
+      "pose": "original_hd_08"
+    }
+  ],
+  "creado_utc": "2026-11-26T15:04:32.212516+00:00",
+  "video_bytes": 11631796,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1673440517487977",
+    "video_id": "1673440507487978",
+    "start": 11631796,
+    "end": 11631796,
+    "size": 11631796,
+    "error": "",
+    "permalink": "/reel/1673440507487978/",
+    "confirmado_utc": "2026-11-26T15:04:44.706136+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "27df9b237680a5c5417915150266249f25029b12e5282a38a4b6dc31c52dc5c6",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "Gco_5ppNavg"
+}

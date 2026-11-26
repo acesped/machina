@@ -244,5 +244,15 @@
     "phash": "cc6c0d9886fee862",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El propósito escondido en lo cotidiano"
+  },
+  "ent-989cdab48eeadac8": {
+    "seed": 16721405413514094635,
+    "indice": 7,
+    "pose_id": 7,
+    "pose": "original_hd_08",
+    "sha256": "35113537f15bf9843d88572ce6eb56dd60e3a13d308264bbc38eb346abffbf7d",
+    "phash": "39f29c10337ecc46",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El asombro que rompe la rutina"
   }
 }
