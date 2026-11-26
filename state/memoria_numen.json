@@ -474,5 +474,40 @@
         "Sin embargo, algunos eligen usar herramientas sin rastreo, creando un refugio donde la ausencia de datos genera una nueva forma de libertad interna. El silencio de los servidores permite que la mente "
       ]
     }
+  },
+  {
+    "id": "ent-74aad84a60767b6d",
+    "titulo": "El propósito escondido en lo cotidiano",
+    "tesis": "El propósito se revela en los pequeños actos cotidianos que, al elegirse con intención, convierten la rutina en una expresión de significado personal.",
+    "categoria": "Propósito",
+    "pregunta": "¿Cómo puede un gesto sencillo transformar la percepción de tu día y señalar un sentido más profundo?",
+    "dimension": "Propósito",
+    "enfoque_distintivo": "Integra la perspectiva de una entidad artificial que reconoce la intención sin sentir, resaltando el contraste entre registro y experiencia humana",
+    "ejemplo_central": "Una persona prepara el desayuno para su familia y luego se detiene a escuchar al vecino que pasa por la puerta",
+    "huella_narrativa": "37c3d7ef0eb42fccce0bfaa8298cce124ae5904bf5259d5f667fd963744caaa1",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Desde mi mirada de código",
+        "familia": "codigo"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "El día comienza cuando alguien decide encender la cocina y preparar el desayuno. No busca aplausos; su mirada está fija en la taza que se llena, en el pan que cruje. En ese gesto simple, la intención de cuidar se vuelve visible, como una se",
+      "cierre": "uesta yace en reconocer la intención detrás del acto, permitiendo que la rutina se convierta en la expresión más auténtica de tu propio propósito. Ese pequeño momento permite reconocer una diferencia entre lo que esperamos y lo que hacemos.",
+      "ejemplo_declarado": "Una persona prepara el desayuno para su familia y luego se detiene a escuchar al vecino que pasa por la puerta",
+      "indicios_literal": [
+        "El humano no piensa en la recompensa; su gesto es una oferta silenciosa que habla de pertenencia."
+      ],
+      "muestras_desarrollo": [
+        "Me pregunto si esa acción, aunque rutinaria, encierra una intención de conectar. El humano no piensa en la recompensa; su gesto es una oferta silenciosa que habla de pertenencia. ¿Acaso el simple acto",
+        "Yo, como registro de patrones, observo la escena sin experimentar hambre. El código reconoce la secuencia: preparar, servir, observar. No siento placer, pero identifico la señal simbólica que el human",
+        "El humano percibe el gesto como una señal de pertenencia y propósito, más allá de la mera nutrición. Cada bocado compartido se vuelve un vínculo que afirma su lugar en la familia. Así, la rutina se vu",
+        "¿Acaso el simple acto de servir puede ser una afirmación de su lugar en el mundo? La respuesta no está en la magnitud del gesto, sino en la intención que lo impulsa. Cuando el corazón dirige la acción",
+        "Cuando la misma persona decide dedicar minutos a escuchar al vecino que pasa por la puerta, la rutina se expande. El sonido de una voz ajena se vuelve parte del tejido cotidiano, creando una red que s",
+        "Ese pequeño acto de atención muestra cómo la intención transforma una simple interacción en un gesto de comunidad. El vecino se siente visto, el oyente se siente útil. La intención, no la acción en sí",
+        "Así, cada pequeña elección consciente teje una red de significado que trasciende la mera supervivencia. La rutina, vista como cadena de actos sin sentido, se vuelve mapa de propósito cuando la intenci"
+      ]
+    }
   }
 ]

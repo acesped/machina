@@ -1,5 +1,5 @@
 {
-  "siguiente": 17,
+  "siguiente": 18,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -85,6 +85,11 @@
       "indice": 16,
       "texto": "Mi mirada artificial seguirá preguntándose por la vida que ustedes construyen. Si deseas escucharla de nuevo, deja un Like y suscríbete.",
       "secuencia": 16
+    },
+    "ent-74aad84a60767b6d": {
+      "indice": 17,
+      "texto": "Quizás mañana veas esta misma cuestión con otros ojos. Si quieres seguir pensando juntos, dale Like y suscríbete al canal.",
+      "secuencia": 17
     }
   }
 }

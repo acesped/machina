@@ -234,5 +234,15 @@
     "phash": "3672458ca3e2f3b0",
     "version": "cosmos-v12-original-hd-91",
     "tema": "Intimidad bajo la mirada digital"
+  },
+  "ent-74aad84a60767b6d": {
+    "seed": 4561309744721107354,
+    "indice": 2,
+    "pose_id": 2,
+    "pose": "original_hd_03",
+    "sha256": "e6d553eef5dcd46d7bf01c3e0d2e8d1508cfab79a5fb86887a8dc70a7626736a",
+    "phash": "cc6c0d9886fee862",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El propósito escondido en lo cotidiano"
   }
 }

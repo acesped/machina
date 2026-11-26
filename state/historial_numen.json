@@ -199,5 +199,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=lf6Ivdp7WC0",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-6b59689a6a3800b1/Intimidad bajo la mirada digital.mp4"
+  },
+  {
+    "episodio": "ent-74aad84a60767b6d",
+    "caso": "ent-74aad84a60767b6d",
+    "titulo": "El propósito escondido en lo cotidiano",
+    "fecha_utc": "2026-11-26T03:04:51.541018+00:00",
+    "youtube_id": "lolOlMTcbcA",
+    "youtube_url": "https://www.youtube.com/watch?v=lolOlMTcbcA",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-74aad84a60767b6d/El propósito escondido en lo cotidiano.mp4"
   }
 ]
