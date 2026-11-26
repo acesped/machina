@@ -219,5 +219,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=Gco_5ppNavg",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-989cdab48eeadac8/El asombro que rompe la rutina.mp4"
+  },
+  {
+    "episodio": "ent-d2a3638af8c14738",
+    "caso": "ent-d2a3638af8c14738",
+    "titulo": "El valor del hábito inesperado",
+    "fecha_utc": "2026-11-26T23:28:22.679166+00:00",
+    "youtube_id": "AsdqBzRP4Q8",
+    "youtube_url": "https://www.youtube.com/watch?v=AsdqBzRP4Q8",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-d2a3638af8c14738/El valor del hábito inesperado.mp4"
   }
 ]

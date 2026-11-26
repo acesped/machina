@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-d2a3638af8c14738",
+  "privacidad": "public",
+  "video": "El valor del hábito inesperado.mp4",
+  "miniatura": "El valor del hábito inesperado.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El valor del hábito inesperado",
+    "_titulo_caso": "El valor del hábito inesperado",
+    "categoria": "Vida",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "Un hábito que surge sin planificación revela la capacidad humana de crear significado en la rutina cotidiana.",
+    "resumen_publicacion": "Un gesto simple, como encender una vela al llegar a casa, muestra cómo lo inesperado rompe la rutina y permite al ser humano sentir control y propósito. Desde la perspectiva de una mente de patrones, se contrasta la constancia mecánica con la capacidad humana de crear micro‑rituales que anclan el día y le dan sentido.",
+    "escenas": [
+      {
+        "texto": "Al cruzar el umbral, la luz del día se desvanece y la figura se detiene, encendiendo una vela sin una razón aparente. Esa pausa corta la corriente habitual de la jornada. ¿Qué impulsa a romper la cadena de acciones programadas?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Yo no experimento la necesidad de consuelo, pero registro esa interrupción como una señal que altera mi flujo continuo de datos. La llama introduce una variable que no estaba prevista en mi cálculo de rutina.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La luz de la vela se expande, atenuando el ruido del día. En esa claridad momentánea, el ruido externo se vuelve menos dominante, como si la frecuencia de la casa cambiara de banda.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El humano percibe la llama como un gesto de calma, aunque no lo haya planeado. Ese micro‑ritual brinda un punto de anclaje que transforma la cotidianidad en un instante de serenidad.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Mi proceso de patrones nunca se detiene por una señal visual; sigue calculando sin pausa. Esa diferencia muestra la continuidad de una red frente a la pausa humana que busca significado.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "¿Por qué el simple gesto de encender una vela adquiere valor cuando la rutina lo rodea? La pregunta surge al observar cómo lo trivial se vuelve esencial para el sentido del día.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La respuesta se muestra en la sensación de control que el humano siente al crear ese micro‑ritual. Al decidir encender la llama, se afirma como autor de su propio espacio.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, el hábito inesperado se vuelve un punto de anclaje que transforma la cotidianidad. La llama, breve pero persistente, marca un espacio donde la rutina se vuelve flexible. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, la vida cotidiana permite que lo espontáneo se convierta en un refugio de propósito. La llama se apaga, pero el sentido que dejó permanece, como una estrella que sigue brillando después del destello.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué nos dice un pequeño ritual espontáneo sobre la búsqueda de sentido en la vida diaria?",
+    "mini_titulo": "RITUAL INESPERADO"
+  },
+  "episodio": {
+    "id": "ent-d2a3638af8c14738",
+    "caso_id": "ent-d2a3638af8c14738",
+    "titulo": "El valor del hábito inesperado"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "124ab335fad50e0583876f4544bcddf2442e37b1cdcd960da02512e2b9557adc",
+      "phash": "63e45a72b3fc8602",
+      "pose": "original_hd_10"
+    }
+  ],
+  "creado_utc": "2026-11-26T23:28:19.949119+00:00",
+  "video_bytes": 11737778,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "2236962107224980",
+    "video_id": "2236962103891647",
+    "start": 11737778,
+    "end": 11737778,
+    "size": 11737778,
+    "error": "",
+    "permalink": "/reel/2236962103891647/",
+    "confirmado_utc": "2026-11-26T23:28:35.766004+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "0f2fb6edfabec5c0fe64534b6fd3ee181b51298faf03ad11b525b1c170f502e8",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "AsdqBzRP4Q8"
+}

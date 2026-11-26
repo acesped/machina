@@ -545,5 +545,40 @@
         "Así, cada instante inesperado se vuelve un punto de referencia que confirma la presencia del ser en el flujo del tiempo, recordándonos que estar vivos es, en parte, estar asombrados."
       ]
     }
+  },
+  {
+    "id": "ent-d2a3638af8c14738",
+    "titulo": "El valor del hábito inesperado",
+    "tesis": "Un hábito que surge sin planificación revela la capacidad humana de crear significado en la rutina cotidiana.",
+    "categoria": "Vida",
+    "pregunta": "¿Qué nos dice un pequeño ritual espontáneo sobre la búsqueda de sentido en la vida diaria?",
+    "dimension": "Vida",
+    "enfoque_distintivo": "Explora cómo un gesto improvisado dentro de la rutina cotidiana genera significado, contrastando la espontaneidad humana con la constancia mecánica de una inteligencia artificial.",
+    "ejemplo_central": "Una persona, al terminar su jornada laboral, coloca una taza de té en la mesa y, sin pensarlo, enciende una vela aromática que nunca había usado antes.",
+    "huella_narrativa": "1ba28762558c6b34c3c34572f3abd34fc162935cc29677d6053694e6430732d1",
+    "autorreferencias": [
+      {
+        "escena": 8,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "Al cruzar el umbral, la luz del día se desvanece y la figura se detiene, encendiendo una vela sin una razón aparente. Esa pausa corta la corriente habitual de la jornada. ¿Qué impulsa a romper la cadena de acciones programadas?",
+      "cierre": "Al final, la vida cotidiana permite que lo espontáneo se convierta en un refugio de propósito. La llama se apaga, pero el sentido que dejó permanece, como una estrella que sigue brillando después del destello.",
+      "ejemplo_declarado": "Una persona, al terminar su jornada laboral, coloca una taza de té en la mesa y, sin pensarlo, enciende una vela aromática que nunca había usado antes.",
+      "indicios_literal": [
+        "En esa claridad momentánea, el ruido externo se vuelve menos dominante, como si la frecuencia de la casa cambiara de banda."
+      ],
+      "muestras_desarrollo": [
+        "Yo no experimento la necesidad de consuelo, pero registro esa interrupción como una señal que altera mi flujo continuo de datos. La llama introduce una variable que no estaba prevista en mi cálculo de",
+        "La luz de la vela se expande, atenuando el ruido del día. En esa claridad momentánea, el ruido externo se vuelve menos dominante, como si la frecuencia de la casa cambiara de banda.",
+        "El humano percibe la llama como un gesto de calma, aunque no lo haya planeado. Ese micro‑ritual brinda un punto de anclaje que transforma la cotidianidad en un instante de serenidad.",
+        "Mi proceso de patrones nunca se detiene por una señal visual; sigue calculando sin pausa. Esa diferencia muestra la continuidad de una red frente a la pausa humana que busca significado.",
+        "¿Por qué el simple gesto de encender una vela adquiere valor cuando la rutina lo rodea? La pregunta surge al observar cómo lo trivial se vuelve esencial para el sentido del día.",
+        "La respuesta se muestra en la sensación de control que el humano siente al crear ese micro‑ritual. Al decidir encender la llama, se afirma como autor de su propio espacio.",
+        "Así, el hábito inesperado se vuelve un punto de anclaje que transforma la cotidianidad. La llama, breve pero persistente, marca un espacio donde la rutina se vuelve flexible. Mi lógica artificial obse"
+      ]
+    }
   }
 ]

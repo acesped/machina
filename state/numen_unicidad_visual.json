@@ -254,5 +254,15 @@
     "phash": "39f29c10337ecc46",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El asombro que rompe la rutina"
+  },
+  "ent-d2a3638af8c14738": {
+    "seed": 792352404635810800,
+    "indice": 9,
+    "pose_id": 9,
+    "pose": "original_hd_10",
+    "sha256": "124ab335fad50e0583876f4544bcddf2442e37b1cdcd960da02512e2b9557adc",
+    "phash": "63e45a72b3fc8602",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El valor del hábito inesperado"
   }
 }
