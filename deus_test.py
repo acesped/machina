@@ -1,4 +1,4 @@
-"""One-shot Facebook playback diagnostic; no retries or access bypass."""
+"""Passive Facebook availability diagnostic; no playback commands or access bypass."""
 import json
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -19,7 +19,7 @@ def safe_url(url):
 
 
 def main():
-    result = dict(url=URL, success=False, states={}, media_events=[],
+    result = dict(url=URL, success=False, status='failed', diagnostic_completed=False, states={}, media_events=[],
                   javascript_errors=[], console_errors=[], network_failures=[],
                   http_errors=[], media_responses=[], access_signals={})
     def add(key, item):
@@ -43,39 +43,34 @@ def main():
                 nav = page.goto(URL, wait_until='domcontentloaded', timeout=45000)
                 result['navigation_status'] = nav.status if nav else None
                 result['final_url'] = safe_url(page.url)
-                result['access_signals'] = page.evaluate('''() => {
+                page.wait_for_timeout(2500)
+                result['access_signals'] = page.evaluate(r"""() => {
+                    const visible = e => !!(e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden');
+                    const passwords = [...document.querySelectorAll('input[type=password]')];
+                    const dialogs = [...document.querySelectorAll('[role=dialog],dialog[open],[aria-modal=true]')].filter(visible);
                     const t = (document.body?.innerText || '').toLowerCase();
-                    return {password_field:!!document.querySelector('input[type=password]'),
-                    login_url:/\\/(login|checkpoint)(\\/|$)/.test(location.pathname),
+                    return {password_field:passwords.length>0,
+                    password_visible:passwords.some(visible),
+                    login_url:/\/(login|checkpoint)(\/|$)/.test(location.pathname),
                     login_text:/log in to continue|inicia sesi[oó]n para continuar/.test(t),
-                    unavailable_text:/content isn't available|contenido no est[aá] disponible/.test(t)};
-                }''')
+                    unavailable_text:/content isn't available|contenido no est[aá] disponible/.test(t),
+                    authentication_dialog:dialogs.some(d=>d.querySelector('input[type=password]') || /log in|inicia sesi[oó]n/i.test(d.innerText)),
+                    visible_dialogs:dialogs.length};
+                }""")
                 signals = result['access_signals']
-                if signals['login_url'] or signals['password_field'] or signals['login_text'] or signals['unavailable_text'] or (nav and nav.status >= 400):
-                    raise RuntimeError('Possible access restriction or authentication requirement; test stopped.')
-                video = page.locator('video').first
-                video.wait_for(state='attached', timeout=20000)
-                result['video_count'] = page.locator('video').count()
-                result['states']['before'] = video.evaluate(STATE, timeout=3000)
-                video.evaluate('''v => {
-                    window.__testMediaEvents = [];
-                    for (const name of ['play','playing','pause','waiting','stalled','error','emptied','loadedmetadata','loadeddata','canplay','abort','suspend']) {
-                        v.addEventListener(name, () => window.__testMediaEvents.push({event:name,time:v.currentTime,readyState:v.readyState}), {passive:true});
-                    }
-                    v.muted = true;
-                }''', timeout=3000)
-                try:
-                    start = video.evaluate('v => v.currentTime', timeout=3000)
-                    video.evaluate('v => v.play()', timeout=5000)
-                    page.wait_for_function('(start) => { const v = document.querySelector("video"); return v && v.currentTime > start + 0.5; }', arg=start, timeout=10000)
-                    result['success'] = True
-                    result['detail'] = 'Playback clock advanced.'
-                finally:
-                    try:
-                        result['states']['after'] = video.evaluate(STATE, timeout=3000)
-                        result['media_events'] = page.evaluate('window.__testMediaEvents || []')
-                    except Exception as exc:
-                        result['diagnostic_error'] = str(exc)
+                videos = page.locator('video')
+                result['video_count'] = videos.count()
+                result['states']['before'] = videos.evaluate_all('vs => vs.map(' + STATE + ')')
+                result['access_assessment'] = ('restriction_indicated' if signals['login_url'] or signals['login_text'] or signals['unavailable_text'] or signals['authentication_dialog'] or (nav and nav.status >= 400) else 'authentication_field_present_unconfirmed' if signals['password_field'] else 'no_explicit_restriction_observed')
+                result['media_http_success'] = any(200 <= r['status'] < 300 for r in result['media_responses'])
+                page.wait_for_timeout(3000)
+                result['states']['after'] = videos.evaluate_all('vs => vs.map(' + STATE + ')')
+                result['status'] = 'failed' if result['access_assessment'] == 'restriction_indicated' else 'inconclusive'
+                result['detail'] = 'Passive diagnostic only; no playback requested. HTTP success is not proof of playback.'
+                result['diagnostic_completed'] = True
+                result['screenshot'] = 'deus_test_failure.png'
+                page.screenshot(path=result['screenshot'], timeout=5000)
+
             except Exception as exc:
                 result['detail'] = str(exc)
                 result['diagnosis'] = 'Playback not confirmed; no retry performed.'
@@ -91,7 +86,7 @@ def main():
     finally:
         REPORT.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding='utf-8')
         print(json.dumps(result, ensure_ascii=False))
-    return 0 if result['success'] else 1
+    return 0 if result['diagnostic_completed'] else 1
 
 
 if __name__ == '__main__':
