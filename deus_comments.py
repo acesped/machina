@@ -5,7 +5,7 @@ import time
 import sys
 import traceback
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 import requests
 
 BASE = 'https://www.googleapis.com/youtube/v3/'
@@ -128,9 +128,8 @@ def run(report):
     cache = {}
     processed = 0
     now = datetime.now(timezone.utc)
-    cutoff = now - timedelta(hours=24)
-    report.update(window_start=cutoff.isoformat(), window_end=now.isoformat(),
-                  older_skipped=0, deferred=0, drafts=0, review_required=0,
+    report.update(window_start=None, window_end=now.isoformat(),
+                  scan_mode="all_history", older_skipped=0, deferred=0, drafts=0, review_required=0,
                   failed_comments=0, verified=0)
     seen = set()
     # No cortar por fecha: el orden de hilos no garantiza el orden de todos
@@ -155,9 +154,6 @@ def run(report):
             report['results'].append({'comment_id': cid, 'status': 'invalid_date'})
             report['failed_comments'] += 1
             continue
-        if not cutoff <= published <= now:
-            report['older_skipped'] += 1
-            continue
         report['scanned'] += 1
         row = {'comment_id': cid, 'video_id': vid, 'published_at': published.isoformat()}
         report['results'].append(row)
@@ -175,7 +171,6 @@ def run(report):
                 row['status'] = 'deferred_limit'
                 report['deferred'] += 1
                 continue
-            processed += 1
             report['stage'] = 'fetch_video'
             if vid not in cache:
                 items = yt.get('videos', part='snippet', id=vid).get('items') or []
@@ -190,6 +185,7 @@ def run(report):
             if not comment.strip():
                 row['status'] = 'empty_comment'
                 continue
+            processed += 1
             report['stage'] = 'generate_reply'
             reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]})
             row['provider'] = provider
