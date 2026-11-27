@@ -5,7 +5,7 @@ import time
 import sys
 import traceback
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import requests
 
 BASE = 'https://www.googleapis.com/youtube/v3/'
@@ -127,65 +127,106 @@ def run(report):
     report['channel_id'] = channel
     cache = {}
     processed = 0
-    # El historial persistente es YouTube: se comprueban también respuestas manuales.
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(hours=24)
+    report.update(window_start=cutoff.isoformat(), window_end=now.isoformat(),
+                  older_skipped=0, deferred=0, drafts=0, review_required=0,
+                  failed_comments=0, verified=0)
+    seen = set()
+    # No cortar por fecha: el orden de hilos no garantiza el orden de todos
+    # los comentarios principales. La fecha utilizada es publishedAt.
     for thread in yt.pages('commentThreads', part='snippet', allThreadsRelatedToChannelId=channel,
                            maxResults=100, order='time', textFormat='plainText', moderationStatus='published'):
-        report['stage'] = 'inspect_comment'
-        sn = thread['snippet']
-        top = sn['topLevelComment']
-        vid = sn.get('videoId') or top['snippet'].get('videoId')
-        if not vid or author(top) == channel or not sn.get('canReply', False):
+        sn = as_dict(as_dict(thread).get('snippet'))
+        top = as_dict(sn.get('topLevelComment'))
+        ts = as_dict(top.get('snippet'))
+        cid = top.get('id')
+        if not cid or cid in seen:
+            continue
+        seen.add(cid)
+        vid = sn.get('videoId') or ts.get('videoId')
+        if not vid or author(top) == channel:
+            continue
+        try:
+            published = datetime.fromisoformat(as_text(ts.get('publishedAt')).replace('Z', '+00:00'))
+            if published.tzinfo is None:
+                raise ValueError('Fecha sin zona horaria')
+        except (ValueError, TypeError):
+            report['results'].append({'comment_id': cid, 'status': 'invalid_date'})
+            report['failed_comments'] += 1
+            continue
+        if not cutoff <= published <= now:
+            report['older_skipped'] += 1
             continue
         report['scanned'] += 1
-        report['stage'] = 'check_existing_replies'
-        if already_answered(yt, thread, channel):
-            report['already_answered'] += 1
-            continue
-        report['stage'] = 'fetch_video'
-        if vid not in cache:
-            items = yt.get('videos', part='snippet', id=vid).get('items', [])
-            cache[vid] = items[0]['snippet'] if items else {}
-        video = cache[vid]
-        if video.get('channelId') != channel:
-            continue
-        comment = top['snippet'].get('textOriginal') or top['snippet'].get('textDisplay', '')
-        comment = as_text(comment)
-        if not comment.strip():
-            continue
-        report['stage'] = 'generate_reply'
-        report['active_comment_id'] = top['id']
-        try:
-            reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]})
-        except ApiError as exc:
-            report['results'].append({'comment_id': top['id'], 'status': 'generation_failed', 'error': str(exc)})
-            processed += 1
-            save(report)
-            if processed >= LIMIT:
-                break
-            continue
-        row = {'comment_id': top['id'], 'video_id': vid, 'video_title': video.get('title'), 'provider': provider}
+        row = {'comment_id': cid, 'video_id': vid, 'published_at': published.isoformat()}
         report['results'].append(row)
-        processed += 1
-        if reply is None:
-            row['status'] = 'review_required'
-        elif DRY:
-            row.update(status='draft', reply=reply)
-        else:
-            report['stage'] = 'publish_reply'
-            # Comprobar nuevamente justo antes de publicar para evitar duplicados.
-            existing = yt.pages('comments', part='snippet', parentId=top['id'], maxResults=100, textFormat='plainText')
-            if any(author(c) == channel for c in existing):
+        report['active_comment_id'] = cid
+        try:
+            report['stage'] = 'check_existing_replies'
+            if already_answered(yt, thread, channel):
                 row['status'] = 'already_answered'
+                report['already_answered'] += 1
+                continue
+            if not sn.get('canReply', False):
+                row['status'] = 'cannot_reply'
+                continue
+            if processed >= LIMIT:
+                row['status'] = 'deferred_limit'
+                report['deferred'] += 1
+                continue
+            processed += 1
+            report['stage'] = 'fetch_video'
+            if vid not in cache:
+                items = yt.get('videos', part='snippet', id=vid).get('items') or []
+                cache[vid] = as_dict(as_dict(items[0]).get('snippet')) if items else {}
+            video = cache[vid]
+            if video.get('channelId') != channel:
+                row['status'] = 'video_not_verified'
+                report['failed_comments'] += 1
+                continue
+            row['video_title'] = video.get('title')
+            comment = as_text(ts.get('textOriginal') or ts.get('textDisplay'))
+            if not comment.strip():
+                row['status'] = 'empty_comment'
+                continue
+            report['stage'] = 'generate_reply'
+            reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]})
+            row['provider'] = provider
+            if reply is None:
+                row['status'] = 'review_required'
+                report['review_required'] += 1
+            elif DRY:
+                row.update(status='draft', reply=reply)
+                report['drafts'] += 1
             else:
-                row['status'] = 'publication_pending'
-                save(report)
-                result = yt.reply(top['id'], reply)
-                row.update(status='published', reply_id=result['id'])
-                report['published'] += 1
-                time.sleep(2)
-        save(report)
-        if processed >= LIMIT:
-            break
+                report['stage'] = 'publish_reply'
+                existing = yt.pages('comments', part='snippet', parentId=cid, maxResults=100, textFormat='plainText')
+                if any(author(c) == channel for c in existing):
+                    row['status'] = 'already_answered'
+                    report['already_answered'] += 1
+                else:
+                    row.update(status='publication_pending', reply=reply)
+                    save(report)
+                    result = yt.reply(cid, reply)
+                    row.update(status='published', reply_id=result['id'])
+                    report['published'] += 1
+                    report['stage'] = 'verify_reply'
+                    try:
+                        items = yt.get('comments', part='snippet', id=result['id'], textFormat='plainText').get('items') or []
+                        row['verified'] = any(c.get('id') == result['id'] and author(c) == channel and as_dict(c.get('snippet')).get('parentId') == cid for c in items)
+                        report['verified'] += int(row['verified'])
+                    except Exception as exc:
+                        row['verified'] = False
+                        row['verification_error'] = str(exc) if isinstance(exc, ApiError) else type(exc).__name__
+                    time.sleep(2)
+        except Exception as exc:
+            row.update(status='failed', stage=report['stage'], error=str(exc) if isinstance(exc, ApiError) else type(exc).__name__)
+            row['error_location'] = [{'line': f.lineno, 'function': f.name} for f in traceback.extract_tb(exc.__traceback__) if Path(f.filename).name == Path(__file__).name]
+            report['failed_comments'] += 1
+        finally:
+            save(report)
+
 
 def save(report):
     temp = REPORT.with_suffix('.tmp')
@@ -198,7 +239,7 @@ def main():
     code = 0
     try:
         run(report)
-        report['status'] = 'partial' if any(r.get('status') == 'generation_failed' for r in report['results']) else 'ok'
+        report['status'] = 'partial' if any(report.get(k, 0) for k in ('failed_comments', 'deferred', 'review_required')) or any(r.get('status') == 'cannot_reply' or r.get('verified') is False for r in report['results']) else 'ok'
         report['stage'] = 'completed'
         report.pop('active_comment_id', None)
     except Exception as exc:
@@ -209,6 +250,8 @@ def main():
     finally:
         save(report)
         print(json.dumps({k:v for k,v in report.items() if k != 'results'}, ensure_ascii=False))
+        for row in report['results']:
+            print(json.dumps({k:v for k,v in row.items() if k != 'reply'}, ensure_ascii=False))
     return code
 
 if __name__ == '__main__':
