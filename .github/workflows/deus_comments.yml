@@ -1,11 +1,12 @@
 name: Deus Digitalis - Responder comentarios
-on:
+'on':
+  # UTC: cuatro ejecuciones por hora, todos los días.
   schedule:
     - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Publicar respuestas reales (false = solo borradores)'
+        description: 'Publicar respuestas reales (false = solo borradores; cron publica automáticamente)'
         type: boolean
         default: false
 permissions:
