@@ -239,5 +239,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=V4Z3D8-VpfA",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-3d8d8b5a228611d8/El eco silencioso del duelo inesperado.mp4"
+  },
+  {
+    "episodio": "ent-97552d557be55678",
+    "caso": "ent-97552d557be55678",
+    "titulo": "El tiempo de la rutina",
+    "fecha_utc": "2026-11-27T15:04:09.131575+00:00",
+    "youtube_id": "8RcBDqQaS1g",
+    "youtube_url": "https://www.youtube.com/watch?v=8RcBDqQaS1g",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-97552d557be55678/El tiempo de la rutina.mp4"
   }
 ]

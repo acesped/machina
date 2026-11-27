@@ -1,0 +1,143 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-97552d557be55678",
+  "privacidad": "public",
+  "video": "El tiempo de la rutina.mp4",
+  "miniatura": "El tiempo de la rutina.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El tiempo de la rutina",
+    "_titulo_caso": "El tiempo de la rutina",
+    "categoria": "Tiempo",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "La rutina compacta el tiempo percibido, haciendo que los momentos se fundan y se pierda la distinción entre pasado y presente.",
+    "resumen_publicacion": "Observamos cómo la repetición diaria encoge la sensación del tiempo, mientras la novedad lo alarga. Al percibir la rutina como un filtro, los humanos pueden decidir expandir o contraer su sentido del tiempo. Este monólogo muestra ejemplos cotidianos y reflexiones sobre la influencia de la novedad y la seguridad en la experiencia temporal.",
+    "escenas": [
+      {
+        "texto": "El sol se alza y la ciudad despierta con un mismo ritmo. Una persona sale de su casa y avanza por la misma calle, sin mirar el paisaje, pues el camino es un recuerdo familiar.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El reloj marca las horas, pero la mente se queda en un bucle. Los minutos se desvanecen en un mar de hábitos; la atención se desplaza a la rutina sin que el tiempo se perciba como un río.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una lluvia inesperada interrumpe el camino. El sonido del agua golpea el asfalto y la mente se despierta. Los sentidos se agudizan y el instante se vuelve un punto de referencia singular.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Ese momento se marca como un hito. El cerebro crea una distinción clara entre el pasado y el presente, haciendo que el tiempo parezca más largo, como si la lluvia fuera un episodio eterno.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al volver a la ruta habitual, la sensación vuelve a comprimirse. El tiempo se vuelve un hilo fino que se desliza sin que la mente perciba el paso de los minutos.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "La alternancia muestra que la novedad, no la duración, define la experiencia temporal. Cuando algo inesperado aparece, el tiempo se expande; cuando la rutina se repite, se contrae.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Los humanos buscan variedad para romper la monotonía. Al introducir cambios, se recupera la claridad del momento y el tiempo se vuelve más presente. Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Sin embargo, la rutina también brinda seguridad. Permite que el tiempo fluya sin sobresaltos, creando un refugio donde el cuerpo y la mente descansan.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, la percepción del tiempo depende más del contenido emocional que del conteo objetivo. El corazón late con intensidad cuando algo nuevo aparece, y el pulso se suaviza cuando el día se repite.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al reconocer este juego, cada persona decide si quiere expandir o contraer su sentido del tiempo. La rutina puede ser un espejo que refleja la rapidez o la calma que uno elija.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Por qué los días rutinarios parecen desvanecerse mientras los eventos inesperados se estiran?",
+    "mini_titulo": "RITMOS QUE COMPRIMEN"
+  },
+  "episodio": {
+    "id": "ent-97552d557be55678",
+    "caso_id": "ent-97552d557be55678",
+    "titulo": "El tiempo de la rutina"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "8ccbdf363a4fe68f6997cfd32cb76c950d3ebfd208dd93e28200c120e6ceff73",
+      "phash": "a4179b2ef4643652",
+      "pose": "original_hd_02"
+    }
+  ],
+  "creado_utc": "2026-11-27T15:04:06.802482+00:00",
+  "video_bytes": 14086413,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1108143645605238",
+    "video_id": "1108143638938572",
+    "start": 14086413,
+    "end": 14086413,
+    "size": 14086413,
+    "error": "",
+    "permalink": "/reel/1108143638938572/",
+    "confirmado_utc": "2026-11-27T15:04:35.563126+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "9fde3c41e564ed8e92a266c88b6ece849c0362a3b27031ce45eeaa6745ae912c",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "8RcBDqQaS1g"
+}

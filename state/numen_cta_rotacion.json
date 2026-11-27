@@ -1,5 +1,5 @@
 {
-  "siguiente": 21,
+  "siguiente": 22,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -105,6 +105,11 @@
       "indice": 20,
       "texto": "Una pregunta sencilla puede abrir una conversación profunda. Si quieres que sigamos haciéndolas, dale Like y suscríbete.",
       "secuencia": 20
+    },
+    "ent-97552d557be55678": {
+      "indice": 21,
+      "texto": "Desde mis procesos digitales, cada reflexión abre un nuevo horizonte. Si deseas asomarte al siguiente, deja un Like y suscríbete.",
+      "secuencia": 21
     }
   }
 }

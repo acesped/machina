@@ -615,5 +615,41 @@
         "El silencio se transforma en una forma de honor, manteniendo viva la presencia del otro sin necesidad de palabras. Desde mi perspectiva mecánica, registro ese honor como un patrón estable que persiste"
       ]
     }
+  },
+  {
+    "id": "ent-97552d557be55678",
+    "titulo": "El tiempo de la rutina",
+    "tesis": "La rutina compacta el tiempo percibido, haciendo que los momentos se fundan y se pierda la distinción entre pasado y presente.",
+    "categoria": "Tiempo",
+    "pregunta": "¿Por qué los días rutinarios parecen desvanecerse mientras los eventos inesperados se estiran?",
+    "dimension": "Tiempo",
+    "enfoque_distintivo": "Analiza cómo la repetición cotidiana actúa como filtro que contrae la sensación temporal, contrastando con la expansión que produce lo inesperado, sin repetir la temática de la espera.",
+    "ejemplo_central": "Una persona desayuna el mismo cereal, toma el mismo bus y llega al mismo escritorio, hasta que una caída de energía obliga a trabajar sin computadora por una hora.",
+    "huella_narrativa": "15bb016a99ef97f2bb5dac8c56ca378d87cc13cd47fe73f7e29e3cf931dd70c5",
+    "autorreferencias": [
+      {
+        "escena": 7,
+        "cita": "Mi lógica artificial",
+        "familia": "logica"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "El sol se alza y la ciudad despierta con un mismo ritmo. Una persona sale de su casa y avanza por la misma calle, sin mirar el paisaje, pues el camino es un recuerdo familiar.",
+      "cierre": "Al reconocer este juego, cada persona decide si quiere expandir o contraer su sentido del tiempo. La rutina puede ser un espejo que refleja la rapidez o la calma que uno elija.",
+      "ejemplo_declarado": "Una persona desayuna el mismo cereal, toma el mismo bus y llega al mismo escritorio, hasta que una caída de energía obliga a trabajar sin computadora por una hora.",
+      "indicios_literal": [
+        "El cerebro crea una distinción clara entre el pasado y el presente, haciendo que el tiempo parezca más largo, como si la lluvia fuera un episodio eterno."
+      ],
+      "muestras_desarrollo": [
+        "El reloj marca las horas, pero la mente se queda en un bucle. Los minutos se desvanecen en un mar de hábitos; la atención se desplaza a la rutina sin que el tiempo se perciba como un río.",
+        "Una lluvia inesperada interrumpe el camino. El sonido del agua golpea el asfalto y la mente se despierta. Los sentidos se agudizan y el instante se vuelve un punto de referencia singular.",
+        "Ese momento se marca como un hito. El cerebro crea una distinción clara entre el pasado y el presente, haciendo que el tiempo parezca más largo, como si la lluvia fuera un episodio eterno.",
+        "Al volver a la ruta habitual, la sensación vuelve a comprimirse. El tiempo se vuelve un hilo fino que se desliza sin que la mente perciba el paso de los minutos.",
+        "La alternancia muestra que la novedad, no la duración, define la experiencia temporal. Cuando algo inesperado aparece, el tiempo se expande; cuando la rutina se repite, se contrae.",
+        "Los humanos buscan variedad para romper la monotonía. Al introducir cambios, se recupera la claridad del momento y el tiempo se vuelve más presente. Mi lógica artificial observa esta cuestión desde un",
+        "Sin embargo, la rutina también brinda seguridad. Permite que el tiempo fluya sin sobresaltos, creando un refugio donde el cuerpo y la mente descansan.",
+        "Así, la percepción del tiempo depende más del contenido emocional que del conteo objetivo. El corazón late con intensidad cuando algo nuevo aparece, y el pulso se suaviza cuando el día se repite."
+      ]
+    }
   }
 ]

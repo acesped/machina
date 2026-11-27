@@ -274,5 +274,15 @@
     "phash": "7b5e9686e16c8c30",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El eco silencioso del duelo inesperado"
+  },
+  "ent-97552d557be55678": {
+    "seed": 12857315058520711536,
+    "indice": 1,
+    "pose_id": 1,
+    "pose": "original_hd_02",
+    "sha256": "8ccbdf363a4fe68f6997cfd32cb76c950d3ebfd208dd93e28200c120e6ceff73",
+    "phash": "a4179b2ef4643652",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El tiempo de la rutina"
   }
 }
