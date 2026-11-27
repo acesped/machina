@@ -3,6 +3,7 @@ import os
 import json
 import time
 import sys
+import traceback
 from pathlib import Path
 from datetime import datetime, timezone
 import requests
@@ -67,8 +68,14 @@ class YouTube:
                        params={'part': 'snippet'}, json={'snippet': {
                            'parentId': parent, 'textOriginal': text}})
 
+def as_dict(value):
+    return value if isinstance(value, dict) else {}
+
+def as_text(value):
+    return value if isinstance(value, str) else ''
+
 def author(comment):
-    return comment.get('snippet', {}).get('authorChannelId', {}).get('value')
+    return as_dict(as_dict(as_dict(comment).get('snippet')).get('authorChannelId')).get('value')
 
 def already_answered(yt, thread, channel):
     top = thread['snippet']['topLevelComment']['id']
@@ -90,7 +97,7 @@ def generate(context):
                 data = request('POST', f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
                     headers={'x-goog-api-key': key}, json={'systemInstruction': {'parts': [{'text': SYSTEM}]},
                     'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': {'maxOutputTokens': 1024, 'temperature': 0.7}})
-                text = ''.join(p.get('text', '') for p in data['candidates'][0]['content']['parts'] if not p.get('thought'))
+                text = ''.join(as_text(p.get('text')) for p in data['candidates'][0]['content']['parts'] if isinstance(p, dict) and not p.get('thought'))
             else:
                 url = 'https://api.groq.com/openai/v1/chat/completions' if provider == 'groq' else 'https://openrouter.ai/api/v1/chat/completions'
                 model = os.getenv('GROQ_MODEL', 'llama-3.3-70b-versatile') if provider == 'groq' else 'openrouter/free'
@@ -98,18 +105,20 @@ def generate(context):
                     'model': model, 'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}],
                     'max_tokens': 350, 'temperature': 0.7})
                 text = data['choices'][0]['message']['content']
-            text = text.strip()
+            text = as_text(text).strip()
             if text.upper().strip('. ') == 'REVIEW':
                 return None, provider
             if not text or len(text) > 750 or 'http://' in text.lower() or 'https://' in text.lower():
                 raise ValueError('Respuesta no válida')
             return text, provider
-        except (requests.RequestException, ApiError, KeyError, IndexError, TypeError, ValueError) as exc:
+        except (requests.RequestException, ApiError, KeyError, IndexError, TypeError, ValueError, AttributeError) as exc:
             errors.append(provider + ':' + (str(exc) if isinstance(exc, ApiError) else type(exc).__name__))
     raise ApiError('IA no disponible: ' + ', '.join(errors))
 
 def run(report):
+    report['stage'] = 'oauth'
     yt = YouTube(oauth())
+    report['stage'] = 'verify_channel'
     own = yt.get('channels', part='snippet', mine='true').get('items', [])
     target = yt.get('channels', part='snippet', forHandle='@' + HANDLE).get('items', [])
     if len(target) != 1 or target[0]['id'] not in {c['id'] for c in own}:
@@ -121,15 +130,18 @@ def run(report):
     # El historial persistente es YouTube: se comprueban también respuestas manuales.
     for thread in yt.pages('commentThreads', part='snippet', allThreadsRelatedToChannelId=channel,
                            maxResults=100, order='time', textFormat='plainText', moderationStatus='published'):
+        report['stage'] = 'inspect_comment'
         sn = thread['snippet']
         top = sn['topLevelComment']
         vid = sn.get('videoId') or top['snippet'].get('videoId')
         if not vid or author(top) == channel or not sn.get('canReply', False):
             continue
         report['scanned'] += 1
+        report['stage'] = 'check_existing_replies'
         if already_answered(yt, thread, channel):
             report['already_answered'] += 1
             continue
+        report['stage'] = 'fetch_video'
         if vid not in cache:
             items = yt.get('videos', part='snippet', id=vid).get('items', [])
             cache[vid] = items[0]['snippet'] if items else {}
@@ -137,9 +149,20 @@ def run(report):
         if video.get('channelId') != channel:
             continue
         comment = top['snippet'].get('textOriginal') or top['snippet'].get('textDisplay', '')
+        comment = as_text(comment)
         if not comment.strip():
             continue
-        reply, provider = generate({'title': video.get('title', ''), 'description': video.get('description', '')[:4000], 'comment': comment[:4000]})
+        report['stage'] = 'generate_reply'
+        report['active_comment_id'] = top['id']
+        try:
+            reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]})
+        except ApiError as exc:
+            report['results'].append({'comment_id': top['id'], 'status': 'generation_failed', 'error': str(exc)})
+            processed += 1
+            save(report)
+            if processed >= LIMIT:
+                break
+            continue
         row = {'comment_id': top['id'], 'video_id': vid, 'video_title': video.get('title'), 'provider': provider}
         report['results'].append(row)
         processed += 1
@@ -148,6 +171,7 @@ def run(report):
         elif DRY:
             row.update(status='draft', reply=reply)
         else:
+            report['stage'] = 'publish_reply'
             # Comprobar nuevamente justo antes de publicar para evitar duplicados.
             existing = yt.pages('comments', part='snippet', parentId=top['id'], maxResults=100, textFormat='plainText')
             if any(author(c) == channel for c in existing):
@@ -174,10 +198,13 @@ def main():
     code = 0
     try:
         run(report)
-        report['status'] = 'ok'
+        report['status'] = 'partial' if any(r.get('status') == 'generation_failed' for r in report['results']) else 'ok'
+        report['stage'] = 'completed'
+        report.pop('active_comment_id', None)
     except Exception as exc:
         report['status'] = 'failed'
         report['error'] = str(exc) if isinstance(exc, ApiError) else type(exc).__name__
+        report['error_location'] = [{'file': Path(f.filename).name, 'line': f.lineno, 'function': f.name} for f in traceback.extract_tb(exc.__traceback__)]
         code = 1
     finally:
         save(report)
