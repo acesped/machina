@@ -1,0 +1,45 @@
+name: Deus Digitalis - Responder comentarios
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publicar respuestas reales (false = solo borradores)'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: deus-comments
+  cancel-in-progress: false
+jobs:
+  comments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar dependencias
+        run: python -m pip install 'requests>=2.32,<3'
+      - name: Procesar comentarios
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          DRY_RUN: ${{ (github.event_name == 'schedule' || inputs.publish == true) && 'false' || 'true' }}
+          MAX_REPLIES: '10'
+        run: python deus_comments.py
+      - name: Guardar informe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deus-comments-${{ github.run_id }}
+          path: deus_comments_report.json
+          if-no-files-found: warn
+          retention-days: 7
