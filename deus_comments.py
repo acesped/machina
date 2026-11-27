@@ -4,6 +4,7 @@ import json
 import time
 import sys
 import traceback
+import re
 from pathlib import Path
 from datetime import datetime, timezone
 import requests
@@ -28,6 +29,16 @@ class ApiError(Exception):
     pass
 
 def request(method, url, **kw):
+    # Solo reintentar lecturas; nunca duplicar una publicación.
+    for attempt in range(3 if method == "GET" else 1):
+        try:
+            return request_once(method, url, **kw)
+        except (requests.RequestException, ApiError) as exc:
+            if method != "GET" or attempt == 2 or (isinstance(exc, ApiError) and not re.search(r"HTTP (429|5\d\d)", str(exc))):
+                raise
+            time.sleep(2 ** attempt)
+
+def request_once(method, url, **kw):
     # No registrar URLs, tokens ni cuerpos de errores que puedan contener secretos.
     r = requests.request(method, url, timeout=35, **kw)
     if not r.ok:
@@ -55,12 +66,16 @@ class YouTube:
     def get(self, endpoint, **params):
         return request('GET', BASE + endpoint, headers=self.headers, params=params)
     def pages(self, endpoint, **params):
+        seen_tokens = set()
         while True:
             data = self.get(endpoint, **params)
             yield from data.get('items', [])
             token = data.get('nextPageToken')
             if not token:
                 break
+            if token in seen_tokens:
+                raise ApiError('Token de paginación repetido')
+            seen_tokens.add(token)
             params['pageToken'] = token
     def reply(self, parent, text):
         # No reintentar escrituras: si hay timeout, verificar en la próxima ejecución.
@@ -79,41 +94,141 @@ def author(comment):
 
 def already_answered(yt, thread, channel):
     top = thread['snippet']['topLevelComment']['id']
-    if thread['snippet'].get('totalReplyCount', 0) == 0:
-        return False
     return any(author(c) == channel for c in yt.pages('comments', part='snippet',
                parentId=top, maxResults=100, textFormat='plainText'))
 
-def generate(context):
+# Cache de catálogos y modelos no disponibles durante esta ejecución.
+CATALOG = {}
+UNAVAILABLE = set()
+PREFERRED = {}
+PROVIDERS = [('gemini', 'GEMINI_API_KEY'), ('groq', 'GROQ_API_KEY'),
+             ('openrouter', 'OPENROUTER_API_KEY')]
+
+def model_rank(model):
+    name = model.lower()
+    return (not any(x in name for x in ('flash', 'llama', 'gemma', 'qwen', 'gpt-oss', 'mistral')), 'preview' in name, name)
+
+def text_model(name):
+    return not any(x in name.lower() for x in ('embed', 'audio', 'whisper', 'tts', 'image', 'vision', 'guard', 'moderation', 'rerank', 'robot', 'live', 'veo', 'imagen', 'research', 'compound'))
+
+def discover(provider, key):
+    if provider in CATALOG:
+        return CATALOG[provider]
+    models = []
+    if provider == 'gemini':
+        params = {'pageSize': 100}
+        seen = set()
+        while True:
+            data = request('GET', 'https://generativelanguage.googleapis.com/v1beta/models', headers={'x-goog-api-key': key}, params=params)
+            for m in data.get('models') or []:
+                name = as_text(m.get('name')).removeprefix('models/')
+                if name and 'generateContent' in (m.get('supportedGenerationMethods') or []) and text_model(name):
+                    models.append(name)
+            token = data.get('nextPageToken')
+            if not token or token in seen:
+                break
+            seen.add(token)
+            params['pageToken'] = token
+    else:
+        base = 'https://api.groq.com/openai/v1' if provider == 'groq' else 'https://openrouter.ai/api/v1'
+        data = request('GET', base + '/models', headers={'Authorization': 'Bearer ' + key})
+        for m in data.get('data') or []:
+            name = as_text(m.get('id'))
+            if not name or not text_model(name) or m.get('active') is False:
+                continue
+            if provider == 'openrouter':
+                pricing = as_dict(m.get('pricing'))
+                try:
+                    free = all(float(pricing[k]) == 0 for k in ('prompt', 'completion'))
+                except (KeyError, TypeError, ValueError):
+                    free = False
+                if not free or not name.endswith(':free'):
+                    continue
+            models.append(name)
+    models = sorted(set(models), key=model_rank)
+    if provider == 'openrouter':
+        models.insert(0, 'openrouter/free')
+    override = os.getenv(provider.upper() + '_MODEL', '')
+    if override in models:
+        models.remove(override)
+        models.insert(0, override)
+    CATALOG[provider] = models
+    return models
+
+def generate_once(provider, key, model, prompt):
+    if provider == 'gemini':
+        data = request('POST', f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+            headers={'x-goog-api-key': key}, json={'systemInstruction': {'parts': [{'text': SYSTEM}]},
+            'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': {'maxOutputTokens': 2048, 'temperature': 0.6}})
+        parts = as_dict(as_dict((data.get('candidates') or [{}])[0]).get('content')).get('parts') or []
+        text = ''.join(as_text(p.get('text')) for p in parts if isinstance(p, dict) and not p.get('thought'))
+    else:
+        base = 'https://api.groq.com/openai/v1' if provider == 'groq' else 'https://openrouter.ai/api/v1'
+        data = request('POST', base + '/chat/completions', headers={'Authorization': 'Bearer ' + key}, json={
+            'model': model, 'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}],
+            'max_tokens': 1024, 'temperature': 0.6})
+        text = as_dict(as_dict((data.get('choices') or [{}])[0]).get('message')).get('content')
+    text = as_text(text).strip()
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.S).strip()
+    if text.upper().strip('. ') == 'REVIEW':
+        return None
+    if not text or len(text) > 750 or len(text.split()) > 90 or re.search(r'https?://|<think>|^\s*```', text, re.I):
+        raise ValueError('Respuesta vacía o inválida')
+    return text
+
+def generate(context, row):
     prompt = json.dumps(context, ensure_ascii=False)
-    errors = []
-    for provider, keyname in [('gemini', 'GEMINI_API_KEY'), ('groq', 'GROQ_API_KEY'), ('openrouter', 'OPENROUTER_API_KEY')]:
+    errors = row.setdefault('ai_attempts', [])
+    for provider, keyname in PROVIDERS:
         key = os.getenv(keyname)
         if not key:
+            errors.append({'provider': provider, 'error': 'Secret ausente'})
             continue
         try:
-            if provider == 'gemini':
-                model = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
-                data = request('POST', f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
-                    headers={'x-goog-api-key': key}, json={'systemInstruction': {'parts': [{'text': SYSTEM}]},
-                    'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': {'maxOutputTokens': 1024, 'temperature': 0.7}})
-                text = ''.join(as_text(p.get('text')) for p in data['candidates'][0]['content']['parts'] if isinstance(p, dict) and not p.get('thought'))
-            else:
-                url = 'https://api.groq.com/openai/v1/chat/completions' if provider == 'groq' else 'https://openrouter.ai/api/v1/chat/completions'
-                model = os.getenv('GROQ_MODEL', 'llama-3.3-70b-versatile') if provider == 'groq' else 'openrouter/free'
-                data = request('POST', url, headers={'Authorization': 'Bearer ' + key}, json={
-                    'model': model, 'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}],
-                    'max_tokens': 350, 'temperature': 0.7})
-                text = data['choices'][0]['message']['content']
-            text = as_text(text).strip()
-            if text.upper().strip('. ') == 'REVIEW':
-                return None, provider
-            if not text or len(text) > 750 or 'http://' in text.lower() or 'https://' in text.lower():
-                raise ValueError('Respuesta no válida')
-            return text, provider
-        except (requests.RequestException, ApiError, KeyError, IndexError, TypeError, ValueError, AttributeError) as exc:
-            errors.append(provider + ':' + (str(exc) if isinstance(exc, ApiError) else type(exc).__name__))
-    raise ApiError('IA no disponible: ' + ', '.join(errors))
+            models = list(discover(provider, key))
+        except Exception as exc:
+            errors.append({'provider': provider, 'stage': 'discover', 'error': str(exc) if isinstance(exc, ApiError) else type(exc).__name__})
+            continue
+        preferred = PREFERRED.get(provider)
+        if preferred in models:
+            models.remove(preferred)
+            models.insert(0, preferred)
+        candidates = [m for m in models if (provider, m) not in UNAVAILABLE][:4]
+        for model in candidates:
+            for attempt in range(2):
+                try:
+                    text = generate_once(provider, key, model, prompt)
+                    PREFERRED[provider] = model
+                    row['model'] = model
+                    return text, provider
+                except Exception as exc:
+                    err = str(exc) if isinstance(exc, (ApiError, ValueError)) else type(exc).__name__
+                    errors.append({'provider': provider, 'model': model, 'attempt': attempt+1, 'error': err})
+                    if isinstance(exc, ApiError) and re.search(r'HTTP (400|404)', err):
+                        UNAVAILABLE.add((provider, model))
+                    if attempt == 0 and (isinstance(exc, requests.RequestException) or re.search(r'HTTP (429|5\d\d)', err)):
+                        time.sleep(2)
+                        continue
+                    break
+    raise ApiError('IA no disponible; consultar ai_attempts')
+
+def verify_reply(yt, reply_id, cid, channel):
+    errors = []
+    for delay in (0, 2, 5):
+        if delay:
+            time.sleep(delay)
+        try:
+            items = yt.get('comments', part='snippet', id=reply_id, textFormat='plainText').get('items') or []
+            if any(c.get('id') == reply_id and author(c) == channel and as_dict(c.get('snippet')).get('parentId') == cid for c in items):
+                return True, errors
+        except Exception as exc:
+            errors.append(str(exc) if isinstance(exc, ApiError) else type(exc).__name__)
+        try:
+            if any(c.get('id') == reply_id and author(c) == channel for c in yt.pages('comments', part='snippet', parentId=cid, maxResults=100, textFormat='plainText')):
+                return True, errors
+        except Exception as exc:
+            errors.append(str(exc) if isinstance(exc, ApiError) else type(exc).__name__)
+    return False, errors
 
 def run(report):
     report['stage'] = 'oauth'
@@ -184,10 +299,11 @@ def run(report):
             comment = as_text(ts.get('textOriginal') or ts.get('textDisplay'))
             if not comment.strip():
                 row['status'] = 'empty_comment'
+                report['failed_comments'] += 1
                 continue
             processed += 1
             report['stage'] = 'generate_reply'
-            reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]})
+            reply, provider = generate({'title': as_text(video.get('title')), 'description': as_text(video.get('description'))[:4000], 'comment': comment[:4000]}, row)
             row['provider'] = provider
             if reply is None:
                 row['status'] = 'review_required'
@@ -208,13 +324,8 @@ def run(report):
                     row.update(status='published', reply_id=result['id'])
                     report['published'] += 1
                     report['stage'] = 'verify_reply'
-                    try:
-                        items = yt.get('comments', part='snippet', id=result['id'], textFormat='plainText').get('items') or []
-                        row['verified'] = any(c.get('id') == result['id'] and author(c) == channel and as_dict(c.get('snippet')).get('parentId') == cid for c in items)
-                        report['verified'] += int(row['verified'])
-                    except Exception as exc:
-                        row['verified'] = False
-                        row['verification_error'] = str(exc) if isinstance(exc, ApiError) else type(exc).__name__
+                    row['verified'], row['verification_errors'] = verify_reply(yt, result['id'], cid, channel)
+                    report['verified'] += int(row['verified'])
                     time.sleep(2)
         except Exception as exc:
             row.update(status='failed', stage=report['stage'], error=str(exc) if isinstance(exc, ApiError) else type(exc).__name__)
