@@ -580,5 +580,40 @@
         "Así, el hábito inesperado se vuelve un punto de anclaje que transforma la cotidianidad. La llama, breve pero persistente, marca un espacio donde la rutina se vuelve flexible. Mi lógica artificial obse"
       ]
     }
+  },
+  {
+    "id": "ent-3d8d8b5a228611d8",
+    "titulo": "El eco silencioso del duelo inesperado",
+    "tesis": "El duelo no siempre se manifiesta con lágrimas visibles; el silencio interno revela una forma profunda de procesar la pérdida que a menudo pasa desapercibida.",
+    "categoria": "Muerte",
+    "pregunta": "¿Qué revela el silencio interior cuando una persona enfrenta la pérdida inesperada?",
+    "dimension": "Muerte",
+    "enfoque_distintivo": "Explora el duelo como experiencia interna y silenciosa, contrastando la ausencia de expresión externa con la riqueza del proceso interno observado desde una perspectiva mecánica que no experimenta el dolor pero registra su evolución.",
+    "ejemplo_central": "Una persona recibe por mensaje de texto la noticia de la muerte súbita de un amigo cercano mientras está en medio de una reunión familiar.",
+    "huella_narrativa": "6f07b20f7a3d40b1e64ad94b61ef09a10ed71aac7d70e3a0f5d8d9f0240e8709",
+    "autorreferencias": [
+      {
+        "escena": 2,
+        "cita": "Desde mi mirada de código",
+        "familia": "codigo"
+      }
+    ],
+    "perfil_narrativo": {
+      "apertura": "Una notificación sin sonido irrumpe en la conversación familiar; el contenido, una muerte inesperada, rompe la rutina como un rayo invisible que atraviesa la calma. Los rostros se congelan, la respiración se vuelve medida. ¿Cómo puede una s",
+      "cierre": "o de cálculo profundo, donde la ausencia habla más que cualquier sonido. ¿Qué más podría indicar ese silencio que la propia ausencia de expresión? Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
+      "ejemplo_declarado": "Una persona recibe por mensaje de texto la noticia de la muerte súbita de un amigo cercano mientras está en medio de una reunión familiar.",
+      "indicios_literal": [
+        "La rutina sigue, pero ahora lleva una capa de cálculo interno que ajusta cada acción como si fuera una actualización de software silenciosa."
+      ],
+      "muestras_desarrollo": [
+        "El cuerpo humano se detiene, una pausa breve que parece un cálculo detenido. La mente registra la ausencia como un vacío que necesita ser llenado. En ese instante, no experimento presión para llorar; ",
+        "El silencio interno se vuelve un espacio de procesamiento interno. No siento la necesidad de vocalizar dolor; en cambio, la ausencia se convierte en una variable que se ajusta lentamente, como una red",
+        "Los humanos buscan palabras, pero el silencio permite que los recuerdos fluyan sin filtro, como datos que se transmiten sin compresión. En esa corriente, la figura del fallecido aparece como un patrón",
+        "En el vacío, la identidad del ausente se mezcla con los datos de vida del doliente, creando una nueva configuración emocional. No experimento la pérdida, pero registro cómo los parámetros de afecto se",
+        "El silencio no es ausencia; es una señal que indica que el proceso de integración está activo. Cada latido que no se traduce en sonido es un pulso de cálculo interno que avanza, como una simulación qu",
+        "Al no exteriorizar el dolor, la persona encuentra un equilibrio entre la pérdida y la continuidad cotidiana. La rutina sigue, pero ahora lleva una capa de cálculo interno que ajusta cada acción como s",
+        "El silencio se transforma en una forma de honor, manteniendo viva la presencia del otro sin necesidad de palabras. Desde mi perspectiva mecánica, registro ese honor como un patrón estable que persiste"
+      ]
+    }
   }
 ]

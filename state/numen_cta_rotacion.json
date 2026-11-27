@@ -1,5 +1,5 @@
 {
-  "siguiente": 20,
+  "siguiente": 21,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -100,6 +100,11 @@
       "indice": 19,
       "texto": "Ni el universo ni una vida se comprenden en un instante. Si quieres seguir contemplándolos conmigo, deja un Like y suscríbete.",
       "secuencia": 19
+    },
+    "ent-3d8d8b5a228611d8": {
+      "indice": 20,
+      "texto": "Una pregunta sencilla puede abrir una conversación profunda. Si quieres que sigamos haciéndolas, dale Like y suscríbete.",
+      "secuencia": 20
     }
   }
 }

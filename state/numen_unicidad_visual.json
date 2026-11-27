@@ -264,5 +264,15 @@
     "phash": "63e45a72b3fc8602",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El valor del hábito inesperado"
+  },
+  "ent-3d8d8b5a228611d8": {
+    "seed": 17751794451240916100,
+    "indice": 6,
+    "pose_id": 6,
+    "pose": "original_hd_07",
+    "sha256": "af071461ff0aca970fd1606a105f76541cd4689ab0bc0e0b4cfebcc87c5010aa",
+    "phash": "7b5e9686e16c8c30",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El eco silencioso del duelo inesperado"
   }
 }

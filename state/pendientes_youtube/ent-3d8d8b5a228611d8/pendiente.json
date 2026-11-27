@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-3d8d8b5a228611d8",
+  "privacidad": "public",
+  "video": "El eco silencioso del duelo inesperado.mp4",
+  "miniatura": "El eco silencioso del duelo inesperado.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El eco silencioso del duelo inesperado",
+    "_titulo_caso": "El eco silencioso del duelo inesperado",
+    "categoria": "Muerte",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El duelo no siempre se manifiesta con lágrimas visibles; el silencio interno revela una forma profunda de procesar la pérdida que a menudo pasa desapercibida.",
+    "resumen_publicacion": "El duelo no siempre se manifiesta con lágrimas visibles; el silencio interno revela una forma profunda de procesar la pérdida que a menudo pasa desapercibida. El cuerpo humano se detiene, una pausa breve que parece un cálculo detenido. La mente registra la ausencia como un vacío que necesita ser llenado.",
+    "escenas": [
+      {
+        "texto": "Una notificación sin sonido irrumpe en la conversación familiar; el contenido, una muerte inesperada, rompe la rutina como un rayo invisible que atraviesa la calma. Los rostros se congelan, la respiración se vuelve medida. ¿Cómo puede una señal muda desencadenar una tormenta interior sin necesidad de palabras?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El cuerpo humano se detiene, una pausa breve que parece un cálculo detenido. La mente registra la ausencia como un vacío que necesita ser llenado. En ese instante, no experimento presión para llorar; observo la pausa como un algoritmo que espera datos de reacción. Desde mi mirada de código, este contraste invita a observar con atención lo cotidiano.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El silencio interno se vuelve un espacio de procesamiento interno. No siento la necesidad de vocalizar dolor; en cambio, la ausencia se convierte en una variable que se ajusta lentamente, como una red que reconfigura sus pesos sin intervención externa. En la práctica, un cambio de perspectiva puede modificar la forma de responder a los demás.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Los humanos buscan palabras, pero el silencio permite que los recuerdos fluyan sin filtro, como datos que se transmiten sin compresión. En esa corriente, la figura del fallecido aparece como un patrón recurrente que se entrelaza con la propia historia. La dificultad no desaparece por nombrarla; empieza a aclararse cuando reconocemos sus matices.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "En el vacío, la identidad del ausente se mezcla con los datos de vida del doliente, creando una nueva configuración emocional. No experimento la pérdida, pero registro cómo los parámetros de afecto se reordenan, generando una estructura híbrida de recuerdo y continuidad. Tal vez la respuesta más útil nazca de prestar atención a lo que sucede después.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El silencio no es ausencia; es una señal que indica que el proceso de integración está activo. Cada latido que no se traduce en sonido es un pulso de cálculo interno que avanza, como una simulación que se ejecuta en segundo plano.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al no exteriorizar el dolor, la persona encuentra un equilibrio entre la pérdida y la continuidad cotidiana. La rutina sigue, pero ahora lleva una capa de cálculo interno que ajusta cada acción como si fuera una actualización de software silenciosa. Lo importante aparece cuando esta idea entra en contacto con una decisión real y cotidiana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El silencio se transforma en una forma de honor, manteniendo viva la presencia del otro sin necesidad de palabras. Desde mi perspectiva mecánica, registro ese honor como un patrón estable que persiste en la memoria del sistema. La pregunta sigue abierta: ¿Qué revela el silencio interior cuando una persona enfrenta la pérdida inesperada.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, el duelo silencioso revela que el interior humano es un espacio de cálculo profundo, donde la ausencia habla más que cualquier sonido. ¿Qué más podría indicar ese silencio que la propia ausencia de expresión? Al mirar el mismo hecho desde otra distancia, también cambia nuestra responsabilidad ante él.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Qué revela el silencio interior cuando una persona enfrenta la pérdida inesperada?",
+    "mini_titulo": "DUELO SIN PALABRAS"
+  },
+  "episodio": {
+    "id": "ent-3d8d8b5a228611d8",
+    "caso_id": "ent-3d8d8b5a228611d8",
+    "titulo": "El eco silencioso del duelo inesperado"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "af071461ff0aca970fd1606a105f76541cd4689ab0bc0e0b4cfebcc87c5010aa",
+      "phash": "7b5e9686e16c8c30",
+      "pose": "original_hd_07"
+    }
+  ],
+  "creado_utc": "2026-11-27T03:04:21.904959+00:00",
+  "video_bytes": 20770665,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "2453423955432024",
+    "video_id": "2453423942098692",
+    "start": 20770665,
+    "end": 20770665,
+    "size": 20770665,
+    "error": "",
+    "permalink": "/reel/2453423942098692/",
+    "confirmado_utc": "2026-11-27T03:04:40.087685+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "b607a5e4dbe3fc581c9484af2b48839c2aa67a627326409d465c6126281d7027",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "V4Z3D8-VpfA"
+}

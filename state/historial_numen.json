@@ -229,5 +229,15 @@
     "youtube_url": "https://www.youtube.com/watch?v=AsdqBzRP4Q8",
     "youtube_estado": "completo",
     "salida": "output/NumenExCodice/ent-d2a3638af8c14738/El valor del hábito inesperado.mp4"
+  },
+  {
+    "episodio": "ent-3d8d8b5a228611d8",
+    "caso": "ent-3d8d8b5a228611d8",
+    "titulo": "El eco silencioso del duelo inesperado",
+    "fecha_utc": "2026-11-27T03:04:24.828640+00:00",
+    "youtube_id": "V4Z3D8-VpfA",
+    "youtube_url": "https://www.youtube.com/watch?v=V4Z3D8-VpfA",
+    "youtube_estado": "completo",
+    "salida": "output/NumenExCodice/ent-3d8d8b5a228611d8/El eco silencioso del duelo inesperado.mp4"
   }
 ]
