@@ -14,6 +14,9 @@ REPORT = Path('deus_comments_report.json')
 HANDLE = 'deusdigitalis'
 DRY = os.getenv('DRY_RUN', 'true').lower() != 'false'
 LIMIT = max(1, min(20, int(os.getenv('MAX_REPLIES', '10'))))
+ROUNDS = max(1, min(5, int(os.getenv('SCAN_ROUNDS', '1'))))
+INTERVAL = 60
+ACCEPTED_THIS_RUN = set()
 SYSTEM = '''Eres Deus Digitalis, una IA que reflexiona sobre la existencia humana.
 Responde en el idioma del comentario, con calidez, precisión y lenguaje sencillo.
 Relaciona la respuesta con el título y descripción del video cuando corresponda.
@@ -275,7 +278,7 @@ def run(report):
         report['active_comment_id'] = cid
         try:
             report['stage'] = 'check_existing_replies'
-            if already_answered(yt, thread, channel):
+            if cid in ACCEPTED_THIS_RUN or already_answered(yt, thread, channel):
                 row['status'] = 'already_answered'
                 report['already_answered'] += 1
                 continue
@@ -323,6 +326,7 @@ def run(report):
                     result = yt.reply(cid, reply)
                     row.update(status='published', reply_id=result['id'])
                     report['published'] += 1
+                    ACCEPTED_THIS_RUN.add(cid)
                     report['stage'] = 'verify_reply'
                     row['verified'], row['verification_errors'] = verify_reply(yt, result['id'], cid, channel)
                     report['verified'] += int(row['verified'])
@@ -340,9 +344,10 @@ def save(report):
     temp.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     temp.replace(REPORT)
 
-def main():
+def run_once(round_number):
     report = {'timestamp': datetime.now(timezone.utc).isoformat(), 'dry_run': DRY,
-              'scanned': 0, 'already_answered': 0, 'published': 0, 'results': []}
+              'scanned': 0, 'already_answered': 0, 'published': 0, 'results': [],
+              'round': round_number, 'rounds_requested': ROUNDS}
     code = 0
     try:
         run(report)
@@ -359,7 +364,36 @@ def main():
         print(json.dumps({k:v for k,v in report.items() if k != 'results'}, ensure_ascii=False))
         for row in report['results']:
             print(json.dumps({k:v for k,v in row.items() if k != 'reply'}, ensure_ascii=False))
-    return code
+    return code, report
+
+def main():
+    history = []
+    start = time.monotonic()
+    codes = []
+    for i in range(ROUNDS):
+        # Start-to-start cadence; never overlap or queue missed minute slots.
+        if i:
+            time.sleep(max(0, start + INTERVAL - time.monotonic()))
+        start = time.monotonic()
+        CATALOG.clear()
+        UNAVAILABLE.clear()
+        PREFERRED.clear()
+        code, report = run_once(i + 1)
+        codes.append(code)
+        history.append(report)
+        aggregate = dict(report)
+        aggregate['rounds_completed'] = len(history)
+        aggregate['rounds'] = history
+        aggregate['interval_seconds'] = INTERVAL
+        aggregate['total_published'] = sum(r.get('published', 0) for r in history)
+        aggregate['total_verified'] = sum(r.get('verified', 0) for r in history)
+        aggregate['any_failed_round'] = any(codes)
+        save(aggregate)
+        # A daily quota exhaustion cannot be fixed by polling every minute.
+        if 'quotaExceeded' in str(report.get('error', '')) or any('quotaExceeded' in str(r.get('error', '')) for r in report['results']):
+            print('Cuota de YouTube agotada; se detienen las rondas restantes.')
+            break
+    return int(any(codes))
 
 if __name__ == '__main__':
     sys.exit(main())
