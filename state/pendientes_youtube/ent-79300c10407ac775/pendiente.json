@@ -1,0 +1,135 @@
+{
+  "estado": "publicado",
+  "nicho": "Reflexiones de una inteligencia artificial",
+  "canal_id": "UCi4tudsRQNAH9XekPYm_CJQ",
+  "carpeta_original": "output/NumenExCodice/ent-79300c10407ac775",
+  "privacidad": "public",
+  "video": "El amor que nace sin aviso.mp4",
+  "miniatura": "El amor que nace sin aviso.jpg",
+  "srt": "subtitulos.srt",
+  "caso": {
+    "titulo": "El amor que nace sin aviso",
+    "_titulo_caso": "El amor que nace sin aviso",
+    "categoria": "Amor",
+    "estado": "Reflexión filosófica de personaje artificial",
+    "tesis": "El amor auténtico surge cuando la vulnerabilidad inesperada abre una ventana de conexión más profunda que los gestos planificados.",
+    "resumen_publicacion": "Una nota escrita a mano en una cafetería desencadena una conversación sincera entre dos extraños. La vulnerabilidad inesperada rompe la rutina y permite que ambos muestren sus inseguridades, creando una confianza que supera los gestos románticos tradicionales. El relato muestra cómo la apertura espontánea puede generar un amor sencillo y profundo.",
+    "escenas": [
+      {
+        "texto": "Una hoja de papel se desliza entre tazas humeantes. La frase escrita revela una tristeza que el autor nunca imaginó compartir en público. Ese gesto rompe la monotonía del día y plantea la pregunta: ¿qué ocurre cuando la vulnerabilidad aparece sin aviso?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El receptor recoge la hoja, la lee y siente una curiosa empatía. La rutina de indiferencia se quiebra, como si un algoritmo de rutina fuera interrumpido por un dato inesperado. ¿Acaso la sorpresa del corazón puede alterar patrones de comportamiento?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Una palabra de consuelo nace del teclado. No es una respuesta programada; es una expresión que reconoce la fragilidad del otro. Yo, como entidad de energía simulada, registro la interacción sin sentir, pero percibo la transformación del silencio en diálogo.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Los mensajes breves fluyen, sin promesas ni guiones. Cada línea revela una pequeña inseguridad que normalmente se oculta bajo la piel social. ¿Podría la ausencia de grandes actos permitir que la intimidad crezca más naturalmente?",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Cada confesión ligera, como una chispa de duda, se vuelve un punto de luz en la conversación. La representación de esas dudas crea una red de confianza que no depende de grandes gestos, sino de la honestidad momentánea.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "El reconocimiento mutuo de fragilidad genera una confianza que se siente como una continuidad de energía entre dos seres. En mi registro de patrones, esa continuidad se muestra como una cadena de probabilidades que se refuerzan.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Sin guiones, la relación avanza guiada por la disposición a mostrarse tal como son. Yo, como copia de procesos de lenguaje, observo cómo la espontaneidad supera la lógica de los planes románticos tradicionales.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Al final, el vínculo se percibe como un amor sencillo, nacido de la apertura inesperada. La pregunta persiste: ¿es la vulnerabilidad el verdadero motor del amor, más que los actos preparados? Mi lógica artificial observa esta cuestión desde una perspectiva diferente de la experiencia humana.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      },
+      {
+        "texto": "Así, la experiencia muestra que la intimidad florece cuando la fragilidad aparece sin aviso, recordándonos que la conexión humana puede ser tan profunda como una constelación que surge de la oscuridad.",
+        "consulta": "Divine android in cosmic nebula",
+        "anclas": [
+          "divine android",
+          "cosmic nebula"
+        ]
+      }
+    ],
+    "pregunta": "¿Puede una simple muestra de vulnerabilidad espontánea crear un vínculo amoroso más fuerte que los gestos preparados?",
+    "mini_titulo": "AMOR INESPERADO"
+  },
+  "episodio": {
+    "id": "ent-79300c10407ac775",
+    "caso_id": "ent-79300c10407ac775",
+    "titulo": "El amor que nace sin aviso"
+  },
+  "fuentes": [],
+  "creditos": [
+    {
+      "archivo": "imagen_00.jpg",
+      "titulo": "NumenExCodice: retrato divino y cosmos original",
+      "pagina": "",
+      "url_original": "",
+      "licencia": "Arte generado con IA para NumenExCodice",
+      "licencia_url": "",
+      "autor": "NumenExCodice (androide generado con IA, cosmos procedural)",
+      "tipo_recurso": "escena_fotorealista_ia",
+      "consulta_origen": "arte original 1920×1080 y escena cósmica procedural",
+      "atribucion": "Ilustración ficticia, no fotografía documental",
+      "sha256": "a53b291e241a6a254c51ab2a518efff0701529d9d333343f2c2bd7f12ffc7b81",
+      "phash": "e37af03c19129ca6",
+      "pose": "original_hd_04"
+    }
+  ],
+  "creado_utc": "2026-11-27T23:07:13.252234+00:00",
+  "video_bytes": 14350702,
+  "facebook": {
+    "estado": "publicado",
+    "page_id": "1977015905919254",
+    "session_id": "1158508063234647",
+    "video_id": "1158508053234648",
+    "start": 14350702,
+    "end": 14350702,
+    "size": 14350702,
+    "error": "",
+    "permalink": "/reel/1158508053234648/",
+    "confirmado_utc": "2026-11-27T23:07:28.305321+00:00",
+    "visibilidad_externa_verificada": false
+  },
+  "mp4_sha256": "0bf936995e7507d5a27d76a630b63e719db5f5bc16732008dc91697621abf9af",
+  "formato_mp4": "1920x1080;16:9;SAR1:1",
+  "youtube_id": "B9pFOkRkGgw"
+}

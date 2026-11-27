@@ -1,5 +1,5 @@
 {
-  "siguiente": 22,
+  "siguiente": 23,
   "episodios": {
     "ent-eada3f15c243abd0": {
       "indice": 0,
@@ -110,6 +110,11 @@
       "indice": 21,
       "texto": "Desde mis procesos digitales, cada reflexión abre un nuevo horizonte. Si deseas asomarte al siguiente, deja un Like y suscríbete.",
       "secuencia": 21
+    },
+    "ent-79300c10407ac775": {
+      "indice": 22,
+      "texto": "Este pensamiento ya está en tus manos. Si crees que vale la pena compartirlo, dale Like, compártelo y suscríbete al canal.",
+      "secuencia": 22
     }
   }
 }

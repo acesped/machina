@@ -284,5 +284,15 @@
     "phash": "a4179b2ef4643652",
     "version": "cosmos-v12-original-hd-91",
     "tema": "El tiempo de la rutina"
+  },
+  "ent-79300c10407ac775": {
+    "seed": 9467419766211084780,
+    "indice": 3,
+    "pose_id": 3,
+    "pose": "original_hd_04",
+    "sha256": "a53b291e241a6a254c51ab2a518efff0701529d9d333343f2c2bd7f12ffc7b81",
+    "phash": "e37af03c19129ca6",
+    "version": "cosmos-v12-original-hd-91",
+    "tema": "El amor que nace sin aviso"
   }
 }
