@@ -1,8 +1,10 @@
-"""Prueba supervisada de reproducción en Facebook. Ejecutar localmente.
+"""Prueba supervisada local y diagnóstico pasivo en CI.
 Instalación: pip install playwright && python -m playwright install chromium
 """
 import asyncio
 import json
+import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -12,13 +14,37 @@ REPORT = Path('deus_test_report.json')
 
 async def main():
     report = {'url': URL, 'authenticated': None, 'success': False, 'events': [], 'played_seconds': 0, 'mode': 'manual_supervised'}
+    ci = os.getenv('GITHUB_ACTIONS', '').lower() == 'true' or os.getenv('CI', '').lower() == 'true'
+    no_display = sys.platform.startswith('linux') and not (os.getenv('DISPLAY') or os.getenv('WAYLAND_DISPLAY'))
+    headless = ci or no_display or not sys.stdin.isatty()
+    report.update(headless=headless, diagnostic_completed=False, status='failed')
+    if headless:
+        report['mode'] = 'headless_diagnostic'
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=False)
+            browser = await p.chromium.launch(headless=headless)
             try:
                 context = await browser.new_context()
                 page = await context.new_page()
-                await page.goto(URL, wait_until='domcontentloaded', timeout=60000)
+                response = await page.goto(URL, wait_until='domcontentloaded', timeout=60000)
+                report['navigation_status'] = response.status if response else None
+                if headless:
+                    report['final_url'] = page.url
+                    report['page_title'] = await page.title()
+                    report['authenticated'] = any(c['name'] == 'c_user' and c['value'] for c in await context.cookies('https://www.facebook.com'))
+                    report['password_visible'] = await page.locator('input[type=password]:visible').count() > 0
+                    report['visible_dialogs'] = await page.locator('[role=dialog]:visible').count()
+                    report['video_count'] = await page.locator('video').count()
+                    report['states'] = await page.locator('video').evaluate_all("""vs => vs.map(v => ({paused:v.paused, readyState:v.readyState, currentTime:v.currentTime, duration:Number.isFinite(v.duration)?v.duration:null, ended:v.ended}))""")
+                    report['diagnostic_completed'] = True
+                    report['status'] = 'inconclusive'
+                    report['detail'] = 'Diagnóstico sin pantalla completado; no se solicitó reproducción. La prueba supervisada requiere ejecución local.'
+                    report['played_seconds'] = None
+                    try:
+                        await page.screenshot(path='deus_test_diagnostic.png', timeout=10000)
+                    except Exception:
+                        report['screenshot_error'] = 'No se pudo guardar la captura.'
+                    return 0
                 print('Inicia sesión manualmente si es necesario. Abre una publicación de video y déjala pausada al inicio.')
                 await asyncio.to_thread(input, 'Pulsa Enter aquí cuando esté preparada: ')
                 # La cookie es una señal, no una garantía de autorización.
@@ -56,6 +82,8 @@ async def main():
                 report['played_seconds'] = round(sum(r['end']-r['start'] for r in after['played_ranges']), 3)
                 report['success'] = report['played_seconds'] > 0 and any(e['event']=='playing' for e in report['events'])
                 report['detail'] = 'Reproducción observada' if report['success'] else 'Reproducción no confirmada'
+                report['diagnostic_completed'] = True
+                report['status'] = 'passed' if report['success'] else 'failed'
             except Exception as exc:
                 report['detail'] = str(exc)
             finally:
